@@ -1,0 +1,9 @@
+- var base = current.path[4] ? '.' : './guide';
+.banner.grid-fluid
+  .alert.is-important
+    :marked
+      **Known issue:** Some cheat sheet entries are currently inaccurate, reflecting TypeScript instead of Dart.
+
+article(class="l-content-small grid-fluid docs-content")
+  .cheatsheet
+    ngio-cheatsheet(src= base + '/cheatsheet.json')
