@@ -1,7 +1,7 @@
 # Angular.io
 [![Build Status][travis-badge]][travis-badge-url]
 
-Angular.io is site for Angular 2 **documentation** . 
+Angular.io is site for Angular 2 **documentation**. 
 
 This site also includes links to other helpful angular resources including 
 Angular 2, Angular 1, Angular Material, and AngularFire.
@@ -9,7 +9,7 @@ Angular 2, Angular 1, Angular Material, and AngularFire.
 ## Issues
 
 Please file **Developer Guide, Cookbook, and code sample issues _only_** in this 
-[Angular.io](https://github.com/angular/angular.io/issues) github repo.
+[Angular.io (FR)](https://github.com/angular/angular-fr/issues) github repo.
 
 **Angular API issues, cheatsheet corrections, feature requests, defect reports, and technical questions** concerning Angular itself
 belong in the [**angular source code**](https://github.com/angular/angular/issues) github repo.
@@ -32,7 +32,7 @@ if not install [nvm](https://github.com/creationix/nvm) to get node going on you
 1. clone this repo and the [angular source code repo](https://github.com/angular/angular) to the same parent directory.
 The two cloned repo directories must be sibling.
 
-1. cd into root directory `angular.io/`
+1. cd into root directory `angular-fr/`
 
 1. install the *all-docs* local packages by running `npm install`
 > If running node v.5+, you probably must rebuild `node-sass` in a separate step: `npm rebuild node-sass`
@@ -137,5 +137,5 @@ Also, there is a script available for Linux and OSX users that will setup the pr
 ## License
 Powered by Google ©2010-2016. Code licensed under an [MIT-style License](https://github.com/angular.io/blob/master/LICENSE). Documentation licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/).
 
-[travis-badge]: https://travis-ci.org/angular/angular.io.svg?branch=master
-[travis-badge-url]: https://travis-ci.org/angular/angular.io
+[travis-badge]: https://travis-ci.org/angular/angular-fr.svg?branch=master
+[travis-badge-url]: https://travis-ci.org/angular/angular-fr
