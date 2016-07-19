@@ -6,7 +6,7 @@ include ../../../_includes/_util-fns
 
 //- Deprecated
 mixin liveExampleLink(linkText, exampleUrlPartName)
-  - var text = linkText || 'live example';
+  - var text = linkText || 'exemple en ligne';
   - var ex = exampleUrlPartName || getExampleName();
   - var href = '/resources/live-examples/' + ex + '/ts/plnkr.html';
   a(href='#{href}' target="_blank")= text
