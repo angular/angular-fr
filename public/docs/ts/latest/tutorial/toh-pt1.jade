@@ -3,16 +3,27 @@ include ../_util-fns
 :marked
   # Once Upon a Time
 
+  # Il était une fois
+
   Every story starts somewhere. Our story starts where the [QuickStart](../quickstart.html) ends.
+  
+  Toutes les histoires ont un début. La notre commence à la fin du [QuickStart](../quickstart.html).
 
   Run the <live-example></live-example> for this part.
 
+  Exécutez la <live-example>démo</live-example> correspondante à cette partie.
+  
   Create a folder called `angular2-tour-of-heroes` and follow the [QuickStart](../quickstart.html) steps 
   which provide the prerequisites, the folder structure, and the core files for our Tour of Heroes.
+  
+  Créez un répertoire appelé `angular2-tour-of-heroes` et suivez les instructions du [QuickStart](../quickstart.html) 
+  pour avoir tous les pré-requis, la structure de répertoire et les principaux fichiers de notre Guide des Héros.
 
 include ../_quickstart_repo
 :marked
   We should have the following structure:
+  
+  Vous devriez avoir la structure suivante&nbsp;:
 
 .filetree
   .file angular2-tour-of-heroes
@@ -31,7 +42,12 @@ include ../_quickstart_repo
     .file typings.json
 :marked
   ## Keep the app transpiling and running
+  
+  ## Laissons notre application se transpiler et s'exécuter
+  
   We want to start the TypeScript compiler, have it watch for changes, and start our server. We'll do this by typing
+  
+  Nous souhaitons démarrer notre compilateur TypeScript, observer les changements de code et démarrer notre serveur. Pour cela tapez la commande
 
 code-example(language="bash").
   npm start
@@ -39,78 +55,135 @@ code-example(language="bash").
 :marked
   This command runs the compiler in watch mode, starts the server, launches the app in a browser,
   and keeps the app running while we continue to build the Tour of Heroes.
+  
+  Cette commande lance le compilateur, démarre le serveur, lance l'application dans le navigateur
+  et continue à tourner pendant que nous travaillons sur notre Guide des Héros.
 
 .l-main-section
   :marked
     ## Show our Hero
+    
+    ## Affichons notre Héros
+    
     We want to display Hero data in our app
 
+    Nous voulons afficher les caractéristiques de notre héros dans l'application
+     
     Let's add two properties to our `AppComponent`, a `title` property for the application name and a `hero` property
     for a hero named "Windstorm".
 
+    Ajoutons deux propriétés à notre composant `AppComponent`, un `title` pour le nom de l'application et un `hero` 
+    appelé "Windstorm".
+    
   +makeExample('toh-1/ts-snippets/app.component.snippets.pt1.ts', 'app-component-1', 'app.component.ts (AppComponent class)')(format=".")
 
   :marked
     Now we update the template in the `@Component` decoration with data bindings to these new properties.
+    
+    Nous alons maintenant modifier le template du decorateur `@Component` en ajoutant du data binding vers ces nouvelles propriétés.
 
   +makeExample('toh-1/ts-snippets/app.component.snippets.pt1.ts', 'show-hero')
 
   :marked
     The browser should refresh and display our title and hero.
+    
+    Le navigateur devrait se rafraîchir et afficher notre titre et notre héros
 
     The double curly braces tell our app to read the `title` and `hero` properties from the component and render them.
     This is the "interpolation" form of one-way data binding.
+    
+    Les doubles accolades indiquent à notre application de lire les propriétés `title` et `hero` sur notre composant et de les afficher.
+    Il s'agit d'une forme particulière de binding unidirectionnel appelée "interpolation".
 .l-sub-section
   :marked
     Learn more about interpolation in the [Displaying Data chapter](../guide/displaying-data.html).
+    
+    Apprenez en plus sur l'interpolation dans [le chapitre Afficher des données](../guide/displaying-data.html).
 :marked
   ### Hero object
+  
+  ### Un objet pour notre héros
 
   At the moment, our hero is just a name.  Our hero needs more properties.
   Let's convert the `hero` from a literal string to a class.
+  
+  Pour le moment notre héros est juste représenté par un nom. Il va avoir besoin de plus de caractéristiques.
+  Transformons alors notre `hero` d'une chaîne de caractère en véritable classe.
 
   Create a `Hero` class with `id` and `name` properties.
   For now put this near the top of the `app.component.ts` file, just below the import statement.
+  
+  Créez une classe `Hero` ayant les propriétés `id` et `name`.
+  Pour le moment ajoutez votre code directement dans le fichier `app.component.ts`, juste après la section d'import.
 
 +makeExample('toh-1/ts/app/app.component.ts', 'hero-class-1', 'app.component.ts (Hero class)')(format=".")
 
 :marked
   Now that we have a `Hero` class, let’s refactor our component’s `hero` property to be of type `Hero`.
   Then initialize it with an id of `1` and the name, "Windstorm".
+  
+  Maintenant que nous avons notre classe `Hero`, transformons la propriété `hero` de notre composant afin qu'elle soit de type `Hero`.
+  Initialisez la ensuite avec un id de `1` et le nom "Windstorm".
 
 +makeExample('toh-1/ts/app/app.component.ts', 'hero-property-1', 'app.component.ts (hero property)')(format=".")
 
 :marked
   Because we changed the hero from a string to an object,
   we update the binding in the template to refer to the hero’s `name` property.
+  
+  Comme nous avons changé le type de la propriété hero, nous allons mettre à jour
+  le template pour faire référence à la propriété `name` de notre héros
 
 +makeExample('toh-1/ts-snippets/app.component.snippets.pt1.ts', 'show-hero-2')
 :marked
   The browser refreshes and continues to display our hero’s name.
+  
+  Le navigateur se rafraîchit et continue à afficher le nom de notre héros.
 
   ### Adding more HTML
+ 
+  ### Rajoutons plus de HTML
+  
   Displaying a name is good, but we want to see all of our hero’s properties.
   We’ll add a `<div>` for our hero’s `id` property and another `<div>` for our hero’s `name`.
+  
+  Afficher un nom c'est bien, mais nous souhaitons voir toutes les propriétés de notre héros.
+  Nous allons ajouter une `<div>` pour l'`id` et une autre `<div>` pour le nom de notre héros.
 
 +makeExample('toh-1/ts-snippets/app.component.snippets.pt1.ts', 'show-hero-properties')
 :marked
   Uh oh, our template string is getting long. We better take care of that to avoid the risk of making a typo in the template.
-
+  
+  Bon, notre template commence à être assez long. Nous avons interêt à y remédier pour éviter les risques de fautes de frappes.
+  
   ### Multi-line template strings
+  
+  ### Template Multi-ligne
 
   We could make a more readable template with string concatenation
   but that gets ugly fast, it is harder to read, and
   it is easy to make a spelling error. Instead,
   let’s take advantage of the template strings feature
   in ES2015 and TypeScript to maintain our sanity.
+  
+  Nous pourrions rendre notre template plus lisible en utilisant la concaténation de chaînes
+  mais cela deviendrait vite volumineux, de plus en plus difficile à lire et on pourrait facilement introduire une erreur de frappe.
+  Au lieu de ça, utilisons la fonctionalité de _template string_ de ES2015 et TypeScript pour laisser tout cela propre.
 
   Change the quotes around the template to back-ticks and
   put the `<h1>`, `<h2>` and `<div>` elements on their own lines.
+  
+  Changez les apostrophes dans le template par des back-ticks et placez chaque balises `<h1>`, `<h2>` 
+  et `<div>` sur sa propre ligne.
+
 
 +makeExample('toh-1/ts-snippets/app.component.snippets.pt1.ts', 'multi-line-strings', 'app.component.ts (AppComponent\'s template)')
 
   .callout.is-important
     header A back-tick is not a single quote
+    
+    header Un back-tick est différent d'une apostrophe
+    
     :marked
       **Be careful!** A back-tick (`) looks a lot like a single quote (').
       It's actually a completely different character.
@@ -118,15 +191,28 @@ code-example(language="bash").
       Here we use them in a limited way to spread the template over multiple lines.
       Everything between the back-ticks at the beginning and end of the template
       is part of a single template string.
+      
+      **Attention&nbsp;!** Un back-tick (`) ressemble un peu à une apostrophe (').
+      Ce sont en fait des caractères completement différents.
+      Les back-ticks font plus que délimiter une chaîne.
+      Nous les utilisons ici pour exposer notre template sur plusieurs lignes.
+      Tout ce qui se trouve entre les back-ticks fait partie du contenu du template.
+  
 
 .l-main-section
 :marked
   ## Editing Our Hero
+  
+  ## Editer notre héros
 
   We want to be able to edit the hero name in a textbox.
+  
+  Nous souhaitons éditer notre héros à l'aide d'un champ de saisie.
 
   Refactor the hero name `<label>` with `<label>` and `<input>` elements as shown below:
 
+  Modifier la balise `<label>` du nom et utilisez les balises `<label>` et `<input>` comme indiqué ci-dessous&nbsp;:
+  
 +makeExample('toh-1/ts-snippets/app.component.snippets.pt1.ts', 'editing-Hero', 'app.component.ts (input element)')
 :marked
   We see in the browser that the hero’s name does appear in the `<input>` textbox.
@@ -134,22 +220,42 @@ code-example(language="bash").
   When we change the name, we notice that our change
   is not reflected in the `<h2>`. We won't get the desired behavior
   with a one-way binding to `<input>`.
+  
+  Nous constatons que le nom de notre héros apparaît bien dans le champs.
+  Mais quelque chose ne va pas.
+  Lorsque nous modifions le nom, nous constatons que le changement ne se reflète pas dans la balise `<h2>`. 
+  Nous n'avons pas le comportement attendu avec le binding unidirectionnel sur un `<input>`.
 
   ### Two-Way Binding
+  
+  ### Binding bi-directionnel
 
   We intend to display the name of the hero in the `<input>`, change it,
   and see those changes wherever we bind to the hero’s name.
   In short, we want two-way data binding.
 
+  Nous souhaitons afficher le nom de notre héros dans le champs de saisie, le modifier et observer les changements 
+  sur tous les éléments liés à ce nom.
+  Pour faire court, nous voulons du binding bi-directionnel.
+  
   Let’s update the template to use the  **`ngModel`** built-in directive for two-way binding.
+  
+  Modifions notre template pour utiliser la directive native **`ngModel`** qui permet de faire du binding bi-directionnel.
 
 .l-sub-section
   :marked
     Learn more about `ngModel` in the 
     [Forms](../guide/forms.html#ngModel) and
     [Template Syntax](../guide/template-syntax.html#ngModel) chapters.
+    
+    Apprenez en plus sur `ngModel` dans les chapitres [Formulaires](../guide/forms.html#ngModel) et
+    [Syntaxe de Template](../guide/template-syntax.html#ngModel).
+    
+    
 :marked
   Replace the `<input>` with the following HTML
+  
+  Remplacez le `<input>` avec le code HTML suivant
 
 code-example(language="html").
   &lt;input [(ngModel)]="hero.name" placeholder="name">
@@ -157,30 +263,66 @@ code-example(language="html").
 :marked
   The browser refreshes. We see our hero again. We can edit the hero’s name and
   see the changes reflected immediately in the `<h2>`.
+  
+  Le navigateur se rafraîchit avec notre héros. Nous pouvons modifier son nom et observer que les changements
+  se répercutent immédiatement dans notre balise `<h2>`.
 
 .l-main-section
 :marked
   ## The Road We’ve Travelled
-  Let’s take stock of what we’ve built.
 
+  ## Qu'avons nous vu ?
+  
+  Let’s take stock of what we’ve built.
+  
+  Revoyons ce que nous avons réalisé.
+  
   * Our Tour of Heroes uses the double curly braces of interpolation (a form of one-way data binding)
   to display the application title and properties of a `Hero` object.
+  
+  * Notre Guide des Héros utilise les doubles accolades de l'interpolation (une forme de binding unidirectionnel)
+  pour afficher le titre de l'application et les propriétés d'un objet `Hero`.
+    
   * We wrote a multi-line template using ES2015’s template strings to make our template readable.
+  
+  * Nous avons écrit un template multi-lignes en utilisant la syntaxe du _template string_ d'ES2015 
+  pour rendre notre code plus lisible.
+  
   * We can both display and change the hero’s name after adding a two-way data binding to the `<input>` element
   using the built-in `ngModel` directive.
-  * The `ngModel` directive also propagates changes to every other binding of the `hero.name`.
-
+  
+  * Nous pouvons à la fois afficher et modifier le nom de notre héros à l'aide du binding bi-directionnel activé sur un champ de saisie
+  grâce à la directive native `ngModel`.
+    
+  * The `ngModel` directive also propagates changes to every other binding of the `hero.name`.  
+  
+  * La directive `ngModel` propage également les changements vers tout autre élément lié à la propriété `hero.name`.
+  
+  
   Run the <live-example></live-example> for this part.
 
+  Exécutez la <live-example>démo</live-example> correspondante à cette partie.
+
   Here's the complete `app.component.ts` as it stands now:
+  
+  Voici ci-dessous la version complète de notre `app.component.ts`&nbsp;:
 
 +makeExample('toh-1/ts/app/app.component.ts', 'pt1', 'app.component.ts')
 
 .l-main-section
 :marked
   ## The Road Ahead
+  
+  ## Par la suite
+  
   Our Tour of Heroes only displays one hero and we really want to display a list of heroes.
   We also want to allow the user to select a hero and display their details.
   We’ll learn more about how to retrieve lists, bind them to the
   template, and allow a user to select it in the
   [next tutorial chapter](./toh-pt2.html).
+  
+  Notre Guide des Héros ne permet d'afficher qu'un seul héros et nous voudrions en afficher une liste.
+  Nous voulons également laisser l'utilisateur sélectionner un héros pour en voir le détail.
+  Nous allons [dans le prochain chapitre](./toh-pt2.html) en apprendre plus sur la récupération de liste, leur utilisation dans
+  un template, et la possibilité de sélectionner un élement dedans.
+  
