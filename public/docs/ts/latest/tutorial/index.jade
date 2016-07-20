@@ -3,15 +3,22 @@ include ../_util-fns
 // #docregion intro
 :marked
   # Tour of Heroes: the vision
+  
+  # Le Guide des Héros: l'objectif
 
   Our grand plan is to build an app to help a staffing agency manage its stable of heroes.
   Even heroes need to find work.
+  
+  Nous allons construire ici une application permettant à une agence de gérer son équipe de super-héros. Et oui même les héros on besoin de travailler.
 
   Of course we'll only make a little progress in this tutorial. What we do build will
   have many of the features we expect to find in a full-blown, data-driven application: acquiring and displaying
   a list of heroes, editing a selected hero's detail, and navigating among different
   views of heroic data.
-
+  
+  Bien sur, ce tutorial ne vous permettra pas de couvrir l'ensemble des possibilités. Mais nous allons quand même mettre en place 
+  des fonctionnalités assez caractéristiques de ce que l'on retrouve dans des applications riches: récupérer et afficher une liste de héros, éditer le détail d'un héro et naviguer entre les différentes vues de notre Guide.
+  
   The Tour of Heroes covers the core fundamentals of Angular.
   We’ll use built-in directives to show/hide elements and display lists of hero data.
   We’ll create a component to display hero details and another to show an array of heroes.
@@ -20,20 +27,40 @@ include ../_util-fns
   We’ll learn to select a hero from a master list and edit that hero in the details view. We'll
   format data with pipes. We'll create a shared service to assemble our heroes. And we'll use routing to navigate among different views and their components.
 
+  Le guide des Héros couvre les principes fondamentaux d'Angular.
+  Nous utiliserons les directives natives pour afficher ou masquer des éléments et pour afficher la liste des caractéristiques d'un héro.
+  Nous allons créer un composant pour afficher le détail d'un héro et un autre pour afficher une liste de héros.  
+  Nous utiliserons le one-way data binding pour les données en lecture seule. Nous ajouterons des champs d'édition pour mettre à jour le modèle avec le two-way data binding. 
+  Nous exécuterons des méthodes de nos composants en réponse à des événements utilisateurs comme le clic ou la saisie.
+  Nous apprendrons à sélectionner un héro à partir d'une liste pour l'éditer dans une vue de détail. Nous 
+  transformerons les données à l'aide de pipes. 
+  Nous allons également créer un service partagé pour manipuler notre héro. Et nous utiliserons un mécanisme de routage pour naviguer entre nos différentes vues et leurs composants.
+
   We’ll learn enough core Angular to get started and gain confidence that
   Angular can do whatever we need it to do.
   We'll be covering a lot of ground at an introductory level but we’ll find plenty of links
   to chapters with greater depth.
+  
+  Nous en apprendrons finalement assez pour avoir la garantie qu' Angular peut faire tout ce que l'on attend de lui.
+  Nous survolerons beaucoup de concepts de façon théorique mais vous trouverez des liens vers les chapitres correspondants 
+  afin d'approfondir plus en détails.
 
   Run the <live-example name="toh-6"></live-example>.
+  
+  Pour lancez <live-example name="toh-6">la démo</live-example>.
 // #enddocregion intro
 // #docregion main
 .l-main-section
 :marked
   ## The End Game
+  
+  ## Notre application
 
   Here's a visual idea of where we're going in this tour, beginning with the "Dashboard"
   view and our most heroic heroes:
+
+  Vous trouverez ci-dessous une représentation visuelle de notre Guide, en commencant par le "Dashboard"
+  contenant nos héros les plus populaires:
 
 figure.image-display
   img(src='/resources/images/devguide/toh/heroes-dashboard-1.png' alt="Output of heroes dashboard")
@@ -41,9 +68,15 @@ figure.image-display
 :marked
   Above the dashboard are two links ("Dashboard" and "Heroes").
   We could click them to navigate between this Dashboard and a Heroes view.
+  
+  Sur ce dashboard, se trouvent deux liens ("Dashboard" et "Heroes").
+  Nous pouvons les utiliser pour naviguer entre la vue Dashboard et la vue Hereos.
 
   Instead we click the dashboard hero named "Magneta" and the router takes us to a "Hero Details" view
   of that hero where we can change the hero's name.
+  
+  Dès que nous cliquons sur le héro dénommé "Magneta" sur le dashboard,  le routeur nous emmène sur la vue de détail 
+  dans laquelle nous pouvons éditer le nom de notre héro.
 
 figure.image-display
   img(src='/resources/images/devguide/toh/hero-details-1.png' alt="Details of hero in app")
@@ -52,23 +85,36 @@ figure.image-display
   Clicking the "Back" button would return us to the "Dashboard".
   Links at the top can take us to either of the main views.
   We'll click "Heroes". The app takes to the "Heroes" master list view.
+  
+  En cliquant sur le bouton "Back", nous retournons sur le "Dashboard".
+  Les liens du haut peuvent nous amener sur les vues principales.  
+  Cliquons sur le lien "Heroes". L'application affiche alors la page "Heroes" qui liste nos super-héros.
 
 figure.image-display
   img(src='/resources/images/devguide/toh/heroes-list-2.png' alt="Output of heroes list app")
 
 :marked
   We click a different hero and the readonly mini-detail beneath the list reflects our new choice.
+  
+  En sélectionnant un héro dan la liste, la page affiche sous la liste le détail de ce dernier en lecture seule.
 
   We click the "View Details" button to drill into the
   editable details of our selected hero.
+  
+  Enfin, en cliquant sur le bouton "View Details", nous accedons à la page d'édition de notre héro sélectionné
 
   The following diagram captures all of our navigation options.
+  
+  Le diagramme ci-dessous synthétise nos options de navigation.
+  
 
 figure.image-display
   img(src='/resources/images/devguide/toh/nav-diagram.png' alt="View navigations")
 
 :marked
   Here's our app in action
+  
+  Et voici notre application en action
 
 figure.image-display
   img(src='/resources/images/devguide/toh/toh-anim.gif' alt="Tour of Heroes in Action")
@@ -76,12 +122,20 @@ figure.image-display
 .l-main-section
 :marked
   ## Up Next
+  
+  ## Par la suite
 
   We’ll build this Tour of Heroes together, step by step.
   We'll motivate each step with a requirement that we've
   met in countless applications. Everything has a reason.
+  
+  Nous allons construire ce Guide des Héros ensemble pas à pas.
+  L'objectif de chaque étape est de mettre l'accent sur des fonctionnalités couramment présentes dans les applications riches. 
+  Vous verez que tout a un sens.
 
   And we’ll meet many of the core fundamentals of Angular along the way.
+  
+  Et nous verrons bien sur les principes fondamentaux d'Angular tout au long de cet exercice.
 
-  [Let's get started!](./toh-pt1.html)
+  [C'est parti!](./toh-pt1.html)
 // #enddocregion main
