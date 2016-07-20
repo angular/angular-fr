@@ -7,7 +7,7 @@
   },
   "toh-pt1": {
     "title": "Editer un héro",
-    "intro": "Nous allons construire un simple éditeur pour un héro",
+    "intro": "Nous allons construire un simple éditeur pour héros",
     "nextable": true
   },
   "toh-pt2": {
@@ -32,7 +32,7 @@
   },
   "toh-pt6": {
     "title": "Http",
-    "intro": "Modifions nos service et composants afin de leur faire utiliser Http",
+    "intro": "Modifions nos services et composants afin de leur faire utiliser Http",
     "nextable": true
   }
 }

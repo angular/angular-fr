@@ -133,7 +133,7 @@ code-example(language="bash").
   We’ll insert the following chunk of HTML below the title and above the hero details.
   
   Notre composant a maintenant des héros. Nous allons créer une liste non ordonnée dans notre template pour les afficher.
-  Insérez le code HTML ci-dessous entre le titre et la section de détail d'un héro.
+  Insérez le code HTML ci-dessous entre le titre et la section de détail d'un héros.
 
 +makeExample('toh-2/ts-snippets/app.component.snippets.pt2.ts', 'heroes-template-1', 'app.component.ts (heroes template)')
 
@@ -151,7 +151,7 @@ code-example(language="bash").
   We’ll need some help from Angular to do this. Let’s do this step by step.
   
   Nous voulon associer le tableau `heroes` de notre composant avec le template, itérer dessus, 
-  et afficher chaque héro individuellement.
+  et afficher chaque héros individuellement.
   Nous allons avoir besoin d'un peu d'aide de la part d'Angular pour cela. Alors commençons petit à petit.
 
   First modify the `<li>` tag by adding the built-in directive `*ngFor`.
@@ -185,14 +185,14 @@ code-example(language="bash").
     and make it available to the corresponding template instance*”.
     
     Le texte associé à `ngFor` signifie 
-    “*qu'il faut prendre chaque héro du tableau `heroes`, 
+    “*qu'il faut prendre chaque héros du tableau `heroes`, 
     le mettre dans la variable locale `hero`, et le rendre disposnible pour l'instance de template correspondante*”.
                 
     The `let` keyword before "hero" identifies `hero` as a template input variable.
     We can reference this variable within the template to access a hero’s properties.
 
     Le mot clé `let` avant "hero" définit `hero` comme une variable de template.
-    Nous pouvons alors l'utiliser pour accéder aux propriétés de notre héro.
+    Nous pouvons alors l'utiliser pour accéder aux propriétés de notre héros.
 
     Learn more about `ngFor` and template input variables in the
     [Displaying Data](../guide/displaying-data.html#ngFor) and
@@ -207,7 +207,7 @@ code-example(language="bash").
   that uses the `hero` template variable to display the hero’s properties.
   
   Nous pouvons maintenant insérer du contenu dans les balise `<li>`
-  en utilisant la variable de template `hero` pour afficher les propriétés d'un héro.
+  en utilisant la variable de template `hero` pour afficher les propriétés d'un héros.
 
 +makeExample('toh-2/ts-snippets/app.component.snippets.pt2.ts', 'ng-for', 'app.component.ts (ngFor template)')(format=".")
 
@@ -224,12 +224,12 @@ code-example(language="bash").
   We want to make it visually obvious to a user which hero we are hovering over and which hero is selected.
 
   Notre liste de héros est plutôt basique.
-  Nous voulons maintenant mettre évidence le héro survolé par la souris et celui qui sera sélectionné.
+  Nous voulons maintenant mettre évidence le héros survolé par la souris et celui qui sera sélectionné.
   
   Let’s add some styles to our component by setting the `styles` property on the `@Component` decorator
   to the following CSS classes:
 
-  Ajoutons un peu de style à notre composant en initialisant la propriété `styles` de notre decorator `@Component`
+  Ajoutons un peu de style à notre composant en initialisant la propriété `styles` de notre decorateur `@Component`
   avec les classe CSS ci-dessous.
 
 +makeExample('toh-2/ts/app/app.component.ts', 'styles', 'app.component.ts (styles)')(format=".")
@@ -261,7 +261,7 @@ code-example(language="bash").
   :marked
     ## Selecting a Hero
     
-    ## Sélectionner un héro
+    ## Sélectionner un héros
     
     We have a list of heroes and we have a single hero displayed in our app.
     The list and the single hero are not connected in any way.
@@ -269,11 +269,11 @@ code-example(language="bash").
     This UI pattern is widely known as "master-detail".
     In our case, the master is the heroes list and the detail is the selected hero.
     
-    Alors nous avons maintenant une liste de héros et un héro affiché.
+    Alors nous avons maintenant une liste de héros et un héros affiché.
     Mais ces deux éléments ne sont pour le moment pas reliés.
-    Nous voulons que l'utilisateur sélectionne un héro dans la liste et que ça soit ce héro qui apparaisse alors dans la vue de détail.
+    Nous voulons que l'utilisateur sélectionne un héros dans la liste et que ça soit ce héros qui apparaisse alors dans la vue de détail.
     Ce pattern d'interface est appelé "master/detail.
-    Dans notre cas le master est la liste de héros et le detail est le héro sélectionné.
+    Dans notre cas le master est la liste de héros et le detail est le héros sélectionné.
 
     Let’s connect the master to the detail through a `selectedHero` component property bound to a click event.
     
@@ -328,15 +328,15 @@ code-example(language="bash").
     
     What should that method do? It should set the component’s selected hero to the hero that the user clicked.
 
-    Que doit faire cette méthode? Elle doit associer le héro sélectionné de notre composant à celui sur lequel l'utilisateur a cliqué. 
+    Que doit faire cette méthode? Elle doit associer le héros sélectionné de notre composant à celui sur lequel l'utilisateur a cliqué. 
 
     Our component doesn’t have a “selected hero” yet either. We’ll start there.
 
-    Notre composant n'a pas de  “héro sélectionné” pour le moment. Commençons pas ça.
+    Notre composant n'a pas de “héros sélectionné” pour le moment. Commençons pas ça.
 
     ### Expose the selected hero
     
-    ### Exposons un héro sélectionné
+    ### Exposons un héros sélectionné
 
     We no longer need the static `hero` property of the `AppComponent`.
     **Replace** it with this simple `selectedHero` property:
@@ -350,7 +350,7 @@ code-example(language="bash").
     We’ve decided that none of the heroes should be selected before the user picks a hero so
     we won’t initialize the `selectedHero` as we were doing with `hero`.
     
-    Il n'y aura pas de héro sélectioné par défaut, avant que l'utilisateur en choisisse un.
+    Il n'y aura pas de héros sélectioné par défaut, avant que l'utilisateur en choisisse un.
     Ainsi nous n'initialiserons pas la propriété `selectedHero` comme nous l'avions fait avec `hero`.
 
     Now **add an `onSelect` method** that sets the `selectedHero` property to the `hero` the user clicked.
@@ -364,7 +364,7 @@ code-example(language="bash").
     At the moment, it is still referring to the old `hero` property.
     Let’s fix the template to bind to the new `selectedHero` property.
     
-    Nous allons afficher les caractéristiques de ce héro sélectionné dans notre template.
+    Nous allons afficher les caractéristiques de ce héros sélectionné dans notre template.
     Actuellement, il fait encore référence à l'ancienne propriété `hero`.
     Modifions le template pour utiliser maintenant la propriété `selectedHero`.
 
@@ -394,7 +394,7 @@ code-example(language="bash").
 
     We'll address this problem by keeping the hero detail out of the DOM until there is a selected hero.
 
-    Nous allons résoudre ce problème en excluant du DOM la section de détail tant qu'il n'y a a pas de héro sélectioné.
+    Nous allons résoudre ce problème en excluant du DOM la section de détail tant qu'il n'y a a pas de héros sélectioné.
     
     We wrap the HTML hero detail content of our template with a `<div>`.
     Then we add the `ngIf` built-in directive and set it to the `selectedHero` property of our component.
@@ -413,14 +413,14 @@ code-example(language="bash").
     When there is no `selectedHero`, the `ngIf` directive removes the hero detail HTML from the DOM.
     There will be no hero detail elements and no bindings to worry about.
     
-    Quand il n'y a pas de `selectedHero`, la directive `ngIf` supprime du DOM le HTML correspondant au détail d'un héro.
+    Quand il n'y a pas de `selectedHero`, la directive `ngIf` supprime du DOM le HTML correspondant au détail d'un héros.
     Il n'y aura alors plus de soucis de binding.
 
     When the user picks a hero, `selectedHero` becomes "truthy" and
     `ngIf` puts the hero detail content into the DOM and evaluates the nested bindings.
     
-    Quand l'utilisateur sélectionne un héro, la propriété `selectedHero` devient "vrai" et 
-    la directive `ngIf` ajoute au DOM le HTML correspondant au détail d'un héro et évalue les bindings imbriqués.
+    Quand l'utilisateur sélectionne un héros, la propriété `selectedHero` devient "vrai" et 
+    la directive `ngIf` ajoute au DOM le HTML correspondant au détail d'un héros et évalue les bindings imbriqués.
   .l-sub-section
     :marked
       `ngIf` and `ngFor` are called “structural directives” because they can change the
@@ -445,9 +445,9 @@ code-example(language="bash").
     When we click on a hero in the list, the selected hero displays in the hero details.
     Everything is working as we expect.
     
-    La page se recharge et nous avons maintenenant notre liste de héros, sans le détail du héro sélectionné.
+    La page se recharge et nous avons maintenenant notre liste de héros, sans le détail du héros sélectionné.
     La directive `ngIf` maintient le DOM vide tant que la propriété `selectedHero` est indéfinie.
-    Lorsque nous cliquons sur un héro de la liste, il apparait dans la section détail.
+    Lorsque nous cliquons sur un héros de la liste, il apparait dans la section détail.
     Tout fonctionne comme prévu.
 
     ### Styling the selection
@@ -459,9 +459,9 @@ code-example(language="bash").
     For example, when we select Magneta from the heroes list,
     we can make it pop out visually by giving it a subtle background color as shown here.
 
-    Nous pouvons effectivement observer le détail du héro sélectionné mais il n'y a rien qui le représente facilement 
+    Nous pouvons effectivement observer le détail du héros sélectionné mais il n'y a rien qui le représente facilement 
     pour le repérer dans la liste.
-    Nous allons y remedier en ajoutant la classe CSS `selected` à la balise `<li>` correspondante.
+    Nous allons y remédier en ajoutant la classe CSS `selected` à la balise `<li>` correspondante.
     Par exemple, si nous sélectionnons Magneta dans la liste
     nous pouvons le faire ressortir en ajoutant une couleur de fond comme représenté ci-dessous. 
     
@@ -477,7 +477,7 @@ code-example(language="bash").
     We’re saying “*apply the `selected` class if the heroes match, remove it if they don’t*”.
     
     La clé est le nom de la classe CSS (`selected`). Si les deux  héros sont identiques, la valeur est `true`  sinon elle est `false`.
-    Nous sommes en train de dire “*applique la classe `selected` si les deux  heros sont les mêmes, sinon supprime la*”.
+    Nous sommes en train de dire “*applique la classe `selected` si les deux  héros sont les mêmes, sinon supprime là*”.
   +makeExample('toh-2/ts-snippets/app.component.snippets.pt2.ts', 'class-selected-1', 'app.component.ts (setting the CSS class)')(format=".")
   :marked
     Notice in the template that the `class.selected` is surrounded in square brackets (`[]`).
@@ -485,7 +485,7 @@ code-example(language="bash").
     from the data source (the expression `hero === selectedHero`) to a property of `class`.
   
     Notez que dans le template, la `class.selected` est entourée de crochets (`[]`).
-    Il s'agit de la syntaxe utilisée pour le  **binding de propriété**, un binding qui se propage dans un seul sens, 
+    Il s'agit de la syntaxe utilisée pour le  **binding de propriété**, un binding qui se propage dans un seul sens 
     de la source de donnée (l'expression `hero === selectedHero`) à la propriété `class`.
     
   +makeExample('toh-2/ts-snippets/app.component.snippets.pt2.ts', 'class-selected-2', 'app.component.ts (styling each hero)')(format=".")
@@ -502,14 +502,14 @@ code-example(language="bash").
     We select the hero Magneta and the selection is clearly identified by the background color.
 
     La navigateur recharge notre application.
-    Nous sélectionnons le héro Magneta et cette sélection est clairement identifiée par une couleur de fond.
+    Nous sélectionnons le héros Magneta et cette sélection est clairement identifiée par une couleur de fond.
   figure.image-display
     img(src='/resources/images/devguide/toh/heroes-list-1.png' alt="Output of heroes list app")
 
   :marked
     We select a different hero and the tell-tale color switches to that hero.
     
-    Si nous choisissons un autre héro, la couleur sera mise à jour.
+    Si nous choisissons un autre héros, la couleur sera mise à jour.
 
     Here's the complete `app.component.ts` as it stands now:
     
@@ -533,7 +533,7 @@ code-example(language="bash").
   
   * We added the ability to select a hero and show the hero’s details
   
-  * Nous avons ajouté la possibilité de sélectionner un héro et d'en afficher son détail
+  * Nous avons ajouté la possibilité de sélectionner un héros et d'en afficher son détail
     
   * We learned how to use the built-in directives `ngIf` and `ngFor` in a component’s template
   
@@ -552,7 +552,7 @@ code-example(language="bash").
   We need to break it up into sub-components and teach them to work together
   as we learn in the [next chapter](toh-pt3.html).
 
-  Notre Guide des Héros a bien évolué mais il est loin d'être achévé. 
+  Notre Guide des Héros a bien évolué, mais il est loin d'être achevé. 
   Nous ne pouvons pas mettre toute l'application dans un seul composant
-  Nous allons devoir l'éclater en sous composant et leur apprendre à travailler ensemble
+  Nous allons devoir l'éclater en sous-composant et leur apprendre à travailler ensemble
   comme nous le verrons dans le [prochain chapitre](toh-pt3.html).
