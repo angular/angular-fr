@@ -6,7 +6,7 @@ Thank you for submitting this PR...
 - [ ] Docs have been added / updated (for bug fixes / features)
 
 
-**Please provide the issue number? (ex: issue #42)**
+**Please provide the issue number?**
 
 issue #??
 
