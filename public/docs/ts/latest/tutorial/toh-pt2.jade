@@ -29,15 +29,15 @@ include ../_util-fns
 :marked
   ## Where We Left Off
   
-  ## Ou nous étions nous arrêtés ?
+  ## Ou nous étions-nous arrêtés ?
   
   Before we continue with Part 2 of the Tour of Heroes,
   let’s verify we have the following structure after [Part 1](./toh-pt1.html).
   If not, we’ll need to go back to Part 1 and figure out what we missed.
 
-  Avant de continuer cette deuxieme partie de notre Guide des Héros, 
+  Avant de continuer cette deuxième partie de notre Guide des Héros,
   vérifiez que vous avez bien la structure suivante suite à la réalisation de [la partie 1](./toh-pt1.html).
-  Si ce n'est pas le cas, retournez à l'étape précedente pour identifier ce qui a été oublié.
+  Si ce n'est pas le cas, retournez à l'étape précédente pour identifier ce qui a été oublié.
 
   
 .filetree
@@ -62,7 +62,7 @@ include ../_util-fns
   
   We want to start the TypeScript compiler, have it watch for changes, and start our server. We'll do this by typing
   
-  Nous souhaitons démarrer notre compilateur Typescript, observer les changements de code et démarrer notre serveur. Pour cela tapez la commande
+  Nous souhaitons démarrer notre compilateur TypeScript, observer les changements de code et démarrer notre serveur. Pour cela tapez la commande
 
 code-example(language="bash").
   npm start
@@ -70,7 +70,7 @@ code-example(language="bash").
 :marked
   This will keep the application running while we continue to build the Tour of Heroes.
 
-  Cette commande s'assure que l'application s'éxécute pendant que nous travaillons sur notre Guide des Héros.
+  Cette commande s'assure que l'application s'exécute pendant que nous travaillons sur notre Guide des Héros.
   
 .l-main-section
 :marked
@@ -96,8 +96,8 @@ code-example(language="bash").
   first and display mock heroes.
   
   Le tableau `HEROES` est de type `Hero`, cette classe que nous avions définie dans la première partie. 
-  Nous nous attendons à récupérer cette liste d'un web service, mais avançons progressivement et commençons avec
-  un tableau mocké.
+  Nous voulons à terme récupérer cette liste d'un web service, mais avançons progressivement et commençons avec
+  un tableau de fausses données.
 
   ### Exposing heroes
   
@@ -105,7 +105,7 @@ code-example(language="bash").
   
   Let’s create a public property in `AppComponent` that exposes the heroes for binding.
   
-  Créez un propriété publique sur le `AppComponent` qui expose les héros pour le binding.
+  Créez une propriété publique sur le `AppComponent` qui expose les héros pour le binding.
   
 +makeExample('toh-2/ts-snippets/app.component.snippets.pt2.ts', 'hero-array-1', 'app.component.ts (hero array property)')
 
@@ -150,7 +150,7 @@ code-example(language="bash").
   and display them individually.
   We’ll need some help from Angular to do this. Let’s do this step by step.
   
-  Nous voulon associer le tableau `heroes` de notre composant avec le template, itérer dessus, 
+  Nous voulons associer le tableau `heroes` de notre composant avec le template, itérer dessus,
   et afficher chaque héros individuellement.
   Nous allons avoir besoin d'un peu d'aide de la part d'Angular pour cela. Alors commençons petit à petit.
 
@@ -177,8 +177,8 @@ code-example(language="bash").
     The `ngFor` directive iterates over the `heroes` array returned by the `AppComponent.heroes` property
     and stamps out instances of this template.
     
-    La directive `ngFor` itère sur le tableau `heroes` de la prorpiété `AppComponent.heroes`
-    et ajoute les differentes instances du template
+    La directive `ngFor` itère sur le tableau `heroes` de la propriété `AppComponent.heroes`
+    et ajoute les différentes instances du template
 
     The quoted text assigned to `ngFor` means
     “*take each hero in the `heroes` array, store it in the local `hero` variable,
@@ -186,7 +186,7 @@ code-example(language="bash").
     
     Le texte associé à `ngFor` signifie 
     “*qu'il faut prendre chaque héros du tableau `heroes`, 
-    le mettre dans la variable locale `hero`, et le rendre disposnible pour l'instance de template correspondante*”.
+    le mettre dans la variable locale `hero`, et le rendre disponible pour l'instance de template correspondante*”.
                 
     The `let` keyword before "hero" identifies `hero` as a template input variable.
     We can reference this variable within the template to access a hero’s properties.
@@ -198,7 +198,7 @@ code-example(language="bash").
     [Displaying Data](../guide/displaying-data.html#ngFor) and
     [Template Syntax](../guide/template-syntax.html#ngFor) chapters.
     
-    Apprenez en plus sur la directive `ngFor` et les variables de template
+    Apprenez-en plus sur la directive `ngFor` et les variables de template
     dans les chapitres [Afficher des données](../guide/displaying-data.html#ngFor) et
     [Syntaxe de Template](../guide/template-syntax.html#ngFor).
 
@@ -206,7 +206,7 @@ code-example(language="bash").
   Now we insert some content between the `<li>` tags
   that uses the `hero` template variable to display the hero’s properties.
   
-  Nous pouvons maintenant insérer du contenu dans les balise `<li>`
+  Nous pouvons maintenant insérer du contenu dans les balises `<li>`
   en utilisant la variable de template `hero` pour afficher les propriétés d'un héros.
 
 +makeExample('toh-2/ts-snippets/app.component.snippets.pt2.ts', 'ng-for', 'app.component.ts (ngFor template)')(format=".")
@@ -214,7 +214,7 @@ code-example(language="bash").
 :marked
   When the browser refreshes, we see a list of heroes!
   
-  Au rafraichissement du navigateur nous avons maintenant une  liste de héros!
+  Au rafraîchissement du navigateur nous avons maintenant une liste de héros&nbsp;!
 
   ### Styling our heroes
   
@@ -224,13 +224,13 @@ code-example(language="bash").
   We want to make it visually obvious to a user which hero we are hovering over and which hero is selected.
 
   Notre liste de héros est plutôt basique.
-  Nous voulons maintenant mettre évidence le héros survolé par la souris et celui qui sera sélectionné.
+  Nous voulons maintenant mettre en évidence le héros survolé par la souris et celui qui sera sélectionné.
   
   Let’s add some styles to our component by setting the `styles` property on the `@Component` decorator
   to the following CSS classes:
 
   Ajoutons un peu de style à notre composant en initialisant la propriété `styles` de notre decorateur `@Component`
-  avec les classe CSS ci-dessous.
+  avec les classes CSS ci-dessous.
 
 +makeExample('toh-2/ts/app/app.component.ts', 'styles', 'app.component.ts (styles)')(format=".")
 
@@ -242,7 +242,7 @@ code-example(language="bash").
   That's a lot of styles! We can put them inline as shown here, or we can move them out to their own file which will make it easier to code our component. 
   We'll do this in a later chapter. For now let's keep rolling.
 
-  Ok ca fait beaucoup de style! Nous pouvons les mettre directement de cette façon, mais nous pouvons également les ajouter dans un fichier séparé ce qui facilitera le code de notre composant. 
+  Ok ca fait beaucoup de style&nbsp;! Nous pouvons les mettre directement de cette façon, mais nous pouvons également les ajouter dans un fichier séparé ce qui facilitera le code de notre composant.
   Nous ferons cela dans un prochain chapitre. Allez on continue.
   
   When we assign styles to a component they are scoped to that specific component.
@@ -253,7 +253,7 @@ code-example(language="bash").
 
   Our template for displaying the heroes should now look like this:
 
-  Notre template pour afficher les héros ressemble alors à:
+  Notre template pour afficher les héros ressemble alors à&nbsp;:
   
 +makeExample('toh-2/ts-snippets/app.component.snippets.pt2.ts', 'heroes-styled', 'app.component.ts (styled heroes)')
 
@@ -272,12 +272,12 @@ code-example(language="bash").
     Alors nous avons maintenant une liste de héros et un héros affiché.
     Mais ces deux éléments ne sont pour le moment pas reliés.
     Nous voulons que l'utilisateur sélectionne un héros dans la liste et que ça soit ce héros qui apparaisse alors dans la vue de détail.
-    Ce pattern d'interface est appelé "master/detail.
-    Dans notre cas le master est la liste de héros et le detail est le héros sélectionné.
+    Ce pattern d'interface est appelé "mmaître/détail".
+    Dans notre cas le maître est la liste de héros et le détail est le héros sélectionné.
 
     Let’s connect the master to the detail through a `selectedHero` component property bound to a click event.
     
-    Connectons les en utilisant une propriété `selectedHero` sur notre composant liée à un évènement de clic.
+    Connectons-les en utilisant une propriété `selectedHero` sur notre composant liée à un événement de clic.
 
     ### Click event
     
@@ -285,14 +285,14 @@ code-example(language="bash").
     
     We modify the `<li>` by inserting an Angular event binding to its click event.
 
-    Modifiez la balise `<li>` en ajoutant un binding d'évènement Angular sur le clic.
+    Modifiez la balise `<li>` en ajoutant un binding d'événement Angular sur le clic.
     
   +makeExample('toh-2/ts-snippets/app.component.snippets.pt2.ts', 'selectedHero-click', 'app.component.ts (template excerpt)')
 
   :marked
     Focus on the event binding
     
-    Un point sur le binding d'évènement
+    Un point sur le binding d'événement
     
   code-example(format="." language="bash").
     (click)="onSelect(hero)"
@@ -302,7 +302,7 @@ code-example(language="bash").
     passing the template input variable `hero` as an argument.
     That’s the same `hero` variable we defined previously in the `ngFor`.
     
-    Les parenthèses indiquent que la cible sera un évènement clic sur l'élement `<li>`.
+    Les parenthèses indiquent que la cible sera un événement clic sur l'élément `<li>`.
     L'expression à droite du symbole égal appelle la méthode `onSelect()` de notre `AppComponent`
     en lui passant en argument la variable de template `hero`. 
     Il s'agit de la même variable `hero` définie précédemment  dans la directive `ngFor`.
@@ -312,18 +312,18 @@ code-example(language="bash").
       [User Input](../guide/user-input.html) and
       [Templating Syntax](../guide/template-syntax.html#event-binding) chapters.
       
-      Apprenez en plus sur le binding d'évènement dans les chapitres 
+      Apprenez en plus sur le binding d'événement dans les chapitres
       [Actions utilisateurs](../guide/user-input.html) et
       [Syntaxe de Template](../guide/template-syntax.html#event-binding).
   :marked
     ### Add the click handler
     
-    ### Ajoutons un écouteur d'évènement
+    ### Ajoutons un écouteur d'événement
     
     Our event binding refers to an `onSelect` method that doesn’t exist yet.
     We’ll add that method to our component now.
 
-    Notre binding d'évènement fait référence à une méthode `onSelect` qui n'existe pas encore.
+    Notre binding d'événement fait référence à une méthode `onSelect` qui n'existe pas encore.
     Nous allons l'ajouter à notre composant.
     
     What should that method do? It should set the component’s selected hero to the hero that the user clicked.
@@ -332,7 +332,7 @@ code-example(language="bash").
 
     Our component doesn’t have a “selected hero” yet either. We’ll start there.
 
-    Notre composant n'a pas de “héros sélectionné” pour le moment. Commençons pas ça.
+    Notre composant n'a pas de “héros sélectionné” pour le moment. Commençons par ça.
 
     ### Expose the selected hero
     
@@ -342,7 +342,7 @@ code-example(language="bash").
     **Replace** it with this simple `selectedHero` property:
     
     Nous n'avons plus besoin de la propriété statique `hero` dans notre `AppComponent`.
-    **Remplaçons** la par une propriété `selectedHero`.
+    **Remplaçons** la par une propriété `selectedHero`&nbsp;:
 
   +makeExample('toh-2/ts/app/app.component.ts', 'selected-hero', 'app.component.ts (selectedHero)')
 
@@ -379,8 +379,8 @@ code-example(language="bash").
     That’s why we'll see the following error in the browser’s console:
     
     Lorsque notre application se charge, nous voyons une liste de héros mais aucun n'est sélectioné. 
-    La prorpiété `selectedHero` est `undefined`.
-    C'est pour cela que nous avons l'erreur suivante dans la console de notre navigateur:
+    La propriété `selectedHero` est `undefined`.
+    C'est pour cela que nous avons l'erreur suivante dans la console de notre navigateur&nbsp;:
 
   code-example(language="html").
     EXCEPTION: TypeError: Cannot read property 'name' of undefined in [null]
@@ -389,7 +389,7 @@ code-example(language="bash").
     Remember that we are displaying `selectedHero.name` in the template.
     This name property does not exist because `selectedHero` itself is undefined.
     
-    Rappelez vous que nous faisons référence à `selectedHero` dans notre template.
+    Rappelez-vous que nous faisons référence à `selectedHero` dans notre template.
     La propriété name n'existe pas dans la mesure ou la propriété `selectedHero` est elle même indéfinie.
 
     We'll address this problem by keeping the hero detail out of the DOM until there is a selected hero.
@@ -429,7 +429,7 @@ code-example(language="bash").
       
       Les directives `ngIf` et `ngFor` sont appelées des “directives structurelles” car elles altèrent
       la structure d'une portion du DOM. 
-      En d'autres termes, elles indiquent à Angular la façon d'aficher du contenu dans le DOM.
+      En d'autres termes, elles indiquent à Angular la façon d'afficher du contenu dans le DOM.
 
       Learn more about `ngIf`, `ngFor` and other structural directives in the
       [Structural Directives](../guide/structural-directives.html) and
@@ -437,7 +437,7 @@ code-example(language="bash").
       
       Apprenez en plus sur les directives `ngIf`, `ngFor` et les autres directives structurelles dans les chapitres
       [Directives Structurelles](../guide/structural-directives.html) et
-      [Syntaxe de Template Syntax](../guide/template-syntax.html#directives).
+      [Syntaxe de Template](../guide/template-syntax.html#directives).
 
   :marked
     The browser refreshes and we see the list of heroes but not the selected hero detail.
@@ -447,7 +447,7 @@ code-example(language="bash").
     
     La page se recharge et nous avons maintenenant notre liste de héros, sans le détail du héros sélectionné.
     La directive `ngIf` maintient le DOM vide tant que la propriété `selectedHero` est indéfinie.
-    Lorsque nous cliquons sur un héros de la liste, il apparait dans la section détail.
+    Lorsque nous cliquons sur un héros de la liste, il apparaît dans la section détail.
     Tout fonctionne comme prévu.
 
     ### Styling the selection
@@ -484,7 +484,7 @@ code-example(language="bash").
     This is the syntax for a **property binding**, a binding in which data flows one way
     from the data source (the expression `hero === selectedHero`) to a property of `class`.
   
-    Notez que dans le template, la `class.selected` est entourée de crochets (`[]`).
+    Notez que dans le template, `class.selected` est entouré de crochets (`[]`).
     Il s'agit de la syntaxe utilisée pour le  **binding de propriété**, un binding qui se propage dans un seul sens 
     de la source de donnée (l'expression `hero === selectedHero`) à la propriété `class`.
     
@@ -513,7 +513,7 @@ code-example(language="bash").
 
     Here's the complete `app.component.ts` as it stands now:
     
-    Voici ci-dessous la version complète de notre `app.component.ts`:
+    Voici ci-dessous la version complète de notre `app.component.ts`&nbsp;:
 
   +makeExample('toh-2/ts/app/app.component.ts', '', 'app.component.ts')
 
@@ -525,7 +525,7 @@ code-example(language="bash").
   
   Here’s what we achieved in this chapter:
 
-  Voici ce que nous avons réalisé dans ce chapitre:
+  Voici ce que nous avons réalisé dans ce chapitre&nbsp;:
   
   * Our Tour of Heroes now displays a list of selectable heroes
   
@@ -537,7 +537,7 @@ code-example(language="bash").
     
   * We learned how to use the built-in directives `ngIf` and `ngFor` in a component’s template
   
-  * Nous avons appris à uiliser les directives natives `ngIf` et `ngFor` dans le template de notre composant.
+  * Nous avons appris à utiliser les directives natives `ngIf` et `ngFor` dans le template de notre composant.
 
   Run the <live-example></live-example> for this part.
   
@@ -554,5 +554,5 @@ code-example(language="bash").
 
   Notre Guide des Héros a bien évolué, mais il est loin d'être achevé. 
   Nous ne pouvons pas mettre toute l'application dans un seul composant
-  Nous allons devoir l'éclater en sous-composant et leur apprendre à travailler ensemble
+  Nous allons devoir l'éclater en sous-composants et leur apprendre à travailler ensemble
   comme nous le verrons dans le [prochain chapitre](toh-pt3.html).
