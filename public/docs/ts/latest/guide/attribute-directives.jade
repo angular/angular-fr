@@ -4,65 +4,117 @@ block includes
 :marked
   An **Attribute** directive changes the appearance or behavior of a DOM element.
 
+  Une directive d'**Attribut** modifie l'apparence ou le comportement d'un élément DOM.
+
 :marked
   In this chapter we will
+
+  Dans ce chapitre nous allons
   * [write an attribute directive to change the background color](#write-directive)
+  * [Écrire une directive d'attribut qui change la couleur de l'arrière-plan](#write-directive)
   * [apply the attribute directive to an element in a template](#apply-directive)
+  * [Appliquer la directive d'attribut sur un élément d'un template](#apply-directive)
   * [respond to user-initiated events](#respond-to-user)
+  * [Réagir à un événement de l'utilisateur](#respond-to-user)
   * [pass values into the directive using data binding](#bindings)
+  * [Transmettre des valeurs à notre directive grâce à la liaison de données](#bindings)
 
   Try the <live-example></live-example>.
 
+  Essayez la <live-example>démo</live-example>.
+
   ## Directives overview
+  ## Aperçu des Directives
   
   There are three kinds of directives in Angular:
+  
+  Il y a 3 sortes de directives en Angular :
   1. Components
+  1. Les composants (_Components_)
   1. Structural directives  
+  1. Les directives structurelles  
   1. Attribute directives
+  1. Les directives d'attributs
 
   A *Component* is really a directive with a template. 
   It's the most common of the three directives and we tend to write lots of them as we build applications.
 
+  Un *Composant* n'est qu'une directive avec un template.
+  C'est la directive la plus utilisée et nous avons tendance à en écrire beaucoup dans nos applications.
+
   [*Structural* directives](structural-directives.html) can change the DOM layout by adding and removing DOM elements. 
   [NgFor](template-syntax.html#ngFor) and [NgIf](template-syntax.html#ngIf) are two familiar examples.
+
+  [Les directives *Structurelles*](structural-directives.html) peuvent modifier le DOM en ajoutant ou supprimant des éléments DOM.
+  [NgFor](template-syntax.html#ngFor) et [NgIf](template-syntax.html#ngIf) sont les exemples les plus connus.
   
   An *Attribute* directive can change the appearance or behavior of an element.
   The built-in [NgStyle](template-syntax.html#ngStyle) directive, for example,
   can change several element styles at the same time.
+
+  Une directive *d'Attribut* peut changer l'apparence ou le comportement d'un élément.
+  Par exemple, la directive intégrée (dans le framework) [NgStyle](template-syntax.html#ngStyle)
+  peut modifier plusieurs styles en même temps.
   
   We are going to write our own attribute directive to set an element's background color
   when the user hovers over that element.
+
+  Nous allons écrire notre propre directive d'attribut, qui modifie la couleur de l'arrière-plan,
+  quand l'utilisateur survolera cet élément.
+
 .l-sub-section
   :marked
     We don't need *any* directive to simply set the background color.
     We can set it with the special [Style Binding](template-syntax.html#style-binding) like this:
 
+    Nous n'avons besoin d'*aucune* directive pour modifier la couleur d'arrière-plan.
+    Nous pouvons la modifier avec [une liaison spéciale de style (Style Binding)](template-syntax.html#style-binding) comme ceci :
   +makeExample('attribute-directives/ts/app/app.component.1.html','p-style-background')
 
   :marked
     That wouldn't be nearly as much fun as creating our own directive.
+
+    Ça ne serait pas aussi marrant que de créer notre propre directive.
     
     Besides, we're not just *setting* the color; we'll be *changing* the color
     in response to a user action, a mouse hover.
+
+    Mais au final, nous ne faisons que *paramétrer* une couleur; nous voulons *changer* la couleur
+    au travers d'une action de l'utilisateur, par un survol de la souris. 
 
 .l-main-section
 a#write-directive
 :marked
   ## Build a simple attribute directive
+  ## Écrire une simple directive d'attribut
+
   An attribute directive minimally requires building a controller class annotated with 
   `@Directive`, which specifies the selector identifying
   the attribute associated with the directive. 
   The controller class implements the desired directive behavior.
+  
+  Une directive d'attribut requiert au minimum de construire un contrôleur annotée avec 
+  `@Directive`, spécifiant le sélecteur (selector) qui identifie l'attribut associé à notre directive. 
+  Un contrôleur implémente le comportement de la directive souhaitée.
 
   Let's build a small illustrative example together.
 
+  Écrivons un petit exemple ensemble.
+
 :marked
   ### Our first draft
+  ### Notre premier essai
+
   Create a new project folder (`attribute-directives`) and follow the steps in the [QuickStart](../quickstart.html).
+
+  Créez un nouveau dossier (`attribute-directives`) et suivez les étapes du [QuickStart](../quickstart.html).
 
 include ../_quickstart_repo
 :marked
   Create the following source file in the indicated folder with the given code:
+
+  Créez les fichiers suivants dans les dossiers indiqués avec ce code :
+
 +makeExample('app/highlight.directive.1.ts')
 
 block highlight-directive-1
@@ -72,9 +124,19 @@ block highlight-directive-1
     We need the `ElementRef` to [inject](dependency-injection.html) into the directive's constructor
     so we can access the DOM element.
     We don't need `Input` immediately but we will need it later in the chapter.
+    
+    Nous commençons par importer les différents symboles provenant du `core` de Angular.
+    Nous avons besoin du symbole `Directive` pour le décorateur (decorator) `@Directive`.
+    Nous avons besoin du `ElementRef` pour [injecter](dependency-injection.html) dans le constructeur de la directive
+    afin d'accéder à l'élément DOM.
+    Nous n'avons pas besoin de `Input` tout de suite, mais nous l'utiliserons plus tard dans le chapitre.
   
     Then we define the directive metadata in a configuration object passed
     as an argument to the `@Directive` decorator function. 
+
+    Puis nous définissons la metadata de la directive dans un objet de configuration, transmis
+    en tant qu'argument à la fonction décorateur `@Directive`.
+
 :marked
   `@Directive` requires a CSS selector to identify
   the HTML in the template that is associated with our directive.
@@ -82,23 +144,51 @@ block highlight-directive-1
   is the attribute name in square brackets.
   Our directive's selector is `[myHighlight]`. 
   Angular will locate all elements in the template that have an attribute named `myHighlight`. 
+  
+  `@Directive` requiert un sélecteur CSS pour qu'il identifie le HTML du template
+  qui est associé à notre directive. 
+  Le [sélecteur CSS d'un attribut](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors)
+  est le nom de l'attribut entouré par des crochets.
+  Notre sélecteur de directive est `[myHighlight]`.
+  Angular va localiser tous les éléments dans le template possédant un attribut appelé `myHighlight`.
+
 .l-sub-section
   :marked
     ### Why not call it "highlight"?
+
+    ### Pourquoi ne pas l'avoir appelé "highlight" (surbrillance)&nbsp;?
+    
     *highlight* is a nicer name than *myHighlight* and, technically, it would work if we called it that.
+    
+    *highlight* est un nom plus convenable que *myHighlight* et qui, techniquement, fonctionnerait tout autant.
  
     However, we recommend picking a selector name with a prefix to ensure
     that it cannot conflict with any standard HTML attribute, now or in the future.
     There is also less risk of colliding with a third-party directive name when we give ours a prefix.
+    
+    Cependant, nous recommendons de choisir un nom de sélecteur préfixé assurant
+    aucun conflit avec tous les attributs du standard HTML, maintenant ou à l'avenir.
+    Cela apporte moins de risques de collision avec le nom d'une directive tierce d'avoir son propre préfixe.
 
     We do **not** prefix our `highlight` directive name with **`ng`**.
     That prefix belongs to Angular.
 
+    Nous ne préfixons **pas** le nom de notre directive `highlight` avec **`ng`**.
+    Ce préfixe est utilisé par Angular.
+
     We need a prefix of our own, preferably short, and `my` will do for now.
+
+    Nous avons besoin d'avoir notre propre préfixe, de préférence court, et `my` fera l'affaire pour le moment.
+
 p
   | After the #[code @Directive] metadata comes the directive's controller class, which contains the logic for the directive. 
   +ifDocsFor('ts')
     | We export `HighlightDirective` to make it accessible to other components.
+p
+  | La metadata #[code @Directive] est suivie par le contrôleur de la directive, qui contient la logique de la directive.
+  +ifDocsFor('ts')
+    | Nous exportons `HighlightDirective` afin de le rendre accessible aux autres composants.
+
 :marked
   Angular creates a new instance of the directive's controller class for
   each matching element, injecting an Angular `ElementRef` 
@@ -107,129 +197,226 @@ p
   through its `nativeElement` property.
   That's all we need to set the element's background color using the browser DOM API.
 
+  Angular créé une nouvelle instance du contrôleur de la directive pour chaque élement trouvé et injecte un `ElementRef`
+  d'Angular.
+  `ElementRef` est un service qui nous garantit un accès aux éléments du DOM
+  au travers de sa propriété `nativeElement`.
+  C'est tout ce dont on a besoin pour modifier l'élément de la couleur de l'arrière-plan avec l'API DOM du navigateur.
+
 .l-main-section
 a#apply-directive
 :marked
   ## Apply the attribute directive
+  ## Appliquer la directive d'attribut
   The `AppComponent` in this sample is a test harness for our `HighlightDirective`.
   Let's give it a new template that 
   applies the directive as an attribute to a paragraph (`p`) element.
   In Angular terms, the `<p>` element will be the attribute **host**.
+
+  Dans notre exemple, le `AppComponent` a été simplifié pour notre `HighlightDirective`.
+  Donnons lui un nouveau template qui appliquera la directive en tant qu'attribut d'un élément de paragraphe (`p`).
+  Selon les termes Angular, l'élement `<p>` sera l'attribut **host**.
 p
   | We'll put the template in its own 
   code #[+adjExPath('app.component.html')]
   | file that looks like this:
+p
+  | Nous allons ajouter le template dans son propre fichier 
+  code #[+adjExPath('app.component.html')]
+  | qui ressemble à ceci :
 +makeExample('attribute-directives/ts/app/app.component.1.html',null,'app/app.component.html')(format=".")
 :marked
   A separate template file is clearly overkill for a 2-line template. 
   Hang in there; we're going to expand it later.
   Meanwhile, we'll revise the `AppComponent` to reference this template.
+
+  Évidemment, 2 lignes pour un fichier template est exagéré.
+  Patience; nous allons le développer plus tard.
+  En attendant, nous allons remanier `AppComponent` pour qu'il référence ce template.
+
 +makeExample('attribute-directives/ts/app/app.component.ts',null,'app/app.component.ts')
 :marked
   We've added an `import` statement to fetch the 'Highlight' directive and, 
   added that class to a `directives` component metadata so that Angular 
   will recognize our directive when it encounters `myHighlight` in the template. 
 
+  Nous avons ajouté une déclaration `import` pour récupérer la directive 'Highlight' et
+  ajouté dans une metadata `directives` du composant pour que Angular
+  puisse reconnaître notre directive quand il rencontrera `myHighlight` dans le template.
+
   We run the app and see that our directive highlights the paragraph text.
+
+  Nous lançons l'application et constatons que notre directive surbrille le paragraphe.
   
 figure.image-display
   img(src="/resources/images/devguide/attribute-directives/first-highlight.png" alt="First Highlight")
 .l-sub-section
   :marked
     ### Your directive isn't working? 
+    ### Votre directive ne fonctionne pas&nbsp;? 
 
     Did you remember to set the `directives` attribute of `@Component`? It is easy to forget!
+
+    Avez-vous pensé à définir l'attribut `directives` du `@Component`&nbsp;? C'est facile de l'oublier&nbsp;!
     
     Open the console in the browser tools and look for an error like this:
+    
+    Ouvrez la console du navigateur et cherchez si vous avez une erreur telle que : 
   code-example(format="nocode").
     EXCEPTION: Template parse errors:
       Can't bind to 'myHighlight' since it isn't a known native property
   :marked
     Angular detects that we're trying to bind to *something* but it doesn't know what.
     We have to tell it by listing `HighlightDirective` in the `directives` metadata array.
+
+    Angular détecte que nous essayons de lier *quelque chose* mais il ne sait pas quoi.
+    Nous devons le lui préciser en listant `HighlightDirective` dans le tableau de la metadata `directives`.
 :marked
   Let's recap what happened.
+
+  Récapitulons ce qu'il se passe.
   
   Angular found the `myHighlight` attribute on the `<p>` element. It created
   an instance of the `HighlightDirective` class, 
   injecting a reference to the element into the constructor 
   where we set the `<p>` element's background style to yellow.
 
+  Angular détecte l'attribut `myHighlight` sur l'élément `<p>`. Il créé 
+  une instance de la classe `HighlightDirective`, 
+  injecte une référence de l'élement dans le constructeur
+  où nous appliquons le style d'arrière-plan de l'élement `<p>` à jaune.
+
 .l-main-section
 a#respond-to-user
 :marked
   ## Respond to user action
 
+  ## Réagir à un événement de l'utilisateur
+
   We are not satisfied to simply set an element color.
   Our directive should set the color in response to a user action.
   Specifically, we want to set the color when the user hovers over an element.
+
+  Nous ne sommes pas satisfait de simplement modifier la couleur de l'élément.
+  Notre directive devrait modifier la couleur en réponse à une action de l'utilisateur.
+  Plus précisément, nous voulons modifier la couleur quand l'utilisateur survole un élément.
   
   We'll need to
+  
+  Nous devrons
+
   1. detect when the user hovers into and out of the element,
+  1. détecter quand l'utilisateur survole et ne survole plus l'élément,
   2. respond to those actions by setting and clearing the highlight color, respectively.
+  2. réagir à ces actions en appliquant/supprimant respectivement la surbrillance.
   
   We apply the `@HostListener` !{_decorator} to methods which are called when an event is raised.
+
+  Nous appliquons le !{_décorateur} `@HostListener` aux méthodes lancées quand un événement est levé.
 
 +makeExample('attribute-directives/ts/app/highlight.directive.2.ts','host')(format=".")
 
 .l-sub-section
   :marked
     The `@HostListener` !{_decorator} refers to the DOM element that hosts our attribute directive, the `<p>` in our case.
+
+    Le !{_décorateur} `@HostListener` se réfère à l'élément du DOM qui contient (_host_) notre attribut de directive, le `<p>` dans notre cas.
      
     We could have attached event listeners by manipulating the host DOM element directly, but
     there are at least three problems with such an approach:
+
+    Nous aurions pu attacher les écoutes d'événements (_event listeners_) en manipulant le DOM du contenant (host) directement, 
+    mais il y a au moins trois problèmes avec une telle approche :
     
     1. We have to write the listeners correctly.
+    1. Nous devons écrire les écouteurs (_listeners_) correctement.
     1. We must *detach* our listener when the directive is destroyed to avoid memory leaks.
+    1. Nous devons *détacher* nos écouteurs quand la directive est détruire afin d'éviter les fuites de mémoire.
     1. We'd be talking to DOM API directly which, we learned, is something to avoid.
+    1. Nous communiquerions directement avec l'API du DOM ce qui, nous l'avons appris, est quelque chose à éviter.
 
     Let's roll with the `@HostListener` !{_decorator}. 
+
+    Faisons tourner le !{_décorateur} `@HostListener`. 
 :marked
   Now we implement the two mouse event handlers:
+
+  À présent nous implémentons les deux fonctions de gestion d'événement (_event handlers_) de la souris :
 +makeExample('attribute-directives/ts/app/highlight.directive.2.ts','mouse-methods')(format=".")
 :marked
   Notice that they delegate to a helper method that sets the color via a private local variable, `#{_priv}el`.
   We revise the constructor to capture the `ElementRef.nativeElement` in this variable.
 
+  Remarquez qu'ils délèguent à une méthode d'assistance (helper method) qui définit la couleur au travers de 
+  la variable locale privée `#{_priv}el`
+  Nous modifions le constructor afin de récupérer `ElementRef.nativeElement` dans cette variable.
+
 +makeExample('attribute-directives/ts/app/highlight.directive.2.ts','ctor')(format=".")
 :marked
   Here's the updated directive:
+
+  Voici la directive mise à jour :
 +makeExample('app/highlight.directive.2.ts')
 :marked
   We run the app and confirm that the background color appears as we move the mouse over the `p` and
   disappears as we move out.
+
+  Nous lançons l'application et confirmons que la couleur de l'arrière-plan apparaît quand on survole le `p` et 
+  disparaît quand on en sort.
 figure.image-display
   img(src="/resources/images/devguide/attribute-directives/highlight-directive-anim.gif" alt="Second Highlight")
 .l-main-section
 a#bindings
 :marked
   ## Configure the directive with binding
+  ## Configurer la directive avec des liaisons de données
   
   Currently the highlight color is hard-coded within the directive. That's inflexible.
   We should set the color externally with a binding like this:
+
+  Jusqu'à présent, la surbrillance est codée en dur dans la directive. Cette manière de faire est rigide.
+  Nous devons définir la couleur de l'extérieur avec une liaison de données comme ceci : 
 +makeExample('attribute-directives/ts/app/app.component.html','pHost')
 :marked
   We'll extend our directive class with a bindable **input** `highlightColor` property and use it when we highlight text.
 
+  Nous allons étendre notre classe de directive avec une propriété "liante" **input** `highlightColor` et l'utiliser 
+  quand on surbrille le texte.
+
   Here is the final version of the class:
+
+  Voici la version finale de la classe :
 +makeExcerpt('app/highlight.directive.ts', 'class')
 a#input
 :marked
   The new `highlightColor` property is called an *input* property because data flows from the binding expression into our directive.
   Notice the `@Input()` #{_decorator} applied to the property.
+
+  La nouvelle propriété `highlightColor` est appelée *input* parce que les données sont transmises à notre directive grâce à l'expression de la liaison de données.
+  Remarquez que le #{_décorateur} `@Input()` s'applique sur la propriété.
 +makeExcerpt('app/highlight.directive.ts', 'color')
 :marked
   `@Input` adds metadata to the class that makes the `highlightColor` property available for 
   property binding under the `myHighlight` alias. 
   We must add this input metadata or Angular will reject the binding.
   See the [appendix](#why-input) below to learn why.
+
+  `@Input` ajoute des metadata à la classe rendant accessible par liaison de données la propriété `highlightColor`
+  en dessous de l'alias `myHighlight`.
+  Nous devons ajouter cette entrée de metadata ou sinon Angular rejettera la liaison de données.
+  Voir l'[annexe](#why-input) ci-dessous pour savoir pourquoi.
 .l-sub-section
   :marked
     ### @Input(_alias_) 
     The developer who uses this directive expects to bind to the attribute name, `myHighlight`.
     The directive property name is `highlightColor`. That's a disconnect.
+
+    Le développeur qui utilise cette directive s'attend à lier une valeur avec l'attribut `myHighlight`.
+    La nom de propriété de la directive est `highlightColor`. Ce n'est pas très cohérent.
     
     We could resolve the discrepancy by renaming the property to `myHighlight` and define it as follows:
+
+    Nous pouvons résoudre cette incohérence en renommant la propriété `myHighlight` ainsi :
 
   +makeExcerpt('app/highlight.directive.ts', 'highlight', '')
   :marked
@@ -237,82 +424,146 @@ a#input
     doesn't express our intention well. 
     We can **alias** the `highlightColor` property with the attribute name by
     passing `myHighlight` into the `@Input` #{_decorator}:
+
+    Peut-être que nous ne voulons pas de ce nom de propriété dans la directive, car 
+    il ne représente pas correctement notre intention.
+    Nous pouvons créer un **alias** pour la propriété `highlightColor` avec le nom d'attribut en
+    passant `myHighlight` dans le #{_décorateur} `@Input` :
   +makeExcerpt('app/highlight.directive.ts', 'color', '')
 :marked
   Now that we're getting the highlight color as an input, we modify the `onMouseEnter()` method to use
   it instead of the hard-coded color name.
   We also define red as the default color to fallback on in case
   the user neglects to bind with a color.
+
+  Maintenant que nous avons la couleur de surbrillance en tant qu'entrée (input), nous modifions la méthode `onMouseEnter()`
+  pour qu'il l'utilise à la place du nom de couleur codé en dur.
+  Nous définissons également le rouge en tant que couleur par défaut au cas où l'utilisateur 
+  oublie de lier une couleur.
 +makeExcerpt('attribute-directives/ts/app/highlight.directive.ts', 'mouse-enter', '')
 :marked
   Now we'll update our `AppComponent` template to let 
   users pick the highlight color and bind their choice to our directive.
   
+  Maintenant nous mettons à jour notre template `AppComponent` permettant
+  aux utilisateurs de choisir la couleur de surbrillance et de la lier à notre directive.
+
   Here is the updated template:
+
+  Voici notre template mis à jour :
 +makeExcerpt('attribute-directives/ts/app/app.component.html', 'v2', '')
 
 .l-sub-section
   :marked
     ### Where is the templated *color* property?
+
+    ### Où est la propriété *color* dans le template&nbsp;?
     
     The eagle-eyed may notice that the radio button click handlers in the template set a `color` property
     and we are binding that `color` to the directive. 
     We should expect to find a `color` on the host `AppComponent`.
+
+    Les plus attentifs remarqueront que l'événement click du radio bouton dans le template modifie une propriété
+    `color` et nous lions cette `color` à la directive.
+    Nous nous attendons à retrouver un `color` dans le host `AppComponent`.
     
     **We never defined a color property for the host *AppComponent***!
     And yet this code works. Where is the template `color` value going?
     
+    **À aucun moment nous ne définissons la propriété `color` dans notre host *AppComponent***&nbsp;!
+    Et ça fonctionne quand même. Où est donc passé la valeur `color` du template&nbsp;?
+
     Browser debugging reveals that Angular dynamically added a `color` property 
     to the runtime instance of the `AppComponent`.
+
+    Le debuggeur du navigateur révèle que Angular ajoute dynamiquement une propriété `color`
+    à l'instance d'exécution de l'`AppComponent`.
     
     This is *convenient* behavior but it is also *implicit* behavior that could be confusing. 
     While it's cool that this technique works, we recommend adding the `color` property to the `AppComponent`.
 
+    C'est un comportement *avantageux* mais c'est aussi un comportement *implicite* qui peut porter à confusion.
+    Même si cette technique qui fonctionne est cool, nous recommendons d'ajouter la propriété `color` au `AppComponent`.
+
 :marked
   Here is our second version of the directive in action.
+
+  Voici notre seconde version de la direction en action.
 figure.image-display
   img(src="/resources/images/devguide/attribute-directives/highlight-directive-v2-anim.gif" alt="Highlight v.2")
 
 .l-main-section
 :marked
   ## Bind to a second property
+  ## Lier une seconde propriété
   Our directive only has a single, customizable property. What if we had ***two properties***?
+
+  Notre directive ne dispose que d'une propriété personnalisable. Que faire si nous avions ***deux propriétés***&nbsp;?
   
   Let's allow the template developer to set the default color, the color that prevails until the user picks a highlight color.
   We'll add a second **input** property to `HighlightDirective` called `defaultColor`:
+
+  Laissons l'attribution de la couleur par défaut au développeur du template, qui prévaut tant que l'utilisateur
+  n'a pas choisi de couleur de surbrillance. Nous ajouterons une seconde propriété **input** à la directive
+  `HighlightDirective` qu'on appelera `defaultColor` :
 +makeExample('attribute-directives/ts/app/highlight.directive.ts', 'defaultColor')(format=".")
 :marked
   The `defaultColor` property has a setter that overrides the hard-coded default color, "red".
   We don't need a getter.
+
+  La propriété `defaultColor` possède un mutateur surchargeant la couleur par défaut "red" codé en dur.
+  Nous n'avons pas besoin d'accesseur.
   
   How do we bind to it? We already "burned" the `myHighlight` attribute name as a binding target.
+
+  Comment la lie t'on&nbsp;? Nous avons déjà "transformé" le nom de l'attribut `myHighlight` en tant que cible liée.
   
   Remember that a *component is a directive too*. 
   We can add as many component property bindings as we need by stringing them along in the template
   as in this example that sets the `a`, `b`, `c` properties to the string literals 'a', 'b', and 'c'. 
+
+  Souvenez-vous qu'un *composant est aussi une directive*.
+  Nous pouvons ajouter autant de propriétés que l'on a besoin en les passant sous forme de chaîne de caractères dans le template, 
+  comme dans cet exemple qui définit les propriétés `a`, `b`, `c` par les chaînes de caractères 'a', 'b', et 'c'. 
 code-example(format="." ).
   &lt;my-component [a]="'a'" [b]="'b'" [c]="'c'">&lt;my-component>
 :marked
   We do the same thing with an attribute directive.
+
+  Nous appliquons le même changement avec une directive d'attribut.
 +makeExample('attribute-directives/ts/app/app.component.html', 'defaultColor')(format=".")
 :marked
   Here we're binding the user's color choice to the `myHighlight` attribute as we did before.
   We're *also* binding the literal string, 'violet', to the `defaultColor`.
+
+  Ici nous lions le choix de la couleur de l'utilisateur sur l'attribut `myHighlight`, comme nous l'avons fait précédemment.
+  Nous avons *aussi* lié la chaîne de caractères 'violet' sur `defaultColor`.  
     
   Here is the final version of the directive in action.
+
+  Voici la version finale de la directive en action.
 figure.image-display
   img(src="/resources/images/devguide/attribute-directives/highlight-directive-final-anim.gif" alt="Final Highlight")
 
 .l-main-section
 :marked
   ## Summary
+  ## Résumé
   We now know how to
+
+  Maintenant nous savons 
   - [build a simple **attribute directive** to attach behavior to an HTML element](#write-directive),
+  - [construire une simple **directive d'attribut** qui ajoute un comportement à un élément HTML](#write-directive),
   - [use that directive in a template](#apply-directive),
+  - [utiliser cette directive dans un template](#apply-directive),
   - [respond to **events** to change behavior based on an event](#respond-to-user),
+  - [réagir aux **événements** modifiant le comportement basé sur un événement](#respond-to-user),
   - and [use **binding** to pass values to the attribute directive](#bindings).
+  - et [utiliser la **liaison de données** pour transmettre des valeurs à notre directive d'attribut](#bindings).
 
   The final source:
+
+  Les sources finales :
 
 +makeTabs(
   `attribute-directives/ts/app/app.component.ts,
@@ -334,39 +585,75 @@ a#why-input
 .l-main-section
 :marked
   ### Appendix: Input properties
+  ### Annexe : Propriétés de Input
   
   Earlier we declared the `highlightColor` property to be an ***input*** property of our
   `HighlightDirective`
+
+  Plus tôt nous avons déclaré la propriété `highlightColor` en tant que propriété ***input*** de
+  notre `HighlightDirective`
  
   We've seen properties in bindings before. 
   We never had to declare them as anything. Why now?
+
+  Nous avons vu des propriété dans les liaisons de données précédemment.
+  Nous n'avons jamais eu à les déclarer. Comment est-ce possible&nbsp;?
   
   Angular makes a subtle but important distinction between binding **sources** and **targets**.
+
+  Angular fait une subtile mais importante distinction entre la liaison de données **source** et **cible** (target) .
   
   In all previous bindings, the directive or component property was a binding ***source***.
   A property is a *source* if it appears in the template expression to the ***right*** of the equals (=).
+
+  Dans tous les précédentes liaisons de données, la propriété de la directive ou du composant était une liaison ***source***.
+  Une propriété est dite *source* si elle apparaît dans l'expression du template à ***droite*** du égal (=).
   
   A property is a *target* when it appears in **square brackets** ([ ]) to the **left** of the equals (=) ...
   as it is does when we bind to the `myHighlight` property of the `HighlightDirective`, 
+
+  Une propriété est dite *cible* quand elle apparaît dans des **crochets** ([ ]), à **gauche** du égal (=) ...
+  comme quand on a lié la propriété `myHighlight` à la directive `HighlightDirective`,
 +makeExample('attribute-directives/ts/app/app.component.html','pHost')(format=".")
 :marked
   The 'color' in `[myHighlight]="color"` is a binding ***source***.
   A source property doesn't require a declaration.
+
+  Le 'color' dans `[myHighlight]="color"` est une liaison ***source***.
+  Une propriété source ne requiert pas d'être déclaré.
   
   The 'myHighlight' in `[myHighlight]="color"` *is* a binding ***target***.
   We must declare it as an *input* property.
   Angular rejects the binding with a clear error if we don't.
+
+  'myHighlight' dans `[myHighlight]="color"` *est* une liaison ***cible***.
+  Nous devons la déclarer en tant que propriété *input*.
+  Angular rejette la liaison avec une erreur claire si nous ne le faisons pas.
   
   Angular treats a *target* property differently for a good reason.
   A component or directive in target position needs protection.
+
+  Angular traite une propriété *cible* différemment pour une bonne raison.
+  Un composant ou une directive dans une position cible nécessite une protection.
   
   Imagine that our `HighlightDirective` did truly wonderous things.
   We graciously made a gift of it to the world. 
+
+  Imaginez que notre `HighlightDirective` fasse vraiment des choses merveilleuses.
+  Nous l'offrons gracieusement à tout le monde.
   
   To our surprise, some people &mdash; perhaps naively &mdash;
   started binding to *every* property of our directive. 
   Not just the one or two properties we expected them to target. *Every* property.
   That could really mess up our directive in ways we didn't anticipate and have no desire to support.
+
+  À notre grande surprise, des personnes &mdash; peut-être naïvement &mdash;
+  ont commencé à lier *toutes* les propriétés de notre directive.
+  Pas seulement une ou deux propriétés comme escompté. *Toutes* les propriétés.
+  Cette pratique peut gâcher notre directive, d'une manière que nous n'avons pas anticipé et que nous n'avons pas envie de maintenir.
   
   The *input* declaration ensures that consumers of our directive can only bind to
   the properties of our public API ... nothing else.
+
+  La déclaration *input* garantie que les utilisateurs de notre directive peuvent uniquement lier 
+  les propriétés de notre API publique ... rien d'autres.
