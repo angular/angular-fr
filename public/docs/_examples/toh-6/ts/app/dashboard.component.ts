@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 // #docregion , search
+||||||| merged common ancestors
+// #docplaster
+// #docregion
+=======
+// #docplaster
+// #docregion
+// #docregion hero-search-component
+>>>>>>> chore: merge changes from angular.io/master
 import { Component, OnInit } from '@angular/core';
 import { Router }           from '@angular/router';
 
@@ -12,7 +21,12 @@ import { HeroSearchComponent } from './hero-search.component';
   styleUrls: ['app/dashboard.component.css'],
   directives: [HeroSearchComponent]
 })
+<<<<<<< HEAD
 // #enddocregion search
+||||||| merged common ancestors
+=======
+// #enddocregion hero-search-component
+>>>>>>> chore: merge changes from angular.io/master
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
 
