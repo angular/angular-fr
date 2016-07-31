@@ -8,24 +8,24 @@ include ../_util-fns
 
   Le mouvement est un aspect important du design d'applications web modernes.
   Nous voulons des interfaces utilisateur qui aient des transitions fluides entre leurs états, et des animations stimulantes qui attirent l'attention au bon endroit.
-  Des animations bien conçues peuvent rendre une UI non seulement plus fun mais aussi plus facile à utiliser.
+  Des animations bien conçues peuvent rendre une interface graphique non seulement facile à utiliser mais aussi plus amusante.
 
   Angular's animation system gives us what we need to make the kinds of animations we want.
   We can build animations that run with the same kind of native performance that we're used
   to with pure CSS animations. But we can also have our animation logic tightly integrated
   with the rest of our application code, where they can be easily triggered and controlled.
 
-  Le système d'animations d'Angular nous fournit ce dont nous avons besoin pour créer le genre d'animation que nous voulons.
+  Le système d'animation d'Angular nous fournit ce dont nous avons besoin pour créer toutes les animations que nous voulons.
   Nous pouvons construire des animations qui s'exécutent avec le même niveau de performance native auquel les animations en pur CSS nous ont habitués.
   Mais nous pouvons également avoir notre logique d'animation étroitement intégrée au reste du code de notre application,
-  où elles pourront facilement être déclenchées et contrôlées.
+  où elles pourront facilement être utilisées et contrôlées.
 
 .alert.is-helpful
   :marked
     Angular animations are built on top of the standard [Web Animations API](https://w3c.github.io/web-animations/)
     and they run natively on [browsers that support it](http://caniuse.com/#feat=web-animation).
 
-    Les animations Angular sont construites sur la base de l'[API d'animations web standard](https://w3c.github.io/web-animations/)
+    Les animations Angular sont construites sur la base de l'[API standard d'animations Web](https://w3c.github.io/web-animations/)
     et elles tournent nativement sur les [navigateurs qui la supportent](http://caniuse.com/#feat=web-animation).
 
     For other browsers, a polyfill is required. Grab
@@ -37,7 +37,7 @@ include ../_util-fns
 
     A more lightweight polyfill maintained by the Angular team is coming soon.
 
-    Un polyfill plus léger maintenu par l'équipe Angular est en préparation.
+    Un polyfill plus léger est en préparation par l'équipe Angular.
 
 :marked
   # Table of Contents
@@ -45,24 +45,40 @@ include ../_util-fns
   # Table des Matières
 
   * [Quickstart Example: Transitioning Between Two States](#example-transitioning-between-states)
+  
+  * [Démarrage Rapide&nbsp;: Transitions Entre Deux États](#example-transitioning-between-states)
+  
   * [States and Transitions](#states-and-transitions)
+  
+  * [États et Transitions](#states-and-transitions)
+  
   * [Example: Entering and Leaving](#example-entering-and-leaving)
+  
+  * [Exemple&nbsp;: Entrer et Sortir](#example-entering-and-leaving)
+  
   * [Example: Entering and Leaving from Different States](#example-entering-and-leaving-from-different-states)
+  
+  * [Exemple&nbsp;: Entrer et Sortir depuis des États Différents](#example-entering-and-leaving-from-different-states)
+  
   * [Animatable Properties and Units](#animatable-properties-and-units)
+  
+  * [Unités et Propriétés Animables](#animatable-properties-and-units)
+  
   * [Automatic Property Calculation](#automatic-property-calculation)
+  
+  * [Calcul Automatique de Propriété](#automatic-property-calculation)
+  
   * [Animation Timing](#animation-timing)
+  
+  * [Durée (Timing) d'Animation](#animation-timing)
+  
   * [Multi-Step Animations with Keyframes](#multi-step-animations-with-keyframes)
+  
+  * [Animations à Plusieurs Étapes avec les images-clés (Keyframes)](#multi-step-animations-with-keyframes)
+  
   * [Parallel Animation Groups](#parallel-animation-groups)
 
-  * [Démarrage Rapide&nbsp;: Transitions Entre Deux États](#example-transitioning-between-states)
-  * [États et Transitions](#states-and-transitions)
-  * [Exemple&nbsp;: Entrer et Sortir](#example-entering-and-leaving)
-  * [Exemple&nbsp;: Entrer et Sortir depuis des États Différents](#example-entering-and-leaving-from-different-states)
-  * [Propriétés et Unités Animables](#animatable-properties-and-units)
-  * [Calcul Automatique de Propriété](#automatic-property-calculation)
-  * [Timing d'Animation](#animation-timing)
-  * [Animations à Plusieurs Étapes avec les Keyframes](#multi-step-animations-with-keyframes)
-  * [Groupes d'Animation Parallèles](#parallel-animation-groups)
+  * [Groupes d'Animations Parallèles](#parallel-animation-groups)
 
 .l-sub-section
   :marked
@@ -87,7 +103,7 @@ figure
   Animations are defined inside `@Component` metadata. Before we can add some, we need
   to import a few animation-specific functions:
 
-  Les animations sont définies dans les métadonnées `@Component`.
+  Les animations sont définies dans les métadonnées du `@Component`.
   Avant de pouvoir en ajouter, nous devons importer quelques fonctions spécifiques aux animations&nbsp;:
 
 +makeExample('animations/ts/app/hero-list-basic.component.ts', 'imports')(format=".")
@@ -97,7 +113,7 @@ figure
   metadata. It has animated transitions between two states: `active` and `inactive`. When a
   hero is active, we display the element in a slightly larger size and lighter color.
 
-  Avec ça nous pouvont maintenant définir un déclencheur d'animation (*trigger*) appelé `heroState` dans les métadonnées du composant.
+  Avec cela, nous pouvont maintenant définir un déclencheur d'animation (*trigger*) appelé `heroState` dans les métadonnées du composant.
   Il comporte des transitions animées entre deux états&nbsp;: `active` et `inactive`.
   Quand un héros est actif, on affiche l'élément avec une taille un peu plus grande et une couleur plus claire.
 
@@ -118,7 +134,7 @@ figure
   syntax:
 
   Nous avons maintenant une animation définie mais elle n'est utilisée nulle part.
-  Nous pouvons changer cela en la rattachant à un ou plusieurs éléments dans le template du composant en utilisant la syntaxe "`@triggerName`"&nbsp;
+  Nous pouvons changer cela en la rattachant à un ou plusieurs éléments dans le modèle HTML (template) du composant en utilisant la syntaxe "`@triggerName`".
 
 +makeExample('animations/ts/app/hero-list-basic.component.ts', 'template')(format=".")
 
@@ -128,7 +144,7 @@ figure
   attribute to the expression `hero.state`. We expect it to always be either `inactive`
   or `active`, since that's what we have defined animation states for.
 
-  Nous avons appliqué ici un déclencheur d'animation à chaque élément répété par un `ngFor`.
+  Nous avons appliqué ici un déclencheur d'animation à chaque élément répété par la directive `ngFor`.
   Chacun des éléments répétés sera animé indépendamment.
   Nous rattachons la valeur de l'attribut à l'expression `hero.state`.
   Nous prévoyons qu'elle sera toujours `inactive` ou `active`, étant donné que ce sont les valeurs pour lesquelles nous avons définis des états d'animation.
@@ -149,7 +165,7 @@ figure
   Angular animations are defined in terms of logical **states** and **transitions**
   between states.
 
-  Les animations Angular sont définies en termes d'**états** logiques et de **transitions** entre états.
+  Les animations Angular sont définies en termes d'**états** logiques et de **transitions** entre les états.
 
   An animation state is a string value that we define in our application code. In the example
   above we used the states `'active'` and `'inactive'` based on the logical state of
@@ -183,7 +199,7 @@ figure
   controls the timing of switching between one set of styles and the next:
 
   Une fois que nous avons des états, nous pouvons définir des transitions entre ces états.
-  Chaque transition contrôle le timing du passage entre un ensemble de styles vers le suivant&nbsp;:
+  Chaque transition contrôle le durée du passage entre un ensemble de styles vers le suivant&nbsp;:
 
 +makeExample('animations/ts/app/hero-list-basic.component.ts', 'transitions')(format=".")
 
@@ -234,9 +250,11 @@ figure.image-display
   Par exemple&nbsp;:
 
   * The `active => *` transition applies when the element's state changes from `active` to anything else.
+
+  * La transition `active => *` s'applique lorsque l'état de l'élément change de `active` à n'importe quel autre état.
+
   * The `* => *` transition applies when *any* change between two states takes place.
 
-  * La transition `active => *` s'applique lorsque l'état de l'élément change de `active` à n'importe quoi d'autre.
   * La transition `* => *` s'applique lorsque n'importe quel changement d'état a lieu.
 
 figure.image-display
@@ -246,7 +264,7 @@ figure.image-display
 :marked
   ### The `void` state
 
-  ### L'état vide `void`
+  ### L'état vide (`void`)
 
   There's one special state called `void` that may apply to any animation. It applies
   when the element is *not* attached to a view. This may be because it has not yet been
@@ -256,7 +274,7 @@ figure.image-display
   Il existe un état particulier appelé `void` qui peut être appliqué à n'importe quelle animation.
   Il s'applique lorsque l'élément n'est *pas* rattaché à une vue.
   Cela peut arriver parce qu'il n'a pas encore été ajouté ou parce qu'il a été supprimé.
-  L'état vide est utile pour définir des animations d'entrée ("enter") et de sortie ("leave").
+  L'état `void` est utile pour définir des animations d'entrée ("enter") et de sortie ("leave").
 
   For example the `* => void` transition applies when the element leaves the view,
   regardless of what state it was in before it left.
@@ -283,9 +301,11 @@ figure
   En utilisant les états `void` et `*` nous pouvons définir des transitions qui animent l'entrée et la sortie des éléments&nbsp;:
 
   * Enter: `void => *`
+  
+  * Entrer&nbsp;: `void => *`
+  
   * Leave: `* => void`
 
-  * Entrer&nbsp;: `void => *`
   * Sortir&nbsp;: `* => void`
 
 +makeExample('animations/ts/app/hero-list-enter-leave.component.ts', 'animationdef')(format=".")
@@ -298,7 +318,7 @@ figure
 
   Notons que dans ce cas les styles appliqués à l'état vide se trouvent directement dans les définitions de transition, et non dans une définition `state(void)` séparée.
   Nous faisons cela car nous voulons des transitions différentes pour l'entrée et la sortie&nbsp;:
-  l'élement entre par la gauche et sort par la droite.
+  L'élement entre par la gauche et sort par la droite.
 
   ## Example: Entering and Leaving from Different States
 
@@ -315,13 +335,19 @@ figure
   Cela nous permettra de configurer différentes transitions pour entrer et sortir en se basant sur l'état courant du héros&nbsp;:
 
   * Inactive hero enter: `void => inactive`
-  * Active hero enter: `void => active`
-  * Inactive hero leave: `inactive => void`
-  * Active hero leave: `active => void`
 
   * Entrée d'un héros inactif&nbsp; `void => inactive`
+
+  * Active hero enter: `void => active`
+
   * Entrée d'un héros actif&nbsp; `void => active`
+
+  * Inactive hero leave: `inactive => void`
+
   * Sortie d'un héros inactif&nbsp; `inactive => void`
+
+  * Active hero leave: `active => void`
+
   * Sortie d'un héros actif&nbsp; `active => void`
 
   We now have fine-grained control over each transition:
@@ -337,7 +363,7 @@ figure.image-display
 :marked
   ## Animatable Properties and Units
 
-  ## Propriétés et Unités Animables
+  ## Unités et Propriétés Animables
 
   Since Angular's animation support builds on top of Web Animations, we can animate any property
   that the browser considers *animatable*. This includes positions, sizes, transforms, colors,
@@ -353,15 +379,19 @@ figure.image-display
   the value as a string with the appropriate suffix:
 
   Pour les propriétés de position qui ont une valeur numérique, on peut définir une unité en fournissant
-  la valeur sour la forme d'une chaîne de caractères avec le suffixe adapté&nbsp;:
+  la valeur sous la forme d'une chaîne de caractères avec le suffixe adapté&nbsp;:
 
   * `'50px'`
+  
+  * `'50px'`&nbsp;:&nbsp;Valeur fixe en pixels
+  
   * `'3em'`
+  
+  * `'3em'`&nbsp;:&nbsp;Valeur en fonction de la taille de la police
+  
   * `'100%'`
-
-  * `'50px'`
-  * `'3em'`
-  * `'100%'`
+  
+  * `'100%'`&nbsp;:&nbsp;Valeur en pourcentage
 
   For most dimensional properties we can also just define a number which is then assumed to be
   in pixels:
@@ -405,14 +435,14 @@ figure
 :marked
   ## Animation Timing
 
-  ## Timing d'Animation
+  ## Durée (timing) d'Animation
 
   There are three timing properties we can tune for every animated transition:
   The duration, the delay, and the easing function. They are all combined into
   a single transition *timing string*.
 
-  Il existe trois propriétés de timing que nous pouvons régler pour toute transition animée&nbsp;:
-  la durée, le délai et la function d'*easing*.
+  Il existe trois propriétés de timing que nous pouvons régler pour toute les transitions animées&nbsp;:
+  la durée, le délai et la fonction d'animation (easing).
   Elles sont toutes combinées en une seule chaîne de caractères de timing de transition.
 
   ### Duration
@@ -426,11 +456,15 @@ figure
   On peut définir une durée sous trois formes&nbsp;:
 
   * As a plain number, in milliseconds: `100`
+  
+  * Un simple nombre, en millisecondes&nbsp;: `100`
+  
   * In a string, as milliseconds: `'100ms'`
+  
+  * Une chaîne de caractères, en millisecondes&nbsp;: `'100ms'`
+  
   * In a string, as seconds: `'0.1s'`
 
-  * Un simple nombre, en millisecondes&nbsp;: `100`
-  * Une chaîne de caractères, en millisecondes&nbsp;: `'100ms'`
   * Une chaîne de caractères, en secondes&nbsp;: `'0.1s'`
 
   ### Delay
@@ -443,7 +477,7 @@ figure
 
   Le délai contrôle le temps d'attente entre le moment où l'animation est déclenchée et celui où elle débute réellement.
   On peut le définir en l'ajoutant à la même chaîne juste après la durée.
-  Il a les mêmes options de formatage que la durée&nbsp;:
+  Il a le même format d'options que la durée&nbsp;:
 
   * Wait for 100ms and then run for 200ms: `'0.2s 100ms'`
 
@@ -451,7 +485,7 @@ figure
 
   ### Easing
 
-  ### Easing
+  ### La fonction d'animation (Easing)
 
   The [easing function](http://easings.net/) controls how the animation accelerates
   and decelerates during its runtime. For example, using an `ease-in` function means
@@ -461,13 +495,15 @@ figure
 
   La [fonction d'easing](http://easings.net/) contrôle la façon dont l'animation accélère et décélère au cours de son exécution.
   Par exemple, utiliser une fonction `ease-in` signifie que l'animation démarre relativement lentement mais prend ensuite de la vitesse au fur et à mesure de son avancement.
-  On peut contrôler l'easing en ajoutant une *troisième* valeur à la chaîne après la durée et le délai
+  On peut paramétrer la fonction d'animation en ajoutant une *troisième* valeur à la chaîne après la durée et le délai
   (ou une *seconde* valeur si aucun délai n'est défini)&nbsp;:
 
   * Wait for 100ms and then run for 200ms, with easing: `'0.2s 100ms ease-out'`
+  
+  * Attendre 100ms puis s'exécuter en 200ms, avec easing&nbsp;: `'0.2s 100ms ease-out'`
+  
   * Run for 200ms, with easing: `'0.2s ease-in-out'`
 
-  * Attendre 100ms puis s'exécuter en 200ms, avec easing&nbsp;: `'0.2s 100ms ease-out'`
   * S'exécuter en 200ms, avec easing&nbsp;: `'0.2s ease-in-out'`
 
 figure
@@ -490,7 +526,7 @@ figure
 :marked
   ## Multi-Step Animations with Keyframes
 
-  ## Animations à Plusieurs Étapes avec les Keyframes
+  ## Animations à Plusieurs Étapes avec les images-clés (Keyframes)
 figure
   img(src="/resources/images/devguide/animations/animation_multistep.gif" alt="Animations with some bounce implemented with keyframes" align="right" style="width:220px;margin-left:20px" )
 :marked
@@ -498,20 +534,20 @@ figure
   sets of styles to a more intricate animation that goes through one or more
   intermediate styles in between.
 
-  Avec les *keyframes* d'animation nous pouvons aller au-delà d'une simple transition entre deux ensembles de styles
+  Avec les images-clés nous pouvons aller au-delà d'une simple transition entre deux ensembles de styles
   vers une animation plus complexe qui passe par un ou plusieurs styles intermédiaires.
 
   For each keyframe, we can specify an *offset* that defines at which point
   in the animation that keyframe applies. The offset is a number between zero,
   which marks the beginning of the animation, and one, which marks the end.
 
-  Pour chaque keyframe, nous pouvons spécifier un décalage (*offset*) qui définit à quel stade de l'animation ce keyframe est appliqué.
-  L'offset est un nombre entre zéro, qui marque le début de l'animation, et un, qui en marque la fin.
+  Pour chaque images-clé (*keyframe*), nous pouvons spécifier un décalage (*offset*) qui définit à quel stade de l'animation ce keyframe est appliqué.
+  L'*offset* est un nombre entre zéro (0), qui marque le début de l'animation, et un (1), qui en marque la fin.
 
   In this example we add some "bounce" to our enter and leave animations with
   keyframes:
 
-  Dans cet exemple nous ajoutons du "rebond" à nos animations d'entrée et de sortie grâce aux keyframes&nbsp;:
+  Dans cet exemple nous ajoutons du "rebond" à nos animations d'entrée et de sortie grâce aux images-clés&nbsp;:
 
 +makeExample('animations/ts/app/hero-list-multistep.component.ts', 'animationdef')(format=".")
 
@@ -520,22 +556,22 @@ figure
   measures from 0 to 1. The final timeline of the animation will based on the combination
   of keyframe offsets, duration, delay, and easing.
 
-  Notons que les offsets ne sont *pas* définis en terme de temps absolu.
+  Notons que les décalages (offsets) ne sont *pas* définis en terme de temps absolu.
   Ce sont des mesures relatives de 0 à 1.
-  La timeline finale de l'animation sera basée sur la combinaison des offsets de keyframes, de la durée, du délai et de l'easing.
+  La frise chronologie (timeline) finale de l'animation sera basée sur la combinaison des décalages (offset) d'images-clés (keyframe), de la durée, du délai et de la fonction d'animation (easing).
 
   Defining offsets for keyframes is optional. If we omit them, offsets with even
   spacing are automatically assigned. For example, three keyframes without predefined
   offsets will receive offsets `0`, `0.5`, and `1`.
 
-  Définir des offsets pour les keyframes est optionnel.
-  S'ils sont omis, des offsets uniformément espacés sont automatiquement assignés.
-  Par exemple, trois keyframes sans offsets prédéfinis recevront les offsets `0`, `0.5`, et `1`.
+  La définition des décalages pour les images-clés est optionnel.
+  S'ils sont omis, des décalages uniformément espacés sont automatiquement assignés.
+  Par exemple, trois images-clés sans décalages (offsets) prédéfinis recevront les valeurs `0`, `0.5`, et `1`.
 
 :marked
   ## Parallel Animation Groups
 
-  ## Groupes d'Animation Parallèle
+  ## Groupes d'Animations Parallèles
 figure
   img(src="/resources/images/devguide/animations/animation_groups.gif" alt="Parallel animations with different timings, implemented with groups" align="right" style="width:220px;margin-left:20px" )
 :marked
