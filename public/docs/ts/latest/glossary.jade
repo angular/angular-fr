@@ -4,13 +4,23 @@ include _util-fns
 :marked
   # Angular 2 Glossary
 
+  # Glossaire Angular 2
+
   Angular 2 has a vocabulary of its own.
   Most Angular 2 terms are everyday English words
   with a specific meaning within the Angular system.
 
+  Angular 2 a un vocabulaire bien à lui.
+  La plupart des termes employés sont des mots anglais communs
+  avec un sens spécifique dans l'univers Angular.
+
   We have gathered here the most prominent terms
   and a few less familiar ones that have unusual or
   unexpected definitions.
+
+  Nous avons rassemblé ici les termes les plus emblématiques
+  et quelques-uns moins courants qui ont un sens inhabituel ou
+  inattendu.
 
   [A](#A) [B](#B) [C](#C) [D](#D) [E](#E) [F](#F) [G](#G) [H](#H) [I](#I)
   [J](#J) [K](#K) [L](#L) [M](#M) [N](#N) [O](#O) [P](#P) [Q](#Q) [R](#R)
@@ -26,18 +36,29 @@ include _util-fns
 .l-sub-section
   :marked
     In practice a synonym for [Decoration](#decorator).
+
+    En pratique un synonyme de [Décoration](#decorator).
 // #enddocregion a-1
 // #docregion a-2
 :marked
   ## Attribute Directive
+
+  ## Directive d'Attribut
 .l-sub-section
   :marked
     A category of [Directive](#directive) that can listen to and modify the behavior of
     other HTML elements, attributes, properties, and components. They are usually represented
     as HTML attributes, hence the name.
 
+    Une catégorie de [Directives](#directive) qui peuvent écouter et modifier le comportement
+    d'autres éléments HTML, attributs, propriétés, et composants. Elles sont habituellement représentées
+    comme des attributs HTML, d'où le nom.
+
     The `ngClass` directive for adding and removing CSS class names is a good example of
     an Attribute Directive.
+
+    La directive `ngClass` pour ajouter et supprimer des classes CSS est un bon exemple de
+    Directive d'Attribut
 // #enddocregion a-2
 
 // #docregion b-c
@@ -48,42 +69,59 @@ include _util-fns
 .l-main-section
 :marked
   ## Barrel
+
+  ## Baril (_Barrel_)
 .l-sub-section
   :marked
     A barrel is a way to *rollup exports* from several modules into a single convenience module.
     The barrel itself is a module file that re-exports *selected* exports of other modules.
-    
+
+    Un baril est une façon de *regrouper les exports* de différents modules en un seul module, ce qui est plus pratique.
+    Le baril lui-même est un module dans un fichier qui ré-exporte les exports *choisis* d'autres modules.
+
     Imagine three modules in a `heroes` folder:
+
+    Imaginez trois modules dans un dossier `heroes`&nbsp;:
   code-example.
     // heroes/hero.component.ts
     export class HeroComponent {}
-    
+
     // heroes/hero.model.ts
     export class Hero {}
-    
+
     // heroes/hero.service.ts
     export class HeroService {}
   :marked
     Without a barrel, a consumer would need three import statements:
+
+    Sans un baril, un utilisateur a besoin de trois imports différents&nbsp;:
   code-example.
     import { HeroComponent } from '../heroes/hero.component.ts';
     import { Hero }          from '../heroes/hero.model.ts';
     import { HeroService }   from '../heroes/hero.service.ts';
   :marked
     We can add a barrel to the `heroes` folder (called `index` by convention) that exports all of these items:
+
+    On peut ajouter un baril dans le dossier `heroes` (appelé `index` par convention) qui exporte toutes ces entrées&nbsp;:
   code-example.
     export * from './hero.model.ts';   // re-export all of its exports
     export * from './hero.service.ts'; // re-export all of its exports
     export { HeroComponent } from './hero.component.ts'; // re-export the named thing
   :marked
     Now a consumer can import what it needs from the barrel.
+
+    Maintenant, un utilisateur peut importer ce qu'il lui faut depuis le baril.
   code-example.
     import { Hero, HeroService } from '../heroes'; // index is implied
   :marked
     The Angular [scoped packages](#scoped-package) each have a barrel named `index`.
+
+    Les [_scoped-packages_](#scoped-package) Angular ont chacun un baril nommé `index`.
 // #enddocregion b-c
 :marked
   That's why we can write this:
+
+  C'est pour cela que nous pouvons écrire&nbsp;:
 +makeExcerpt('quickstart/ts/app/app.component.ts', 'import', '')
 // #docregion b-c
 
@@ -94,9 +132,15 @@ include _util-fns
     Almost always refers to [Data Binding](#data-binding) and the act of
     binding an HTML object property to a data object property.
 
+    Fait presque toujours référence au [Data Binding](#data-binding) et le fait de
+    lier une propriété d'un objet HTML à une propriété d'un objet du modèle.
+
     May refer to a [Dependency Injection](#dependency-injection) binding
     between a "token" or "key" and a dependency [provider](#provider).
     This more rare usage should be clear in context.
+
+    Peut aussi faire référence à un lien dans l'[Injection de Dépendances](#dependency-injection)
+    entre une "clé" (_Token_) et un [fournisseur](#provider) (_provider_) de dépendance.
 
 :marked
   ## Bootstrap
@@ -107,7 +151,14 @@ include _util-fns
     and optionally registers service [providers](#provider) with the
     [dependency injection system](#dependency-injection).
 
+    Nous lançons une application Angular en la "démarrant" avec la méthode `bootstrap`.
+    La méthode `bootstrap` identifie le [Composant](#component) (_Component_) "racine" d'une application
+    et éventuellement enregistre des [fournisseurs](#provider) (_providers_) de service avec le
+    [système d'injection de dépendances](#dependency-injection).
+
     One can bootstrap multiple apps in the same `index.html`, each with its own top level root.
+
+    Il est possible de démarrer plusieurs applications dans le même `index.html`, chacune avec sa propre racine.
 
 <a id="C"></a>
 .l-main-section
@@ -115,32 +166,56 @@ include _util-fns
   ## camelCase
 .l-sub-section
   :marked
-    The practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter 
-    _except the first letter which is a lowercase letter_. 
-    
+    The practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter
+    _except the first letter which is a lowercase letter_.
+
+    La pratique qui consiste à agréger les mots de façon à ce que chaque mot ou abréviation commence avec une majuscule
+    _à l'exception de la première lettre qui est une minuscule_.
+
     Function, property, and method names are typically spelled in camelCase. Examples include: `square`, `firstName` and `getHeroes`.
-    
+
+    Fonctions, propriétés, et noms de méthodes sont typiquement écrits en camelCase. Par exemple&nbsp;: `square`, `firstName` et `getHeroes`.
+
     This form is also known as **lower camel case**, to distinguish it from **upper camel case** which we call [PascalCase](#pascalcase).
     When we write "camelCase" in this documentation we always mean *lower camel case*.
 
+    Cette pratique est aussi connue sous le nom de *camelCase minuscule*, pour le distinguer de *camelCase majuscule* que l'on appelle [PascalCase](#pascalcase).
+    Quand nous écrivons "camelCase" dans cette documentation, nous parlons toujours de *camelCase minuscle
+
 :marked
   ## Component
+  
+  ## Composant
 .l-sub-section
   :marked
     An Angular class responsible for exposing data
     to a [View](#view) and handling most of the view’s display
     and user-interaction logic.
+    
+    Une classe Angular responsable d'exposer les données
+    à une [Vue](#view) et de gérer la majorité de l'affichage de la vue
+    et la logique des interactions utilisateurs.
 
     The Component is one of the most important building blocks in the Angular system.
     It is, in fact, an Angular [Directive](#directive) with a companion [Template](#template).
+    
+    Le composant est l'un des plus importants blocs de base dans Angular.
+    C'est, en fait, une [Directive](#directive) Angular avec un [Template](#template).
 
     The  developer applies the `#{atSym}Component` !{decorator} to
     the component class, thereby attaching to the class the essential component metadata
     that Angular needs to create a component instance and render it with its template
     as a view.
+    
+    Le développeur applique le [décorateur](#decorator) `#{atSym}Component` à
+    la classe du composant, attachant ainsi à la classe les métadonnées
+    dont Angular a besoin pour créer une instance de ce composant et l'afficher avec son template.
 
     Those familiar with "MVC" and "MVVM" patterns will recognize
     the Component in the role of "Controller" or "View Model".
+    
+    Ceux qui sont familiers avec les patterns "MVC" et "MVVM" reconnaîtront
+    le Composant dans le rôle du "Controlleur" ou du "Vue-Modèle".
 // #enddocregion b-c
 
 // #docregion d1
@@ -150,10 +225,10 @@ include _util-fns
   ## dash-case
 .l-sub-section
   :marked
-    The practice of writing compound words or phrases such that each word is separated by a dash or hyphen (`-`). 
-    
+    The practice of writing compound words or phrases such that each word is separated by a dash or hyphen (`-`).
+
     Directive selectors and the root of filenames are often spelled in dash-case. Examples include: `my-app` and `hero-list.component.ts`.
-    
+
     This form is also known as [kebab-case](#kebab-case).
 
 :marked
@@ -408,10 +483,10 @@ include _util-fns
   ## kebab-case
 .l-sub-section
   :marked
-    The practice of writing compound words or phrases such that each word is separated by a dash or hyphen (`-`). 
-    
+    The practice of writing compound words or phrases such that each word is separated by a dash or hyphen (`-`).
+
     Directive selectors and the root of filenames are often spelled in kebab-case. Examples include: `my-app` and `hero-list.component.ts`.
-    
+
     This form is also known as [dash-case](#dash-case).
 
 <a id="L"></a>
@@ -504,9 +579,9 @@ include _util-fns
   ## PascalCase
 .l-sub-section
   :marked
-    The practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter. 
+    The practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter.
     Class names are typically spelled in PascalCase. Examples include: `Person` and `Customer`.
-    
+
     This form is also known as **upper camel case**, to distinguish it from **lower camel case** which we simply call [camelCase](#camelcase).
     In this documentation, "PascalCase" means *upper camel case* and  "camelCase" means *lower camel case*.
 
@@ -579,9 +654,9 @@ include _util-fns
     `@angular/http`, and `@angular/router`.
 
     A [*scoped package*](https://docs.npmjs.com/misc/scope) is a way to group related *npm* packages.
-    
-    We import a scoped package the same way we'd import a *normal* package. 
-    The only difference, from a consumer perspective, 
+
+    We import a scoped package the same way we'd import a *normal* package.
+    The only difference, from a consumer perspective,
     is that the package name begins with the Angular *scope name*, `@angular`.
 
   +makeExcerpt('architecture/ts/app/app.component.ts', 'import', '')
