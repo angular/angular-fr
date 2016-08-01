@@ -45,7 +45,7 @@ include ../_util-fns
     
   [Trying it out](#try)
 
-  [L'essayer](#try)
+  [Essayez](#try)
   
   [Conclusions](#conclusions)
     
@@ -63,7 +63,7 @@ include ../_util-fns
 
   Webpack est un puissant agrégateur de module.
   Un _bundle_ est un fichier JavaScript qui regroupe les ressources *similaires* et qui 
-  doivent être servi au client dans une réponse unique à une demande de fichier.
+  doivent être servies au client dans une réponse unique à une demande de fichier.
   Un bundle peut inclure JavaScript, CSS, HTML, et presque tout autre type de fichier.
 
   Webpack roams over your application source code, 
@@ -125,7 +125,7 @@ a(id="entries-outputs")
   We probably do not want one giant bundle of everything.
   We'll likely prefer to separate our volatile application app code from comparatively stable vendor code modules.
   
-  Nous ne voulons sans doute pas un seul paquet géant de tout.
+  Nous ne voulons sans doute pas un seul et unique paquet.
   Nous préférons séparer notre code applicatif volatile par rapport au code stable des modules tierces.
 
   We change the configuration so that we have two entry points, `app.ts` and `vendor.ts`:
@@ -276,7 +276,7 @@ code-example(format="").
 :marked
   Open a terminal/console window and install the *npm* packages with `npm install`.
 
-  Ouvez une fenêtre du terminal/console et installez les paquets *npm* avec `npm install`.
+  Ouvrez une fenêtre du terminal/console et installez les paquets *npm* avec `npm install`.
  
 a(id="common-configuration")
 .l-main-section
@@ -294,7 +294,7 @@ a(id="common-configuration")
 
   Let's see the entire file and then walk through it a section at a time:
 
-  Nous allons voir le fichier complet puis avancer pas à pas une section à la fois&nbsp;:
+  Nous allons voir le fichier complet puis avancer une section à la fois&nbsp;:
   
 +makeExample('webpack/ts/config/webpack.common.js', null, 'config/webpack.common.js')(format=".")
 
@@ -577,7 +577,7 @@ a(id="test-configuration")
   But it might be simpler to start over with a completely fresh configuration.
   
   Nous pourrions fusionner notre configuration de test dans la configuration `webpack.common` et remplacer les parties dont nous ne voulons pas ou dont nous n'avons pas besoin.
-  Mais serait plus simple de recommencer avec une configuration complètement fraîche.
+  Mais ce serait plus simple de recommencer avec une configuration complètement fraîche.
 +makeExample('webpack/ts/config/webpack.test.js', null, 'config/webpack.test.js')(format=".")
 
 :marked
@@ -625,7 +625,7 @@ code-example(format="").
 <a id="try"></a>
 :marked
   ## Trying it out
-  ## L'essayer
+  ## Essayez
 
   Here is the source code for a small application that we can bundle with the
   Webpack techniques we learned in this chapter.
