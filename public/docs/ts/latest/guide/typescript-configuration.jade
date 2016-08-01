@@ -7,25 +7,25 @@ include ../_util-fns
   
   TypeScript is a dialect of JavaScript with design-time support for type-safety and tooling.
 
-  TypeScript est un sur-ensemble de Javascript qui ajoute des notions de typage et apporte 
-  un ensemble d'outils.
+  TypeScript est un sur-ensemble de JavaScript qui ajoute des notions de typage et apporte 
+  un ensemble d'outils associés.
     
   Browsers can't execute TypeScript directly. It has to be "transpiled" into JavaScript with the *tsc* compiler
   and that effort requires some configuration.
 
-  Les Navigateurs ne peuvent pas exécuter du code Typescript directement. 
-  Il doit être "transpilé" en Javascript avec le compilateur *tsc*, et cela nécessite de la configuration. 
+  Les Navigateurs ne peuvent pas exécuter du code TypeScript directement. 
+  Il doit être "transpilé" en JavaScript avec le compilateur *tsc*, et cela nécessite de la configuration. 
     
   This chapter covers some aspects of TypeScript configuration and the TypeScript environment
   that are important to Angular developers.
 
-  Ce chapitre couvre quelques aspects de la configuration Typescript et de l'environnement 
-  Typescript important pour un développeur Angular.
+  Ce chapitre couvre quelques aspects de la configuration TypeScript et de l'environnement 
+  TypeScript important pour les développeurs Angular.
   
   * [tsconfig.json](#tsconfig) - TypeScript compiler configuration.
   * [tsconfig.json](#tsconfig) - Configuration du compilateur TypeScript.
   * [typings](#typings) - TypesScript declaration files.
-  * [typings](#typings) - Fichiers de déclarations Typescript.
+  * [typings](#typings) - Fichiers de déclarations TypeScript.
 
 a(id="tsconfig")
 .l-main-section
@@ -35,18 +35,18 @@ a(id="tsconfig")
   We typically add a TypeScript configuration file (`tsconfig.json`) to our project to
   guide the compiler as it generates JavaScript files.
 
-  Typiquement, nous ajoutons un fichier de configuration Typescript (`tsconfig.json`) à notre projet pour 
+  Typiquement, nous ajoutons un fichier de configuration TypeScript (`tsconfig.json`) à notre projet pour 
   guider le compilateur durant la génération des fichiers JavaScript.
 .l-sub-section
   :marked
-    Get details about `tsconfig.json` from the official
-
-    Plus de détails sur le fichier `tsconfig.json` sur le site officiel [QuickStart](../quickstart.html):
+    Get details about `tsconfig.json` from the official 
     [TypeScript wiki](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html).
+
+    Plus de détails sur le fichier `tsconfig.json` sur le [Wiki officiel ](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html).
 :marked
   We created the following `tsconfig.json` for the [QuickStart](../quickstart.html):
 
-  Nous avons créé le fichier `tsconfig.json` pour le [QuickStart](../quickstart.html): 
+  Nous avons créé le fichier `tsconfig.json` pour le [Guide de démarrage rapide](../quickstart.html): 
 +makeJson('quickstart/ts/tsconfig.1.json', null, 'tsconfig.json')(format=".")
 :marked
   The options and flags in this file are essential for Angular 2 applications.
@@ -54,35 +54,37 @@ a(id="tsconfig")
   Les options et paramètres présents dans ce fichier sont essentiels pour une application Angular 2.
 
   <a id="noImplicitAny"></a>
+  ### *noImplicitAny* and *suppressImplicitAnyIndexErrors*
+  
   ### *noImplicitAny* et *suppressImplicitAnyIndexErrors*
 
   TypeScript developers disagree about whether the `noImplicitAny` flag should be `true` or `false`.
   There is no correct answer and we can change the flag later.
   But our choice now can make a difference in larger projects so it merits discussion.
 
-  Les développeurs TypeScript sont en désaccord pour savoir si le paramètre `noImplicitAny` doit être `true` ou `false`.
+  Les développeurs TypeScript sont en désaccord pour savoir si le paramètre `noImplicitAny` doit être à `true` ou `false`.
   Il n'y a pas de réponse correcte et nous pourrons changer ce paramètre plus tard.
 
   When the `noImplicitAny` flag is `false` (the default),
   the compiler silently defaults the type of a variable to `any` if it cannot infer
   the type based on how the variable is used. That's what we mean by *implicit `any`*.
 
-  Quand le paramètre `noImplicitAny` est `false` (la valeur par défaut),
-  le compilateur ajuste silencieusement le type d'une variable à `any` si il ne peut pas déterminer son type en se 
+  Quand le paramètre `noImplicitAny` est à `false` (la valeur par défaut),
+  le compilateur ajuste silencieusement le type d'une variable à `any` s'il ne peut pas inférer son type en se 
   basant sur la manière dont la variable est utilisée. C'est ce que nous voulons dire par *implicitement `any`*.
 
   We initialized the `noImplicitAny` flag to `false` in the QuickStart 
   to make learning TypeScript development easier.
 
-  Nous avons initialisé le paramètre `noImplicitAny` à `false` dans le QuickStart pour faciliter l'apprentissage de TypeScript.
+  Nous avons initialisé le paramètre `noImplicitAny` à `false` dans le Guide de démarrage  pour faciliter l'apprentissage de TypeScript.
   
   When the `noImplicitAny` flag is `true` and the TypeScript compiler cannot infer
   the type, it still generates the JavaScript files. But it also **reports an error**.
   Many seasoned developers prefer this stricter setting because type checking catches more
   unintentional errors at compile time.
 
-  Quand le paramètre `noImplicitAny` est `true` et que le compilateur TypeScript ne peut pas déterminer le type d'une variable,
-  il continue de générer les fichiers JavaScript. Mais il **affiche une erreur**.
+  Quand le paramètre `noImplicitAny` est à `true` et que le compilateur TypeScript ne peut pas inférer le type d'une variable,
+  il génère quand même les fichiers JavaScript. Mais il **affiche une erreur**.
   Les développeurs chevronés préfèrent ce réglage plus strict car la vérification de type permet d'identifier plus 
   d'erreurs involontaires durant la phase de compilation.
   
@@ -90,7 +92,7 @@ a(id="tsconfig")
   We do so when that seems like the best choice for the situation, 
   deliberately and explicitly, after giving the matter some thought.
 
-  Nous pouvons spécifier le type d'une variable à `any` même si le paramètre `noImplicitAny` est `true`.
+  Nous pouvons définir le type d'une variable à `any` même si le paramètre `noImplicitAny` est à `true`.
   Nous faisons cela délibérément et explicitement aprés avoir jugé de la situation, quand cela semble être le meilleur choix.
 
   If we set the `noImplicitAny` flag to `true`, we may get *implicit index errors* as well.
@@ -110,22 +112,22 @@ a(id="typings")
 :marked
   ## TypeScript Typings
 
-  ## Typage Typescript
+  ## Les définitions de types de TypeScript
   
   Many JavaScript libraries such as jQuery, the Jasmine testing library, and Angular itself,
   extend the JavaScript environment with features and syntax
   that the TypeScript compiler doesn't recognize natively.
   When the compiler doesn't recognize something, it throws an error.
 
-  De nombreuses librairies Javascript comme jQuery, la librairie de test Jasmine, et Angular lui-même, 
+  De nombreuses librairies JavaScript comme jQuery, la librairie de test Jasmine, et Angular lui-même, 
   étendent l'environement JavaScript avec des fonctionnalités et des syntaxes que le compilateur TypeScript ne reconnait pas nativement.
   Quand le compilateur ne reconnait pas quelque chose, il émet une erreur. 
   
   We use [TypeScript type definition files](http://www.typescriptlang.org/Handbook#writing-dts-files)
   &mdash; *d.ts files* &mdash; to tell the compiler about the libraries we load.
 
-  Nous utilisons [des fichiers de définitions de types Typescript](http://www.typescriptlang.org/Handbook#writing-dts-files)
-  &mdash; *fichiers d.ts* &mdash; pour informer le compilateur des librairie que nous utilisons.
+  Nous utilisons [des fichiers de définitions de types TypeScript](http://www.typescriptlang.org/Handbook#writing-dts-files)
+  &mdash; *fichiers d.ts* &mdash; pour informer le compilateur des librairies que nous utilisons.
   
   TypeScript-aware editors leverage these same definition files to display type information about library features.
   
@@ -135,23 +137,23 @@ a(id="typings")
   can find them. Angular is one such library. 
   Peek into the `node_modules/@angular/core/` folder of any Angular application to see several `...d.ts` files that describe parts of Angular.
 
-  De nombreuses librairies fournissent leurs fichiers de définitions dans leur package npm, là où le compilateur TypeScript et les éditeurs peuvent le trouver.
+  De nombreuses librairies fournissent leurs fichiers de définitions dans leur package NPM, là où le compilateur TypeScript et les éditeurs peuvent le trouver.
   Angular en fait parti.
   
   **We need do nothing to get *typings* files for library packages which include *d.ts* files &mdash; as all Angular packages do.**
 
-  **Nous n'avons rien à faire faire pour avoir les fichiers de *typage* des librairies qui fournissent leur propres fichiers *d.ts* &mdash; ce qui est le cas pour chaque package Angular.**
+  **Nous n'avons rien à faire pour avoir les fichiers de *typage* des librairies qui fournissent leur propres fichiers *d.ts* &mdash; ce qui est le cas pour chaque package Angular.**
   
   ### Installable typings files
 
-  ### Fichiers de typage installables
+  ### L'instalation des Fichiers de définition des types
 
   Sadly, many libraries &mdash; jQuery, Jasmine, and Lodash among them &mdash; do *not* include `d.ts` files in their npm packages.
   Fortunately, either their authors or community contributors have created separate *d.ts* files for these libraries and 
   published them in well-known locations.
   The *typings* tool can find and fetch these files for us.
 
-  Malheureusement, de nombreuses librairies &mdash; jQuery, Jasmine, et Lodash parmis d'autres &mdash; n'incluent *pas* les fichier `d.ts` dans leurs packages npm.
+  Malheureusement, de nombreuses librairies &mdash; jQuery, Jasmine, et Lodash parmis d'autres &mdash; n'incluent *pas* les fichiers `d.ts` dans leurs packages NPM.
   Heureusement, leurs auteurs ou des contributeurs de la communauté ont crée des fichiers *d.ts* pour ces librairies et les ont publiés dans des endroits bien connus.
   L'outil *typings* peut trouver et récupérer ces fichiers pour nous. 
   
@@ -159,8 +161,8 @@ a(id="typings")
   with npm (it's listed among the *devDependencies* in the `package.json`) and added an npm script
   to run that tool automatically after *npm* installation completes.
 
-  Nous avons installé l'outil [typings](https://github.com/typings/typings/blob/master/README.md) avec npm (il est listé parmis les *devDependencies* dans le fichier *package.json*) 
-  et nous avons ajouté un script npm pour éxécuter cet outil automatiquement aprés chaque installation *npm* réussie.
+  Nous avons installé l'outil [typings](https://github.com/typings/typings/blob/master/README.md) avec NPM (il est listé parmis les *devDependencies* dans le fichier *package.json*) 
+  et nous avons ajouté un script NPM pour éxécuter cet outil automatiquement aprés chaque installation *NPM* réussie.
 
 +makeJson('quickstart/ts/package.1.json', {paths: 'scripts.postinstall'}, 'package.json (postinstall)')(format=".")
 :marked
@@ -168,18 +170,18 @@ a(id="typings")
   We created a `typings.json` file in the [QuickStart](../quickstart.html):
 
   Cet outil *typings* installe les fichiers *d.ts* que nous avons spécifiés dans `typings.json` dans le répertoire `typings`.
-  Nous avons créé un fichier `typings.json` dans le [QuickStart](../quickstart.html):
+  Nous avons créé un fichier `typings.json` dans le [Guide de démarrage rapide](../quickstart.html):
 +makeJson('quickstart/ts/typings.1.json', null, 'typings.json')(format=".")
 :marked
   We identified three *typings* file in the QuickStart, the *d.ts* files for
 
-  Nous remarquons trois fichiers *typings* dans le QuickStart, les fichiers *d.ts* pour
+  Nous remarquons trois fichiers *typings* dans le Guide de démarrage rapide, les fichiers *d.ts* pour&nbsp;:
   
   * [core-js](https://github.com/zloirock/core-js/blob/master/README.md)
   that brings ES2015/ES6 capabilities to our ES5 browsers
 
   * [core-js](https://github.com/zloirock/core-js/blob/master/README.md)
-  qui amène les capacités d'ES2016/ES6 dans nos navigateurs ES5
+  qui amène les nouveautés d'ES2016/ES6 dans nos navigateurs ES5
   
   * [jasmine](http://jasmine.github.io/) typings for the Jasmine test framework
 
@@ -197,21 +199,21 @@ a(id="typings")
   Most of us would be disappointed if we couldn't code against 
   typical ES2015 features or support testing right out-of-the-box.
 
-  Le QuickStart n'a pas besoin de ces typages, mais de nombreux exemples dans la documentations en ont besoin.
-  La plupart d'entre nous serraient désappointés si nous ne pouvions pas directement utiliser dans notre code les fonctionnalités ou le support d'ES2015. 
+  Le Guide de démarrage rapide n'a pas besoin de ces définitions de types, mais de nombreux exemples dans la documentations en ont besoin.
+  La plupart d'entre nous serraient déçus si nous ne pouvions pas utiliser directement les fonctionnalités d'ES2015 dans notre code ou encore tester notre code sans complication. 
 
   We can also run the *typings* tool ourselves.
   The following command (re)installs the typings files, as is sometimes necessary when the `postInstall` hook fails to do so.
 
   Nous pouvons également éxécuter l'outil *typings* nous-même.
-  La commande suivanre (re)installe les fichiers de typages, cela est parfois nécessaire quand le hook `postInstall` n'arrive pas à le faire lui même.
+  La commande suivanre (re)installe les fichiers de typages, cela est parfois nécessaire quand le crochet (hook) `postInstall` n'arrive pas à le faire lui même.
 
 code-example(format="").
   npm run typings install
 :marked
   This command lists the installed typings files:
   
-  Cette commande liste les fichiers de typages installés:
+  Cette commande liste les fichiers de typages installés&nbsp;:
 code-example(format="").
   npm run typings list
 :marked
@@ -228,9 +230,8 @@ code-example(format="").
     it tells npm to pass all arguments to the right of `--` to the *typings* command.
 
     [L'option &ndash;&ndash; ](https://docs.npmjs.com/cli/run-script) est importante;
-    elle dit à npm de passer tout les arguments à la droite de `--` à la commande *typings*.
+    elle dit à NPM de passer tous les arguments à droite de `--` à la commande *typings*.
 
     Learn about the features of the *typings* tool at its [site on github](https://github.com/typings/typings/blob/master/README.md).
 
     Apprenez en plus sur les fonctionnalités de l'outil *typings* sur son [site sur github](https://github.com/typings/typings/blob/master/README.md).
-
