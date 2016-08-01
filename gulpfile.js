@@ -116,13 +116,14 @@ var _exampleConfigFilename = 'example-config.json';
 //
 var lang, langs, buildDartApiDocs = false;
 function configLangs(langOption) {
-  // TODO(chalin): temporary dependence on process.env.TRAVIS until #1910 lands.
-  const buildAllDocs = argv['_'] && argv['_'].indexOf('check-deploy' ) >= 0;
-  const langDefault = (!buildAllDocs || process.env.TRAVIS) ? '(ts|js)' : 'all';
+  const fullSiteBuildTasks = ['build-compile', 'check-serve', 'check-deploy'];
+  const buildAllDocs = argv['_'] && 
+    fullSiteBuildTasks.some((task) => argv['_'].indexOf(task) >= 0);
+  const langDefault = buildAllDocs ? 'all' : '(ts|js)';
   lang = (langOption || langDefault).toLowerCase();
   if (lang === 'all') lang = '(ts|js|dart)';
   langs = lang.match(/\w+/g); // the languages in `lang` as an array
-  gutil.log('Build docs for: ' + lang);
+  gutil.log('Building docs for: ' + lang);
   if (langs.indexOf('dart') >= 0) {
     buildDartApiDocs = true;
     // For Dart, be proactive about checking for the repo
@@ -577,7 +578,6 @@ gulp.task('build-js-api-docs', ['_shred-api-examples'], function() {
 });
 
 gulp.task('build-dart-api-docs', ['_shred-api-examples', 'dartdoc'], function() {
-  // TODO(chalin): also build build-dart-cheatsheet
   return buildApiDocsForDart();
 });
 
@@ -585,11 +585,8 @@ gulp.task('build-plunkers', ['_copy-example-boilerplate'], function() {
   return plunkerBuilder.buildPlunkers(EXAMPLES_PATH, LIVE_EXAMPLES_PATH, { errFn: gutil.log });
 });
 
-gulp.task('build-dart-cheatsheet', ['build-ts-api-docs'], function() {
-  gutil.log('build-dart-cheatsheet - NOT IMPLEMENTED YET - copying TS cheatsheet data');
-  const src = './public/docs/ts/latest/guide/cheatsheet.json';
-  fs.copy(src, './public/docs/dart/latest/guide/cheatsheet.json', {clobber: true},
-    (err) => { if(err) throw err });
+gulp.task('build-dart-cheatsheet', [], function() {
+  return buildDartCheatsheet();
 });
 
 gulp.task('dartdoc', ['pub upgrade'], function() {
@@ -1181,6 +1178,32 @@ function buildApiDocs(targetLanguage) {
     });
 
     var dgeni = new Dgeni([package]);
+    return dgeni.generate();
+  } catch(err) {
+    console.error(err);
+    console.error(err.stack);
+    throw err;
+  }
+}
+
+
+function buildDartCheatsheet() {
+  'use strict';
+  const ALLOWED_LANGUAGES = ['ts', 'js', 'dart'];
+  const lang = 'dart';
+  const vers = 'latest';
+  checkAngularProjectPath(ngPathFor(lang));
+  try {
+    const pkg = new Package('dartApiDocs', [require(path.resolve(TOOLS_PATH, 'dart-api-builder'))]);
+    pkg.config(function(log, targetEnvironments, writeFilesProcessor) {
+      log.level = _dgeniLogLevel;
+      ALLOWED_LANGUAGES.forEach(function(target) { targetEnvironments.addAllowed(target); });
+      targetEnvironments.activate(lang);
+      const outputPath = path.join(lang, vers, 'can-be-any-name-read-comment-below');
+      // Note: cheatsheet data gets written to: outputPath + '/../guide';
+      writeFilesProcessor.outputFolder  = outputPath;
+    });
+    var dgeni = new Dgeni([pkg]);
     return dgeni.generate();
   } catch(err) {
     console.error(err);
