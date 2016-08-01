@@ -19,35 +19,28 @@ include ../_util-fns
   ## Table of contents
   ## Table des matières
   
-  [What is Webpack?](#what-is-webpack)
-
-  [Qu'est-ce que Webpack?](#what-is-webpack)
-  
+  * [What is Webpack?](#what-is-webpack)
+  * [Qu'est-ce que Webpack?](#what-is-webpack)
     * [Entries and outputs](#entries-outputs)
     * [Entrées et sorties](#entries-outputs)
     * [Loaders](#loaders)
-    * [Chargeurs](#loaders)
+    * [Les Chargeurs](#loaders)
     * [Plugins](#plugins)
     * [Extensions](#plugins)
-    
-  [Configuring Webpack](#configure-webpack)
-
-  [Configurer Webpack](#configure-webpack)
-  
+  * [Configuring Webpack](#configure-webpack)
+  * [Configurer Webpack](#configure-webpack)
     * [Common configuration](#common-configuration)
     * [Configuration classique](#common-configuration)
     * [Development configuration](#development-configuration)
-    * [Configuration en développement](#development-configuration)
+    * [Configuration de développement](#development-configuration)
     * [Production configuration](#production-configuration)
-    * [Configuration en production](#production-configuration)
+    * [Configuration de production](#production-configuration)
     * [Test configuration](#test-configuration)
-    * [Configuration en test](#test-configuration)
-    
-  [Trying it out](#try)
-
-  [Essayez](#try)
-  
-  [Conclusions](#conclusions)
+    * [Configuration de test](#test-configuration)
+  * [Trying it out](#try)
+  * [Essayez Webpack](#try)
+  * [Conclusions](#conclusions)
+  * [Conclusion](#conclusions)
     
 .l-main-section
 <a id="what-is-webpack"></a>
@@ -62,9 +55,9 @@ include ../_util-fns
   A bundle can include JavaScript, CSS styles, HTML, and almost any other kind of file.
 
   Webpack est un puissant agrégateur de module.
-  Un _bundle_ est un fichier JavaScript qui regroupe les ressources *similaires* et qui 
+  Un _bundle_ (ou paquet) est un fichier JavaScript qui regroupe les ressources *similaires* et qui 
   doivent être servies au client dans une réponse unique à une demande de fichier.
-  Un bundle peut inclure JavaScript, CSS, HTML, et presque tout autre type de fichier.
+  Un bundle peut inclure du JavaScript, CSS, HTML, et presque tout autre type de fichier.
 
   Webpack roams over your application source code, 
   looking for `import` statements, building a dependency graph, and emitting one (or more) _bundles_.
@@ -72,11 +65,11 @@ include ../_util-fns
 
   Webpack inspecte le code source de votre application, 
   recherche des déclarations d'`import`, construit un graphe de dépendances, et génère un (ou plusieurs) _paquets (bundles)_.
-  Avec l'extension "loaders" Webpack peut prétraiter et minifier différents fichiers non-Javascript tels que TypeScript, SASS, et les fichiers LESS.
+  Avec l'extension "loaders" Webpack peut prétraiter et minifier différents fichiers non-JavaScript tels que TypeScript, SASS, et les fichiers LESS.
 
   We determine what Webpack does and how it does it with a JavaScript configuration file, `webpack.config.js`.
 
-  Nous déterminons ce que Webpack fait ainsi que sa façon de faire dans un fichier Javascript de configuration, `webpack.config.js`.
+  Nous déterminons ce que Webpack fait ainsi que sa façon de faire dans un fichier JavaScript de configuration, `webpack.config.js`.
   
 a(id="entries-outputs")
 .l-main-section
@@ -109,7 +102,7 @@ a(id="entries-outputs")
 
   Then it **outputs** these files to the `app.js` _bundle file_ designated in configuration:
   
-  Puis il **retourne** ces fichiers dans le _fichier bundle_ `app.js` désigné dans la configuration:
+  Puis il **ajoute** ces fichiers dans le _fichier bundle_ `app.js` désigné dans la configuration:
 
 +makeExample('webpack/ts-snippets/webpack.config.snippets.ts', 'one-output', 'webpack.config.js (single output)')(format=".")
 
@@ -117,11 +110,13 @@ a(id="entries-outputs")
   This `app.js` output bundle is a single JavaScript file that contains our application source and its dependencies. 
   We'll load it later with a &lt;script&gt; tag in our index.html. 
   
-  Ce bundle de sortie `app.js` est un seul fichier Javascript qui contient la source de notre application et ses dépendances.
+  Ce bundle de sortie `app.js` est un seul fichier JavaScript qui contient la source de notre application et ses dépendances.
   Nous allons le charger ultérieurement avec une balise &lt;script&gt; dans notre index.html.
 
   #### Multiple bundles
+  
   #### Bundle multiples
+  
   We probably do not want one giant bundle of everything.
   We'll likely prefer to separate our volatile application app code from comparatively stable vendor code modules.
   
@@ -163,14 +158,15 @@ a(id="loaders")
 .l-main-section
 :marked
   ### Loaders
-  ### Chargeurs
+  
+  ### Les Chargeurs
 
   Webpack can bundle any kind of file: JavaScript, TypeScript, CSS, SASS, LESS, images, html, fonts, whatever.
   Webpack itself doesn't know what to do with a non-JavaScript file.
   We teach it to process such files into JavaScript with *loaders*. 
   Here we configure loaders for TypeScript and CSS:
   
-  Webpack peut regrouper tout type de fichier&nbsp;: JavaScript, TypeScript, CSS, SASS, LESS, images, html, fonts, ce que vous voulez.
+  Webpack peut regrouper tout type de fichier&nbsp;: JavaScript, TypeScript, CSS, SASS, LESS, images, HTML, fonts, ce que vous voulez.
   Webpack lui-même ne sait pas quoi faire avec un fichier non-JavaScript.
   Nous lui apprenons à traiter ces fichiers en JavaScript avec des chargeurs.
   Ici, nous configurons des chargeurs (loaders) pour TypeScript et CSS&nbsp;:
@@ -207,6 +203,7 @@ a(id="plugins")
 .l-main-section
 :marked
   ### Plugins
+  
   ### Extensions
   
   Webpack has a build pipeline with well-defined phases.
@@ -221,6 +218,7 @@ a(id="configure-webpack")
 .l-main-section
 :marked
   ## Configure Webpack
+  
   ## Configurer Webpack
 
   After that brief orientation, we are ready to build our own Webpack configuration for Angular 2 apps. 
@@ -282,6 +280,7 @@ a(id="common-configuration")
 .l-main-section
 :marked
   ### Common Configuration
+  
   ### Configuration classique
   
   We will define separate configurations for development, production, and test environments.
@@ -327,7 +326,7 @@ a(id="common-configuration")
   :marked
     Load Zone.js early, immediately after the other ES6 and metadata shims.
     
-    Chargez Zone.js tôt, immédiatement après les autres scripts ES6 et métadonnées.
+    Chargez Zone.js en premier, immédiatement après les autres scripts ES6 et métadonnées.
   
 :marked
   Our app will `import` dozens if not hundreds of JavaScript and TypeScript files. 
@@ -366,7 +365,7 @@ a(id="common-configuration")
 
 :marked
   * ts - a loader to transpile our Typescript code to ES5, guided by the `tsconfig.json` file
-  * ts - un chargeur pour transpiler notre code TypeScript en ES5, guidé par le fichier `tsconfig.json`
+  * ts - un chargeur pour transpiler (transformer) notre code TypeScript en ES5, guidé par le fichier `tsconfig.json`
   * angular2-template-loader - loads angular components' template and styles
   * angular2-template-loader - charge les composants Angular de template et les styles
   * html - for component templates
@@ -374,7 +373,7 @@ a(id="common-configuration")
   * images/fonts - Images and fonts are bundled as well.
   * images/fonts - Les images et les polices sont aussi regroupées
   * css - The pattern matches application-wide styles; the second handles component-scoped styles (the ones specified in a component's `styleUrls` metadata property)
-  * css - Le modèle correspond à tous les styles de l'application; le second gère les styles des composants (ceux spécifiés dans la propriété de metadonnées `styleUrls` des composants)
+  * css - Le schéma correspond à tous les styles de l'application; le second gère les styles des composants (ceux spécifiés dans la propriété de metadonnées `styleUrls` des composants)
 .l-sub-section
   :marked
     The first pattern excludes `.css` files within the `/src/app` directories where our component-scoped styles sit.
@@ -388,7 +387,7 @@ a(id="common-configuration")
     The second pattern filters for component-scoped styles and loads them as strings via the `raw` loader &mdash;
     which is what Angular expects to do with styles specified in a `styleUrls` metadata property.
 
-    Le second modèle filtre les styles de composants et les charge comme des chaînes de caractères avec le chargeur `raw` &mdash;
+    Le second schéma filtre les styles de composants et les charge comme des chaînes de caractères avec le chargeur `raw` &mdash;
     ce que Angular attend avec les styles spécifiés dans une propriété de metadonnées `styleUrls`. 
 .l-sub-section
   :marked
@@ -406,6 +405,8 @@ a(id="common-configuration")
 a(id="commons-chunk-plugin")
 :marked
   #### *CommonsChunkPlugin*
+  
+  #### L'extension *CommonsChunkPlugin*
   
   We want the `app.js` bundle to contain only app code and the `vendor.js` bundle to contain only the vendor code. 
   
@@ -430,6 +431,8 @@ a(id="html-webpack-plugin")
 :marked
   #### *HtmlWebpackPlugin*
   
+  #### L'extension *HtmlWebpackPlugin*
+  
   Webpack generates a number of js and css files. 
   We _could_ insert them into our `index.html` _manually_. That would be tedious and error-prone.
   Webpack can inject those scripts and links for us with the `HtmlWebpackPlugin`.
@@ -441,6 +444,7 @@ a(id="environment-configuration")
 .l-main-section
 :marked
   ### Environment-specific configuration
+  
   ### Configuration d'environnement spécifique
   
   The `webpack.common.js` configuration file does most of the heavy lifting. 
@@ -452,13 +456,15 @@ a(id="environment-configuration")
   en fusionnant les particularités de leurs environnements.
   
   These files tend to be short and simple.
-  Ces fichiers ont tendance à être court et simple.
+  
+  Ces fichiers ont tendance à être courts et simples.
   
 a(id="development-configuration")
 .l-main-section
 :marked
   ### Development Configuration
-  ### Configuration en développement
+  
+  ### Configuration de développement
   
   Here is the development configuration file, `webpack.dev.js`
 
@@ -485,10 +491,10 @@ a(id="development-configuration")
   L'extension `HtmlWebpackPlugin` (ajouté dans `webpack.common.js`) utilise le *chemin public (publicPath)* et le *nom de fichier (filename)* en paramètre pour générer
   les balises &lt;script&gt; et &lt;link&gt; dans `index.html`.
   
-  Our CSS are buried inside our Javascript bundles by default. The `ExtractTextPlugin` extracts them into
+  Our CSS are buried inside our JavaScript bundles by default. The `ExtractTextPlugin` extracts them into
   external `.css` files that the `HtmlWebpackPlugin` inscribes as &lt;link&gt; tags into the `index.html`.
   
-  Notre CSS est enfouie dans nos bundles Javascript par défaut. L'extension `ExtractTextPlugin` les extraits dans 
+  Notre CSS est enfouie dans nos bundles JavaScript par défaut. L'extension `ExtractTextPlugin` les extraits dans 
   des fichiers externes `.css` que l'extension `HtmlWebpackPlugin` inscrit comme balises &lt;link&gt; dans `index.html`.
   
   Refer to the Webpack documentation for details on these and other configuration options in this file
@@ -506,7 +512,8 @@ a(id="production-configuration")
 .l-main-section
 :marked
   ### Production Configuration
-  ### Configuration en production
+  
+  ### Configuration de production
   
   Configuration of a *production* build resembles *development* configuration ... with a few key changes.
   
@@ -521,7 +528,7 @@ a(id="production-configuration")
   
   This time the output bundle files are physically placed in the `dist` folder.
   
-  Cette fois, les fichiers consolidés de sortie sont physiquement placé dans le dossier `dist`.
+  Cette fois, les fichiers consolidés de sortie sont physiquement placés dans le dossier `dist`.
   
   Webpack generates file names with cache-busting hash.
   Thanks to the `HtmlWebpackPlugin` we don't have to update the `index.html` file when the hashes changes.
@@ -540,13 +547,13 @@ a(id="production-configuration")
   * **UglifyJsPlugin** - minifies the bundles.
   * **UglifyJsPlugin** - minifie les bundles.
   * **ExtractTextPlugin** - extracts embedded css as external files, adding cache-busting hash to the filename.
-  * **ExtractTextPlugin** - extraits le css incorporé dans des fichiers externes, en ajoutant un hash pour contourner le cache (cache-busting hash) au nom du fichier.
+  * **ExtractTextPlugin** - extrait le CSS incorporé dans des fichiers externes, en ajoutant un hash pour contourner le cache (cache-busting hash) au nom du fichier.
   * **DefinePlugin** - use to define environment variables that we can reference within our application.
   * **DefinePlugin** - utilisé pour définir les variables d'environnement que nous référençons dans notre application.
   
   Thanks to the *DefinePlugin* and the `ENV` variable defined at top, we can enable Angular 2 production mode like this:
   
-  Grâce à l'extension *DefinePlugin* et la variable `ENV` définie en hautm nous pouvons activer le mode production d'Angular 2 comme ceci :
+  Grâce à l'extension *DefinePlugin* et la variable `ENV` définie en haut nous pouvons activer le mode production d'Angular 2 comme ceci :
 +makeExample('webpack/ts/src/main.ts', 'enable-prod')(format=".")
   
 :marked
@@ -561,7 +568,8 @@ a(id="test-configuration")
 .l-main-section
 :marked
   ### Test Configuration
-  ### Configuration en test
+  
+  ### Configuration de test
   
   We don't need much configuration to run unit tests. 
   We don't need the loaders and plugins that we declared for our development and production builds.
@@ -570,7 +578,7 @@ a(id="test-configuration")
   
   Il ne faut pas beaucoup de configuration pour exécuter des tests unitaires.
   Nous n'avons pas besoin des chargeurs et des extensions que nous avons déclarés pour nos builds de développement et de production.
-  Nous n'avons probablement pas besoin de charger et de traiter les fichiers `css` pour les tests unitaires et le faire va nous ralentir; 
+  Nous n'avons probablement pas besoin de charger et traiter les fichiers `css` pour les tests unitaires et le faire va nous ralentir; 
   nous allons utiliser le chargeur `null` pour tous les CSS.
   
   We could merge our test configuration into the `webpack.common` configuration and override the parts we don't want or need.
@@ -590,12 +598,12 @@ a(id="test-configuration")
 :marked
   We're telling Karma to use webpack to run the tests. 
 
-  Nous indiquons à Karma d'utiliser webpack pour exécuter les tests.
+  Nous indiquons à Karma d'utiliser Webpack pour exécuter les tests.
   
   We don't precompile our TypeScript; Webpack transpiles our Typescript files on the fly, in memory, and feeds the emitted JS directly to Karma.
   There are no temporary files on disk.
   
-  Nous ne pré-compilons pas notre TypeScript; Webpack transpile nos fichiers TypeScript à la volée, en mémoire, et alimente directement Karma avec les JS générés.
+  Nous ne pré-compilons pas notre TypeScript; Webpack transpile (transforme) nos fichiers TypeScript à la volée, en mémoire, et alimente directement Karma avec les JS générés.
   Il n'y a pas de fichiers temporaires sur le disque.
 
   The `karma-test-shim` tells Karma what files to pre-load and 
@@ -612,7 +620,7 @@ a(id="test-configuration")
   Webpack loads just _those_ specific application files and ignores the other files that we aren't testing.
   
   Notez que nous ne chargeons _pas_ explicitement le code de notre application.
-  Nous demandons à Webpack de trouver et de charger nos fichiers de test (les fichiers se terminant par `.spec.ts`).
+  Nous demandons à Webpack de trouver et charger nos fichiers de test (les fichiers se terminant par `.spec.ts`).
   Chaque fichier spec importe tout &mdash; et seulement &mdash; le code source de l'application qu'il teste.
   Webpack charge seulement _ces_ fichiers spécifiques pour l'application et ignore les autres fichiers que nous ne testons pas.
 :marked
@@ -625,7 +633,8 @@ code-example(format="").
 <a id="try"></a>
 :marked
   ## Trying it out
-  ## Essayez
+  
+  ## Essayez par vous-même
 
   Here is the source code for a small application that we can bundle with the
   Webpack techniques we learned in this chapter.
@@ -663,7 +672,7 @@ p.
 p.
   Le template <code>app.component.html</code> affiche le logo téléchargeable d'Angular
   <a href="https://raw.githubusercontent.com/angular/angular.io/master/public/resources/images/logos/angular2/angular.png" target="_blank">
-  <img src="https://raw.githubusercontent.com/angular/angular.io/master/public/resources/images/logos/angular2/angular.png" height="40px" title="download Angular logo"></a>.
+  <img src="https://raw.githubusercontent.com/angular/angular.io/master/public/resources/images/logos/angular2/angular.png" height="40px" title="Télécharger le logo d'Angular 2"></a>.
   
 +makeTabs(
   `webpack/ts/src/vendor.ts,
@@ -674,6 +683,7 @@ p.
 )
 :marked
   ### Highlights:
+  
   ### Points forts&nbsp;:
   
   * There are no &lt;script&gt; or &lt;link&gt; tags in the `index.html`. 
@@ -683,13 +693,13 @@ p.
 
   * The `AppComponent` in `app.component.ts` imports the application-wide css with a simple `import` statement.
 
-  * Le composant `AppComponent` de `app.component.ts` importe les css de toute l'application avec une simple déclaration `import`.
+  * Le composant `AppComponent` dans `app.component.ts` importe les CSS de toute l'application avec une simple déclaration `import`.
 
   * The `AppComponent` itself has its own html template and css file. WebPack loads them with calls to `require()`. 
   Webpack stashes those component-scoped files in the `app.js` bundle too.
   We don't see those calls in our source code; they're added behind the scenes by the `angular2-template-loader` plug-in. 
   
-  * Le composant `AppComponent` lui-même a son propre template html et son fichier css. Webpack les chargent avec des appels à `require()`.
+  * Le composant `AppComponent` lui-même a son propre modèle de vue HTML et son fichier CSS. Webpack les chargent avec des appels à `require()`.
   Webpack masque ces fichiers restreints au composant également dans le bundle `app.js`.
   Nous ne voyons pas ces appels dans notre code source; ils sont ajoutés en arrière plan par l'extension `angular2-template-loader`.
 
@@ -704,14 +714,17 @@ p.
 :marked
   ## Conclusions
   
+  ## Conclusion
+  
   We've learned just enough Webpack to configurate development, test and production builds 
   for a small Angular application.
   
-  Nous venons juste d'apprendre de Webpack comment configurer les builds de développement, de test et de production.
+  Nous venons d'apprendre juste ce qu'il faut pour configurer Webpack pour des builds de développement, de test et de production.
 
   _We could always do more_. Search the web for expert advice and expand your Webpack knowledge.
   
   _Nous pourrions toujours faire plus_. Recherchez sur le web pour obtenir des conseils d'experts et approfondir vos connaissances sur Webpack.
 
   [Back to top](#top)
+  
   [Retour en haut](#top)
