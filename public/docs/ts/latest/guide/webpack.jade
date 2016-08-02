@@ -341,14 +341,14 @@ a(id="common-configuration")
   So we  tell Webpack to _resolve_ module file requests by looking for matching files with
 
   Mais la plupart de nos déclarations d'`import` ne mentionneront pas l'extension du tout.
-  Donc, nous demandons à Webpack de _résoudre_ les demandes de fichiers de module en recherchant les fichiers correspondant avec
+  Donc, nous demandons à Webpack de _résoudre_ les demandes de fichiers de module en recherchant les fichiers correspondants avec
   
   * an explicit extension (signified by the empty extension string, `''`) or 
-  * une extension explicite (signifié par la chaîne d'extension vide, `''`) ou
+  * une extension explicite (signifiée par la chaîne d'extension vide, `''`) ou
   * `.js` extension (for regular JavaScript files and pre-compiled TypeScript files) or 
   * l'extension `.js` (pour les fichiers classiques JavaScript et les fichiers TypeScript pré-compilés) ou
   * `.ts` extension.
-  * L'extension `.ts`.
+  * l'extension `.ts`.
   
 +makeExample('webpack/ts/config/webpack.common.js', 'resolve', 'config/webpack.common.js')(format=".")
 .l-sub-section
@@ -367,9 +367,9 @@ a(id="common-configuration")
   * ts - a loader to transpile our Typescript code to ES5, guided by the `tsconfig.json` file
   * ts - un chargeur pour transpiler (transformer) notre code TypeScript en ES5, guidé par le fichier `tsconfig.json`
   * angular2-template-loader - loads angular components' template and styles
-  * angular2-template-loader - charge les composants Angular de template et les styles
+  * angular2-template-loader - charge les template et les styles des composants Angular
   * html - for component templates
-  * html - pour les modèles des composants
+  * html - pour les templates des composants
   * images/fonts - Images and fonts are bundled as well.
   * images/fonts - Les images et les polices sont aussi regroupées
   * css - The pattern matches application-wide styles; the second handles component-scoped styles (the ones specified in a component's `styleUrls` metadata property)
@@ -393,7 +393,7 @@ a(id="common-configuration")
   :marked
     Multiple loaders can be also chained using the array notation.
 
-    Les chargeurs multiples peuvent également être chainés en utilisant la notation de tableau.
+    Les chargeurs multiples peuvent également être chaînés en utilisant la notation de tableau.
 
 :marked
   Finally we add two plugins:
@@ -451,8 +451,8 @@ a(id="environment-configuration")
   We create separate, environment-specific configuration files that build on `webpack.common`
   by merging into it the peculiarities particular to their target environments.
   
-  Le fichier de configuration `webpack.common.js` n'a pas subit de lourds changements.
-  Nous créons séparémment des fichiers de configurations spécifiques par environnement, qui seront utilisés dans `webpack.common`
+  Le fichier de configuration `webpack.common.js` n'a pas subi de lourds changements.
+  Nous créons séparément des fichiers de configurations spécifiques par environnement, qui seront utilisés dans `webpack.common`
   en fusionnant les particularités de leurs environnements.
   
   These files tend to be short and simple.
@@ -488,13 +488,14 @@ a(id="development-configuration")
   The `HtmlWebpackPlugin` (added in `webpack.common.js`) use the *publicPath* and the *filename* settings to generate 
   appropriate &lt;script&gt; and &lt;link&gt; tags into the `index.html`.
   
-  L'extension `HtmlWebpackPlugin` (ajouté dans `webpack.common.js`) utilise le *chemin public (publicPath)* et le *nom de fichier (filename)* en paramètre pour générer
+  L'extension `HtmlWebpackPlugin` (ajoutée dans `webpack.common.js`) utilise le *chemin public (publicPath)* et le *nom de fichier (filename)* en paramètre pour générer
   les balises &lt;script&gt; et &lt;link&gt; dans `index.html`.
   
   Our CSS are buried inside our JavaScript bundles by default. The `ExtractTextPlugin` extracts them into
   external `.css` files that the `HtmlWebpackPlugin` inscribes as &lt;link&gt; tags into the `index.html`.
   
-  Notre CSS est enfouie dans nos bundles JavaScript par défaut. L'extension `ExtractTextPlugin` les extraits dans 
+  Notre CSS est enfoui dans nos bundles JavaScript par défaut. L'extension `ExtractTextPlugin` les extrait dans
+  
   des fichiers externes `.css` que l'extension `HtmlWebpackPlugin` inscrit comme balises &lt;link&gt; dans `index.html`.
   
   Refer to the Webpack documentation for details on these and other configuration options in this file
@@ -533,7 +534,7 @@ a(id="production-configuration")
   Webpack generates file names with cache-busting hash.
   Thanks to the `HtmlWebpackPlugin` we don't have to update the `index.html` file when the hashes changes.
   
-  Webpack génère des noms de fichiers avec un hachage pour contourner le cache (cache-busting hash).
+  Webpack génère des noms de fichiers avec un hachage pour contourner le cache (_cache-busting hash_).
   Grâce à l'extension `HtmlWebpackPlugin` nous n'avons pas besoin de mettre à jour le fichier `index.html` lorsque les hashes changent.
   
   There are additional plugins:
@@ -547,7 +548,7 @@ a(id="production-configuration")
   * **UglifyJsPlugin** - minifies the bundles.
   * **UglifyJsPlugin** - minifie les bundles.
   * **ExtractTextPlugin** - extracts embedded css as external files, adding cache-busting hash to the filename.
-  * **ExtractTextPlugin** - extrait le CSS incorporé dans des fichiers externes, en ajoutant un hash pour contourner le cache (cache-busting hash) au nom du fichier.
+  * **ExtractTextPlugin** - extrait le CSS incorporé dans des fichiers externes, en ajoutant un hash pour contourner le cache (_cache-busting hash_) au nom du fichier.
   * **DefinePlugin** - use to define environment variables that we can reference within our application.
   * **DefinePlugin** - utilisé pour définir les variables d'environnement que nous référençons dans notre application.
   
