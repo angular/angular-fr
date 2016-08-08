@@ -616,12 +616,17 @@ include _util-fns
 .l-main-section
 :marked
   ## Injector
+  
+  ## Injecteur
 .l-sub-section
   :marked
     An object in the Angular [dependency injection system](#dependency-injection)
     that can find a named "dependency" in its cache or create such a thing
     with a registered [provider](#provider).
 
+    Un objet du [système d'injection de dépendances](#dependency-injection)
+    qui peut trouver une "dépendance" dans son cache ou créer un tel objet
+    grâce à un [_provider_](#provider) enregistré.
 :marked
   ## Input
 .l-sub-section
@@ -630,8 +635,15 @@ include _util-fns
     [Property Binding](/docs/ts/latest/guide/template-syntax.html#property-binding).
     Data values flow *into* this property from the data source identified
     in the template expression to the right of the equal sign.
+    
+    Une propriété des directives qui peut être la **cible** d'une
+    [Liaison de Propriété](/docs/ts/latest/guide/template-syntax.html#property-binding).
+    Les valeurs sont envoyées *dans* cette propriété depuis la source de données identifiée
+    dans l'expression du template à droite du signe égal.
 
     See the [Template Syntax](/docs/ts/latest/guide/template-syntax.html#inputs-outputs) chapter.
+    
+    Voir le chapitre [Syntaxe de Template](/docs/ts/latest/guide/template-syntax.html#inputs-outputs).
 
 :marked
   ## Interpolation
@@ -642,6 +654,12 @@ include _util-fns
     renders as text.  That text may be concatenated with neighboring text
     before it is assigned to an element property
     or displayed between element tags as in this example.
+    
+    Une forme de [Liaison de Données](#data-binding) dans laquelle une
+    [expression de template](#template-expression) entre double accolades
+    est affichée comme texte. Ce texte peut être concaténé avec le texte voisin
+    avant d'être assigné à la propriété d'un élément
+    ou affiché entre les balises d'un élément comme dans cet exemple.
 
   code-example(language="html" escape="html").
     <label>My current hero is {{hero.name}}</label>
@@ -649,6 +667,9 @@ include _util-fns
   :marked
     Learn more about interpolation in the
     [Template Syntax](/docs/ts/latest/guide/template-syntax.html#interpolation) chapter.
+    
+    Apprenez-en plus sur l'interpolation dans le
+    chapitre sur la [Syntaxe de Template](/docs/ts/latest/guide/template-syntax.html#interpolation).
 
 
 <a id="J"></a>
@@ -660,37 +681,67 @@ include _util-fns
 .l-sub-section
   :marked
     The practice of writing compound words or phrases such that each word is separated by a dash or hyphen (`-`).
+    
+    La pratique qui consiste à aggréger les mots de manière à ce que chaque mot soit séparé par un tiret (`-`).
 
     Directive selectors and the root of filenames are often spelled in kebab-case. Examples include: `my-app` and `hero-list.component.ts`.
+    
+    Les sélécteurs de directives et la racine des noms de fichiers sont souvent écrit en _dash-case_. Par exemple&nbsp;: `my-app` et `hero-list.component.ts`.
 
     This form is also known as [dash-case](#dash-case).
+    
+    Cette forme est aussi appelée [dash-case](#dash-case).
 
 <a id="L"></a>
 .l-main-section
 :marked
   ## Lifecycle Hooks
+  
+  ## Méthodes du Cycle de Vie (_Lifecycle Hooks_)
 .l-sub-section
   :marked
     [Directives](#directive) and [Components](#component) have a lifecycle
     managed by Angular as it creates, updates and destroys them.
+    
+    Les [Directives](#directive) et [Composants](#component) ont un cycle de vie
+    géré par Angular lorsqu'il crée, met à jour ou détruit ceux-ci.
 
     Developers can tap into key moments in that lifecycle by implementing
     one or more of the "Lifecycle Hook" interfaces.
+    
+    Les développeurs peuvent s'interfacer dans ces moment clés du cycle de vie en implémentant
+    une ou plusieurs interfaces décrivant ce cycle de vie.
 
     Each interface has a single hook method whose name is the interface name prefixed with `ng`.
     For example, the `OnInit` interface has a hook method names `ngOnInit`.
+    
+    Chaque interface a une seule méthode dont le nom est celui de l'interface préfixé par `ng`.
+    Par exemple, l'interface `OnInit` a une méthode nommée `ngOnInit`.
 
     Angular calls these hook methods in the following order:
+    
+    Angular appele ces méthodes dans l'ordre suivant&nbsp;:
+    
     * `ngOnChanges` - called when an [input](#input)/[output](#output) binding values change
+    * `ngOnChanges` - appelée quand une valeur d'un [input](#input)/[output](#output) change
     * `ngOnInit` - after the first `ngOnChanges`
+    * `ngOnInit` - après le premier `ngOnChanges`
     * `ngDoCheck` - developer's custom change detection
+    * `ngDoCheck` - détection de changement spéciale définie par le développeur
     * `ngAfterContentInit` - after component content initialized
+    * `ngAfterContentInit` - après que le contenu du composant soit initialisé
     * `ngAfterContentChecked` - after every check of component content
+    * `ngAfterContentChecked` - après évaluation de tout le contenu du composant 
     * `ngAfterViewInit` - after component's view(s) are initialized
+    * `ngAfterViewInit` - après l'initialisation de la vue (ou des vues) du composant.
     * `ngAfterViewChecked` - after every check of a component's view(s)
+    * `ngAfterViewChecked` - après évaluation de toute la vue (ou toutes les vues) du composant
     * `ngOnDestroy` - just before the directive is destroyed.
+    * `ngOnDestroy` - juste avant que la directive ne soit détruite.
 
     Learn more in the [Lifecycle Hooks](/docs/ts/latest/guide/lifecycle-hooks.html) chapter.
+    
+    Apprenez-en plus dans le chapitre sur [Méthodes du Cycle de Vie](/docs/ts/latest/guide/lifecycle-hooks.html).
 // #enddocregion f-l
 
 // #docregion m1
@@ -703,31 +754,58 @@ include _util-fns
 .l-sub-section
   :marked
     Angular apps are modular.
+    
+    Les applications Angular sont modulaires.
 
     In general, we assemble our application from many modules, both the ones we write ourselves
     and the ones we acquire from others.
+    
+    En général, on assemble notre application à partir de plusieurs modules, à la fois ceux que l'on écrit nous-même
+    et ceux que l'on récupère ailleurs.
 
     A typical module is a cohesive block of code dedicated to a single purpose.
+    
+    Un module typique est un ensemble cohérent de code dédié à un but unique.
 
     A module **exports** something of value in that code, typically one thing such as a class.
     A module that needs that thing, **imports** it.
+    
+    Un module **exporte** des valeurs depuis ce code, typiquement quelque chose comme une classe.
+    Un module qui a besoin de ces valeurs, les **importe**. 
 
     The structure of Angular modules and the import/export syntax
     is based on the [ES2015](#es2015) module standard
     described [here](http://www.2ality.com/2014/09/es6-modules-final.html).
+    
+    La structure des modules Angular et de la syntaxe import/export
+    est basée sur le standard de module [ES2015](#es2015)
+    décrit [ici](http://www.2ality.com/2014/09/es6-modules-final.html).
 
     An application that adheres to this standard requires a module loader to
     load modules on request and resolve inter-module dependencies.
     Angular does not ship with a module loader and does not have a preference
     for any particular 3rd party library (although most samples use SystemJS).
     Application developers may pick any module library that conforms to the standard
+    
+    Une application qui respecte ce standard a besoin d'un chargeur de modules (_module loader_) pour
+    charger les modules à la demande et résoudre les dépendances inter-module.
+    Angular n'embarque pas un chargeur de module et n'a pas de préférence
+    pour une librairie tierce particulière (même si beaucoup d'exemples utilisent SystemJS).
+    Les développeurs d'application peuvent choisir n'importe quel chargeur de modules qui respecte le standard.
 
     Modules are typically named after the file in which the exported thing is defined.
     The Angular [DatePipe](https://github.com/angular/angular/blob/master/modules/@angular/common/src/pipes/date_pipe.ts)
     class belongs to a feature module named `date_pipe` in the file `date_pipe.ts`.
+    
+    Les modules sont typiquement nommés d'après le fichier dans lequel l'objet exporté est défini.
+    La classe du pipe [DatePipe](https://github.com/angular/angular/blob/master/modules/@angular/common/src/pipes/date_pipe.ts)
+    appartient à un module fonctionnel nommé `date_pipe` dans un fichier nommé `date_pipe.ts`.
 
     Developers rarely access Angular feature modules directly.
     We usually import them from one of the Angular [scoped packages](#scoped-package) such as `@angular/core`.
+    
+    Les développeurs utilisent rarement les modules fonctionnels directement.
+    Nous les importons généralement plutôt depuis l'un des [_scopes packages_](#scoped-package) comme `@angular/core`.
 
 // #enddocregion m2
 
