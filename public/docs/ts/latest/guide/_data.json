@@ -8,9 +8,9 @@
   },
 
   "architecture": {
-    "title": "Architecture Overview",
+    "title": "Appercu de l'architecture",
     "navTitle": "Architecture",
-    "intro": "The basic building blocks of Angular 2 applications",
+    "intro": "Les composants de base pour une application Angular 2",
     "nextable": true,
     "basics": true
   },
