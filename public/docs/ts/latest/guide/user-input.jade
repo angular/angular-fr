@@ -148,15 +148,15 @@ figure.image-display
 
   There's another way to get the user data without the `$event` variable.
 
-  Il existe une autre manière de récupérer les donnés utilisateur sans la variable `$event`.
+  Il existe une autre manière de récupérer les données utilisateur sans la variable `$event`.
 
   Angular has a syntax feature called [**template reference variables**](./template-syntax.html#ref-vars).
   These variables grant us direct access to an element.
   We declare a template reference variable by preceding an identifier with a hash/pound character (#).
 
-  Angular fournit une syntaxe particluière appellée [**variables de références dans un template**](./template-syntax.html#ref-vars).
+  Angular fournit une syntaxe particulière appelée [**variables de références dans un template**](./template-syntax.html#ref-vars).
   Ces variables fournissent un accés direct à un élément.
-  Nous déclarons une variable de référence en préfixant un identificateur par le caractère dièse (#).
+  Nous déclarons une variable de référence en préfixant un identifiant par le caractère dièse (#).
 
   Here's an example of using a template reference variable
   to implement a clever keystroke loopback in an ultra-simple template.
@@ -222,7 +222,7 @@ figure.image-display
 
   Cela semble vraiment plus facile.
   Un aspect particulièrement intéressant avec cette approche est que notre composant récupère des données propres depuis la vue.
-  Il n'a plus besoin de connaitre l'objet `$event` et sa structure.
+  Il n'a plus besoin de connaître l'objet `$event` et sa structure.
 
 <a id="key-event"></a>
 .l-main-section
@@ -254,7 +254,7 @@ figure.image-display
   would be to put the update code in the component.)
 
   C'est seulement à ce moment que nous mettons à jour la propriété `values`. (Dans cette exemple, 
-  la mise à jour se fait dans l'expression liée à l'évènement. Une meilleure pratique serrait de mettre le code
+  la mise à jour se fait dans l'expression liée à l'évènement. Une meilleure pratique serait de mettre le code
   de mise à jour dans le composant.)
 
 +makeExample('user-input/ts/app/keyup.components.ts', 'key-up-component-3' ,'app/keyup.components.ts (v3)')(format=".")
@@ -350,7 +350,7 @@ figure.image-display
 
   Mais cela aurait demandé à la méthode `addHero` d'aller naviguer dans l'élément DOM `<input>`, 
   ce qui est une mauvaise chose, comme nous l'avons appris dans notre première tentative de mettre en place
-  un [composant detectant la relache d'une touche](#keyup1).
+  un [composant détectant la relâche d'une touche](#keyup1).
 
   Instead, we grab the input box *value* and pass *that* to `addHero`.
   The component knows nothing about HTML or the DOM, which is the way we like it.
@@ -360,22 +360,22 @@ figure.image-display
 
   ### Keep template statements simple
 
-  ### Garder les éxpressions dans le template simples
+  ### Garder les expressions dans le template simples
   
   We bound `(blur)` to *two* JavaScript statements.
 
-  Nous avons lié l'évènement `(blur)` sur *deux* éxpressions JavaScript.
+  Nous avons lié l'évènement `(blur)` sur *deux* expressions JavaScript.
 
   We like the first one, which calls `addHero`.
   We do not like the second one, which assigns an empty string to the input box value.
 
-  Nous préférons la première, qui appelle `addHero`, à la seconde, qui assigne une chaine de caractères vide à la valeur du champ de saisie.
+  Nous préférons la première, qui appelle `addHero`, à la seconde, qui assigne une chaîne de caractères vide à la valeur du champ de saisie.
 
   The second statement exists for a good reason. We have to clear the input box after adding the new hero to the list.
   The component has no way to do that itself because it has no access to the
   input box (our design choice).
 
-  La deuxième expression existe pour une bonne raison. Nous devons nettoyer le champ de saisie après avoir ajouté un nouvel héro à la liste.
+  La deuxième expression existe pour une bonne raison. Nous devons nettoyer le champ de saisie après avoir ajouté un nouvel héros à la liste.
   Le composant n'a aucun moyen de le faire lui même car il n'a pas accès au champ de saisie (notre choix de conception). 
 
   Although the example *works*, we are rightly wary of JavaScript in HTML.
@@ -383,7 +383,7 @@ figure.image-display
   Complex JavaScript in HTML is irresponsible.
 
   Bien que cet exemple *fonctionne*, nous devons,  à juste titre, nous méfier d'utiliser du code JavaScript dans du HTML.
-  Les éxpressions dans les patrons sont puissantes. Nous sommes supposés les utiliser de manière responsable.
+  Les expressions dans les templates sont puissantes. Nous sommes supposés les utiliser de manière responsable.
   Du JavaScript complexe dans du HTML est irresponsable.
 
   Should we reconsider our reluctance to pass the input box into the component?
@@ -435,4 +435,4 @@ figure.image-display
   Angular has a two-way binding called `NgModel`, which we'll learn about
   in the `Forms` chapter.
 
-  Angular a un système de liaisons bi-directionel appelé `NgModel`, que nous allons apprendre dans le chapitre sur les `Formulaires`.
+  Angular a un système de liaisons bi-directionelles appelé `NgModel`, que nous allons apprendre dans le chapitre sur les `Formulaires`.
