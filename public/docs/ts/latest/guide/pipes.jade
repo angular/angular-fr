@@ -5,10 +5,19 @@ block includes
   Every application starts out with what seems like a simple task: get data, transform them, and show them to users.
   Getting data could be as simple as creating a local variable or as complex as streaming data over a Websocket.
 
+  Chaque application commence avec ce qui semble être une tâche simple&nbsp;: obtenir des données, les transformer et les montrer aux utilisateurs.
+  Obtenir des données pourrait être aussi simple que la création d'une variable locale ou aussi complexe que les streaming de données sur une Websocket.
+
   Once data arrive, we could push their raw `toString` values directly to the view.
   That rarely makes for a good user experience.
   E.g., almost everyone prefers a simple birthday date like
   <samp>April 15, 1988</samp> to the original raw string format
+  &mdash; <samp>Fri Apr 15 1988 00:00:00 GMT-0700 (Pacific Daylight Time)</samp>.
+
+  Une fois que les données arrivent, nous pourrions pousser leurs premières valeurs `toString` à la vue.
+  Cela fait rarement pour une bonne expérience utilisateur.
+  Par exemple, presque tout le monde préfère une date d'anniversaire simple comme
+  <samp>15 avril 1988</samp> au format de chaîne brute d'origine
   &mdash; <samp>Fri Apr 15 1988 00:00:00 GMT-0700 (Pacific Daylight Time)</samp>.
 
   Clearly some values benefit from a bit of massage. We soon discover that we
@@ -16,21 +25,37 @@ block includes
   We almost think of them as styles.
   In fact, we'd like to apply them in our HTML templates as we do styles.
 
+  Il est clair que certaines valeurs bénéficient d'un peu de massage. Nous découvrons bientôt que nous
+  désirerons à plusieurs reprises les mêmes transformations, tant à l'intérieur et à travers de nombreuses applications.
+  Nous pensons presque à eux comme à des styles.
+  En fait, nous aimerions les appliquer dans nos templates HTML comme nous le faisons avec les styles.
+
   Introducing Angular pipes, a way to write display-value transformations that we can declare in our HTML!
   Try the <live-example></live-example>.
+
+  Laissez-nous vous présenter les pipe Angular, une façon d'écrire des transformations de valeur d'affichage que nous pouvons déclarer dans notre HTML!
+  Essaie l'<live-example>exemples en ligne</live-example>.
 
 .l-main-section
 :marked
   ## Using Pipes
 
+  ## Utilisation des pipes
+
   A pipe takes in data as input and transforms it to a desired output.
   We'll illustrate by transforming a component's birthday property into
   a human-friendly date.
+
+  Un pipe prend des données en entrée et le transforme en une sortie voulue.
+  Nous illustrons ceci en transformant la propriété d'anniversaire d'un composant en
+  une date humaine conviviale.
 
 +makeExample('pipes/ts/app/hero-birthday1.component.ts', null, 'app/hero-birthday1.component.ts')(format='.')
 
 :marked
   Focus on the component's template.
+
+  Focus sur le template du composant.
 
 +makeExample('pipes/ts/app/app.component.html', 'hero-birthday-template')(format=".")
 
@@ -39,30 +64,55 @@ block includes
   [pipe operator](./template-syntax.html#pipe) ( | ) to the [Date pipe](../api/common/index/DatePipe-class.html)
   function on the right. All pipes work this way.
 
+  A l'intérieur de l'expression d'interpolation, nous passons la valeur `birthday` contenue dans le composant à travers le
+  [l'opérateur pipe](./template-syntax.html#pipe) ( | ) au [pipe Date](../api/common/index/DatePipe-class.html)
+  fonction sur la droite. Tous les pipes fonctionnent de cette manière.
+
 .l-main-section
 :marked
   ## Built-in pipes
+
+  ## Construction des pipes
+
   Angular comes with a stock of pipes such as
   `DatePipe`, `UpperCasePipe`, `LowerCasePipe`, `CurrencyPipe`, and `PercentPipe`.
   They are all immediately available for use in any template.
+
+  Angular est livré avec un stock de pipes tels que
+  `DatePipe`, `UpperCasePipe`, `LowerCasePipe`, `CurrencyPipe`, et `PercentPipe`.
+  Ils sont tous immédiatement disponibles pour une utilisation dans n'importe quel template.
 
 .l-sub-section
   :marked
     Learn more about these and many other built-in pipes in the  the [API Reference](../api/#!?apiFilter=pipe);
     filter for entries that include the word "pipe".
 
+    Pour en apprendre plus à propos de ceux-ci et d'autres pipes fournis par le framework, regardez l'[API de Reference](../api/#!?apiFilter=pipe);
+    filtrer avec les entrées qui comprennent le mot "pipe".
+
     Angular 2 doesn't have a `FilterPipe` or an `OrderByPipe` for reasons explained in an [appendix below](#no-filter-pipe).
+
+    Angular 2 n'a pas de `FilterPipe` ou un `OrderByPipe` pour des raisons expliquées dans l'[annexe ci-dessous](#no-filter-pipe).
 
 .l-main-section
 :marked
   ## Parameterizing a Pipe
 
+  ## Paramétrer un pipe
+
   A pipe may accept any number of optional parameters to fine-tune its output.
   We add parameters to a pipe by following the pipe name with a colon ( : ) and then the parameter value
   (e.g., `currency:'EUR'`). If our pipe accepts multiple parameters, we separate the values with colons (e.g. `slice:1:5`)
 
+  Un pipe peut accepter un certain nombre de paramètres facultatifs pour affiner sa sortie.
+  Nous ajoutons des paramètres à un pipe en suivant le nom du pipe avec un deux points ( : ) et ensuite la valeur du paramètre
+  (ex., `currency:'EUR'`). Si notre pipe accepte plusieurs paramètres, nous séparons les valeurs avec deux points (ex. `slice:1:5`)
+
   We'll modify our birthday template to give the date pipe a format parameter.
   After formatting the hero's April 15th birthday, it should render as **<samp>04/15/88</samp>**:
+
+  Nous allons modifier notre template d'anniversaire pour donner la conduite de la date d'un paramètre de format.
+  Après le formatage de l'anniversaire du héros du 15 Avril, il devrait rendre comme **<samp>04/15/88</samp>**:
 
 +makeExample('pipes/ts/app/app.component.html', 'format-birthday')(format=".")
 
@@ -72,8 +122,16 @@ block includes
   such as a string literal or a component property.
   In other words, we can control the format through a binding the same way we control the birthday value through a binding.
 
+  La valeur du paramètre peut être toute
+  [expression de template](./template-syntax.html#template-expressions) valide
+  comme une chaîne littérale ou une propriété de composant.
+  En d'autres termes, nous pouvons contrôler le format à travers le binding de la même manière que nous contrôlons la valeur de l'anniversaire à travers un binding.
+
   Let's write a second component that *binds* the pipe's format parameter
   to the component's `format` property. Here's the template for that component:
+
+  Écrivons un second composant qui *lie* le paramètre de format du pipe
+  à la propriété du `format` du component. Voici le template pour ce composant:
 
 +makeExample('pipes/ts/app/hero-birthday2.component.ts', 'template', 'app/hero-birthday2.component.ts (template)')(format=".")
 
@@ -82,11 +140,19 @@ block includes
   That method toggles the component's `format` property between a short form
   (`'shortDate'`) and a longer form (`'fullDate'`).
 
+  Nous avons également ajouté un bouton pour le template et lier à son événement click à la méthode `toggleFormat()` du composant.
+  Cette méthode permet de basculer la propriété `format` du composant entre une forme courte
+  (`'shortDate'`) et une forme longue (`'fullDate'`).
+
 +makeExample('pipes/ts/app/hero-birthday2.component.ts', 'class', 'app/hero-birthday2.component.ts (class)')(format='.')
 
 :marked
   As we click the button, the displayed date alternates between
   "**<samp>04/15/1988</samp>**" and
+  "**<samp>Friday, April 15, 1988</samp>**".
+
+  Comme nous cliquons sur le bouton, la date affichée alterne entre
+  "**<samp>04/15/1988</samp>**" et
   "**<samp>Friday, April 15, 1988</samp>**".
 
 figure.image-display
@@ -97,12 +163,21 @@ figure.image-display
   :marked
     Learn more about the `DatePipes` format options in the [API Docs](../api/common/index/DatePipe-class.html).
 
+    Apprenez-en plus à propos du format d'option `DatePipes` dans la [documentation de l'Api](../api/common/index/DatePipe-class.html).
+
 :marked
   ## Chaining pipes
+
+  ## Enchaînement de pipes
 
   We can chain pipes together in potentially useful combinations.
   In the following example, we chain the birthday to the `DatePipe` and on to the `UpperCasePipe`
   so we can display the birthday in uppercase. The following birthday displays as
+  **<samp>APR 15, 1988</samp>**.
+
+  Nous pouvons chaîner les pipes les uns aux autres dans des combinaisons potentiellement utiles.
+  Dans l'exemple suivant, on chaîne les pipes `DatePipe` et `UpperCasePipe` sur l'anniversaire
+  afin que nous puissions afficher l'anniversaire en majuscules. L'affichage de l'anniversaire s'affiche en tant que
   **<samp>APR 15, 1988</samp>**.
 
 +makeExample('pipes/ts/app/app.component.html', 'chained-birthday')(format=".")
@@ -111,45 +186,78 @@ figure.image-display
   This example &mdash; which displays **<samp>FRIDAY, APRIL 15, 1988</samp>** &mdash;
   chains the same pipes as above, but passes in a parameter to `date` as well.
 
+  Dans cet exemple &mdash; qui affiche **<samp>FRIDAY, APRIL 15, 1988</samp>** &mdash;
+  chains the same pipes as above, but passes in a parameter to `date` as well.
+
 +makeExample('pipes/ts/app/app.component.html', 'chained-parameter-birthday')(format=".")
 
 .l-main-section
 :marked
   ## Custom Pipes
 
+  ## Customisation des Pipes
+
   We can write our own custom pipes.
   Here's a custom pipe named `ExponentialStrengthPipe` that can boost a hero's powers:
+
+  Nous pouvons écrire nos propres pipes personnalisés.
+  Voici un pipe personnalisé nommé `ExponentialStrengthPipe` qui peut augmenter les pouvoirs d'un héros&nbsp;:
 
 +makeExample('pipes/ts/app/exponential-strength.pipe.ts', null, 'app/exponential-strength.pipe.ts')(format=".")
 
 :marked
   This pipe definition reveals several key points:
 
+  Cette définition du pipe révèle plusieurs points clés&nbsp;:
+
   * A pipe is a class decorated with pipe metadata.
+
+  * Un pipe est une classe décorée avec des métadonnées de pipe.
 
   * The pipe class implements the `PipeTransform` interface's `transform` method that
   accepts an input value followed by optional parameters and returns the transformed value.
 
+  * La classe pipe implémente `PipeTransform` interface des méthodes de `transformation` (transform) qui
+  accepte une valeur d'entrée suivie des paramètres facultatifs et renvoie la valeur transformée transforment.
+
   * There will be one additional argument to the `transform` method for each parameter passed to the pipe.
   Our pipe has one such parameter: the `exponent`.
 
+  * Il y aura un argument supplémentaire à la méthode de `transform` pour chaque paramètre passé à pipe.
+  Notre pipe a un tel paramètre: le `exponent`.
+
   * We tell Angular that this is a pipe by applying the
   `@Pipe` #{_decorator} which we import from the core Angular library.
+
+  * Nous informons Angular que ceci est un pipe en appliquant la
+  le décorateur `@Pipe` que nous importons de la bibliothèque Angular de base.
 
   * The `@Pipe` #{_decorator} allows us to define the
      pipe name that we'll use within template expressions. It must be a valid JavaScript identifier.
      Our pipe's name is `exponentialStrength`.
 
+  * Le décorateur `@Pipe` nous permet de définir le
+    nom du pipe que nous allons utiliser dans les expressions de template. Il doit être un identificateur JavaScript valide.
+    Le nom de notre pipe est une `exponentialStrength` (Force exponentielle).
+
 .l-sub-section
   :marked
     ### The *PipeTransform* Interface
+
+    ### L'interface *PipeTransform*
 
     The `transform` method is essential to a pipe.
     The `PipeTransform` *interface* defines that method and guides both tooling and the compiler.
     It is technically optional; Angular looks for and executes the `transform` method regardless.
 
+    La méthode `transform` est essentielle à un pipe.
+    L'*interface* `PipeTransform` définit cette méthode et guide à la fois l'outillage et le compilateur.
+    Il est techniquement facultatif, Angular cherche et exécute la méthode `transform` indépendamment.
+
 :marked
   Now we need a component to demonstrate our pipe.
+
+  Maintenant, nous avons besoin d'un composant pour démontrer notre pipe.
 +makeExample('pipes/ts/app/power-booster.component.ts',null,'app/power-booster.component.ts')(format='.')
 figure.image-display
     img(src='/resources/images/devguide/pipes/power-booster.png' alt="Power Booster")
@@ -158,7 +266,12 @@ figure.image-display
   Two things to note:
   1. We use our custom pipe the same way we use the built-in pipes.
 
+  Deux choses à noter&nbsp;:
+  1. Nous utilisons notre pipe personnalisé de la même façon dont nous utilisons les pipes intégrés.
+
   1. We must include our pipe in the `pipes` #{_array} of the `@Component` #{_decorator}.
+
+  1. Nous devons inclure votre pipe dans les pipes #{_array} du `@Component` #{_decorator}.
 
 .callout.is-helpful
   header Remember the pipes #{_array}!
@@ -168,15 +281,29 @@ figure.image-display
     Angular built-in pipes are pre-registered.
     Custom pipes must be registered manually.
 
+    Angular signale une erreur si nous négligeons d'énumérer notre pipe personnalisé.
+    Nous ne listons pas `DatePipe` dans notre exemple précédent parce que tous
+    les pipes intégrés d'Angular sont pré-enregistrés.
+    Les Pipes personnalisés doivent être enregistrés manuellement.
+
 :marked
   If we try the <live-example></live-example>,
   we can probe its behavior by changing the value and the optional exponent in the template.
 
+  Si nous essayons l'<live-example>exemples en ligne</live-example>,
+  on peut sonder son comportement en changeant la valeur et l'exposant en option dans le template.
+
   ## Power Boost Calculator (extra-credit)
+
+  ## Calculatrice d'Augmentation de Puissance (extra-credit)
 
   It's not much fun updating the template to test our custom pipe.
   We could upgrade the example to a "Power Boost Calculator" that combines
   our pipe and two-way data binding with `ngModel`.
+
+  Il n'y a pas beaucoup de plaisir de mettre à jour le template pour tester notre pipe personnalisé.
+  Nous pourrions mettre à jour l'exemple d'un "Power Boost Calculator" qui combine
+  notre pipe et le two-way data binding avec `ngModel`.
 
 +makeExample('pipes/ts/app/power-boost-calculator.component.ts', null, '/app/power-boost-calculator.component.ts')(format='.')
 
@@ -188,21 +315,37 @@ a#change-detection
 :marked
   ## Pipes and Change Detection
 
+  ## Pipes et Détection de changement
+
   Angular looks for changes to data-bound values through a *change detection* process that runs after every JavaScript event:
   every keystroke, mouse move, timer tick, and server response. This could be expensive.
   Angular strives to lower the cost whenever possible and appropriate.
 
+  Angular surveille les valeurs liées aux données par le biais d'un processus de détection de changement qui est exécuté après chaque événement JavaScript&nbsp;:
+  chaque frappe, déplacement de la souris, timer tick, et la réponse du serveur. Cela pourrait être coûteux.
+  Angular cherche à réduire le coût chaque fois que c'est possible et approprié.
+
   Angular picks a simpler, faster change detection algorithm when we use a pipe. Let's see how.
+
+  Angular choisit un algorithme de détection de changement rapide et simple lorsque nous utilisons un pipe. Voyons comment.
 
   ### No pipe
 
+  ### Pas de pipe
+
   The component in our next example uses the default, aggressive change detection strategy to monitor and update
   its display of every hero in the `heroes` #{_array}. Here's the template:
+
+  Le composant dans notre prochain exemple utilise la valeur par défaut, la stratégie de détection de changement agressive pour surveiller et mettre à jour
+  son affichage de chaque héros dans le `heroes` #{_array}. Voici le template&nbsp;:
 
 +makeExample('pipes/ts/app/flying-heroes.component.html', 'template-1', 'app/flying-heroes.component.html (v1)')(format='.')
 
 :marked
   The companion component class provides heroes, adds new heroes into the #{_array}, and can reset the #{_array}.
+
+  La classe du composant compagnon fournit des héros, ajoute de nouveaux héros dans le #{_array}, et peut réinitialiser le #{_array}.
+
 +makeExample('pipes/ts/app/flying-heroes.component.ts', 'v1', 'app/flying-heroes.component.ts (v1)')(format='.')
 
 :marked
@@ -210,35 +353,66 @@ a#change-detection
   The `reset` button replaces `heroes` with a new #{_array} of the original heroes and Angular updates the display when we do.
   If we added the ability to remove or change a hero, Angular would detect those changes too and update the display as well.
 
+  Nous pouvons ajouter un nouveau héros et mettre à jour l'affichage d'Angular quand nous faisons.
+  Le button `reset` remplace `heroes` avec des nouveaux #{_array} héros originaux et Angular met à jour l'affichage quand nous faisons.
+  Si nous avons ajouté la possibilité de supprimer ou de modifier un héros, Angular détecterait également ces changements et met à jour l'affichage aussi.
+
   ### Flying Heroes pipe
 
+  ### Le pipe des héros volent
+
   Let's add a `FlyingHeroesPipe` to the `*ngFor` repeater that filters the list of heroes to just those heroes who can fly.
+
+  Ajoutons un `FlyingHeroesPipe` au répéteur `*ngFor` qui filtre la liste des héros uniquement pour les héros qui peuvent voler.
+
 +makeExample('pipes/ts/app/flying-heroes.component.html', 'template-flying-heroes', 'app/flying-heroes.component.html (flyers)')(format='.')
 :marked
   Here's the `FlyingHeroesPipe` implementation which follows the pattern for custom pipes we saw earlier.
+
+  Voici l'implémentation de `FlyingHeroesPipe` qui suit le modèle pour les pipes personnalisés que nous avons vu plus tôt.
 +makeExample('pipes/ts/app/flying-heroes.pipe.ts', 'pure', 'app/flying-heroes.pipe.ts')(format='.')
 
 :marked
   When we run the sample now we see odd behavior (try it in the <live-example></live-example>).
   Every hero we add is a flying hero but none of them are displayed.
 
+  Quand nous excecutons l'échantillon maintenant nous voyons un comportement étrange (essayer dans l'<live-example>exemples en ligne</live-example>).
+  Chaque héros nous ajoutons est un héros volant, mais aucun d'entre eux sont affichés.
+
   Although we're not getting the behavior we want, Angular isn't broken.
   It's just using a different change detection algorithm &mdash; one that ignores changes to the list or any of its items.
 
+  Bien que nous ne recevons pas le comportement que nous voulons, Angular ne s'est pas interrompu.
+  Il vient à l'aide d'un algorithme de détection de changement différent &mdash; celui qui ne tient pas compte des modifications à la liste ou l'un de ses articles.
+
   Look at how we're adding a new hero:
+
+  Regardez comment nous ajoutons un nouveau héros:
 +makeExample('pipes/ts/app/flying-heroes.component.ts', 'push')(format='.')
 :marked
   We're adding the new hero into the `heroes` #{_array}.  The reference to the #{_array} hasn't changed.
+  It's the same #{_array}. That's all Angular cares about. From its perspective, *same #{_array}, no change, no display update*.
+
+  Nous allons ajouter le nouveau héros dans le `heroes` #{_array}. La référence au #{_array} n'a pas changé.
   It's the same #{_array}. That's all Angular cares about. From its perspective, *same #{_array}, no change, no display update*.
 
   We can fix that. Let's create a new #{_array} with the new hero appended and assign that to `heroes`.
   This time Angular detects that the #{_array} reference has changed.
   It executes the pipe and updates the display with the new #{_array} which includes the new flying hero.
 
+  Nous pouvons arranger cela. Créons un nouveau tableau avec le nouveau héros ajoute et attribue cela à `heroes`.
+  Cette fois, Angular détecte que la référence du tableau a changé.
+  Il exécute le pipe et met à jour l'affichage avec le nouveau tableau qui inclut le nouveau héros volant.
+
   *If we **mutate** the #{_array}, no pipe is invoked and no display updated;
   if we **replace** the #{_array}, then the pipe executes and the display is updated*.
   The *Flying Heroes* extends the
   code with checkbox switches and additional displays to help us experience these effects.
+
+  *If we **mutate** the #{_array}, no pipe is invoked and no display updated;
+  Si nous **remplaçons** le tableau, alors le pipe s'exécute et l'affichage est mis à jour.
+  Les *Héros Volants* étendent le
+  code avec des cases à cocher et des affichages supplémentaires pour nous aider à expérimenter ces effets.
 
 figure.image-display
     img(src='/resources/images/devguide/pipes/flying-heroes-anim.gif' alt="Flying Heroes")
@@ -249,6 +423,11 @@ figure.image-display
   That's an easy rule to follow in *this toy* example
   where the only way to change the data is by adding a new hero.
 
+  Le remplacement du tableau est un moyen efficace de signaler à Angular qu'il doit mettre à jour l'affichage.
+  Quand remplacer le tableau? Lorsque les données changent.
+  C'est une règle facile à suivre dans cet exemple de jouet
+  où la seule façon de changer les données est d'ajouter un nouveau héros.
+
   More often we don't know when the data have changed,
   especially in applications that mutate data in many ways,
   perhaps in application locations far away.
@@ -257,16 +436,33 @@ figure.image-display
   We strive as much as possible to keep the component class independent of the HTML.
   The component should be unaware of pipes.
 
+  Plus souvent, nous ne savons pas quand les données ont changé,
+  en particulier dans les applications qui mutent les données de plusieurs façons,
+  peut-être dans des endroits d'application lointains.
+  Un composant d'une telle application ne connaît généralement pas ces changements.
+  En outre, il est imprudent de fausser la conception de nos composants pour accommoder un pipe.
+  Nous nous efforçons autant que possible de conserver la classe de composant indépendante du HTML.
+  Le composant doit être au courant des pipes.
+
   Perhaps we should consider a different kind of pipe for filtering flying heroes, an *impure pipe*.
+
+  Peut-être devrions-nous envisager un autre type de pipe pour filtrer les héros volants, un *pipe impur*.
 
 .l-main-section
 :marked
   ## Pure and Impure Pipes
 
+  ## Pipes purs et impurs
+
   There are two categories of pipes: **pure** and **impure**.
   Pipes are pure by default. Every pipe we've seen so far has been pure.
   We make a pipe impure by setting its pure flag to false. We could make the `FlyingHeroesPipe`
   impure like this:
+
+  Il existe deux catégories de tuyaux&nbsp;: **pur** et **impur**.
+  Les pipes sont purs par défaut. Chaque pipe que nous avons vue jusqu'ici a été pure.
+  Nous fabriquons un pipe impure en mettant son drapeau pur à faux. Nous pourrions transformer le `Flying Heroes Pipe`
+  en impure comme ceci&nbsp;:
 
 +makeExample('pipes/ts/app/flying-heroes.pipe.ts', 'pipe-decorator')(format='.')
 
@@ -274,6 +470,8 @@ figure.image-display
   Before we do that, let's understand the difference between *pure* and *impure*, starting with a *pure* pipe.
 
   ### Pure pipes
+
+  ### Pipes purs
 
 block pure-change
   :marked
@@ -301,6 +499,8 @@ block pure-change
     
 :marked
   ### Impure pipes
+
+  ### Pipes impurs
 
   Angular executes an *impure pipe*  during *every* component change detection cycle.
   An impure pipe will be called a lot, as often as every keystroke or mouse-move.
@@ -386,6 +586,8 @@ figure.image-display
     img(src='/resources/images/devguide/pipes/hero-list.png' alt="Hero List")
 
 :marked
+  ### *JsonPipe*
+
   ### *JsonPipe*
 
   The second binding involving the `FetchPipe` uses more pipe chaining.
