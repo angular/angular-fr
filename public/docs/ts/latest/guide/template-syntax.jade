@@ -2,46 +2,80 @@ block includes
   include ../_util-fns
   - var _JavaScript = 'JavaScript';
   //- Double underscore means don't escape var, use !{__var}.
-  - var __chaining_op = '<code>;</code> or <code>,</code>';
+  - var __chaining_op = '<code>;</code> ou <code>,</code>';
   - var __new_op = '<code>new</code>';
   - var __objectAsMap = 'object';
 
 :marked
   Our Angular application manages what the user sees and can do, achieving this through the interaction of a Component class instance (the *component*) and its user-facing template.
 
+  Notre application Angular gère ce que l'utilisateur voit et peut voir, elle y parvient grâce à l'interaction entre l'instance de la classe d'un composant (le *composant*) et son template utilisateur.
+
   Many of us are familiar with the component/template duality from our experience with model-view-controller (MVC) or model-view-viewmodel (MVVM). In Angular,  the component plays the part of the controller/viewmodel, and the template represents the view.
+
+  Beaucoup d'entre nous sont familier avec la dualité composant/template de notre expérience avec le patron de conception Modèle-Vue-Contrôleur (MVC) ou Modèle-Vue-Modèle de Vue (MVVM).
+  Dans angular, le composant joue le rôle du contrôleur/Modèle de vue, et le template représente la vue.
 
   Let’s find out what it takes to write a template for our view. We’ll cover these basic elements of template syntax:
 
-  * [HTML](#html)
-  * [Interpolation](#interpolation)
-  * [Template expressions](#template-expressions)
-  * [Template statements](#template-statements)
-  * [Binding syntax](#binding-syntax)
-  * [Property binding](#property-binding)
-  * [Attribute, class, and style bindings](#other-bindings)
-  * [Event binding](#event-binding)
-  * [Two-way data binding with `NgModel`](#ngModel)
-  * [Built-in directives](#directives)
-    * [NgClass](#ngClass)
-    * [NgStyle](#ngStyle)
-    * [NgIf](#ngIf)
-    * [NgSwitch](#ngSwitch)
-    * [NgFor](#ngFor)
-  * [* and &lt;template>](#star-template)
-  * [Template reference variables](#ref-vars)
-  * [Input and output properties](#inputs-outputs)
-  * [Template expression operators](#expression-operators)
-    * [pipe](#pipe)
-    * [safe navigation operator (?.)](#safe-navigation-operator)
+  Voyons ce qu'il faut pour écrire un template pour notre vue. Nous allons couvrir ces éléments de base de la syntaxe des templates.
 
+  * [HTML](#html)
+  * [le HTML](#html)
+  * [Interpolation](#interpolation)
+  * [l'Interpolation](#interpolation)
+  * [Template expressions](#template-expressions)
+  * [Expressions de template](#template-expressions)
+  * [Template statements](#template-statements)
+  * [Instructions de template](#template-statements)
+  * [Binding syntax](#binding-syntax)
+  * [Syntaxe de liaison](#binding-syntax)
+  * [Property binding](#property-binding)
+  * [Liaison de propriétés](#property-binding)
+  * [Attribute, class, and style bindings](#other-bindings)
+  * [Liaison d'attributs, de class CSS et style](#other-bindings)
+  * [Event binding](#event-binding)
+  * [Liaison d'évènements](#event-binding)
+  * [Two-way data binding with `NgModel`](#ngModel)
+  * [Laison bi-directionnel avec  `NgModel`](#ngModel)
+  * [Built-in directives](#directives)
+  * [Directives intégrés](#directives)
+    * [NgClass](#ngClass)
+    * [Directive NgClass](#ngClass)
+    * [NgStyle](#ngStyle)
+    * [Directive NgStyle](#ngStyle)
+    * [NgIf](#ngIf)
+    * [Directive NgIf](#ngIf)
+    * [NgSwitch](#ngSwitch)
+    * [Directive NgSwitch](#ngSwitch)
+    * [NgFor](#ngFor)
+    * [Directive NgFor](#ngFor)
+  * [* and &lt;template>](#star-template)
+  * [* et &lt;template>](#star-template)
+  * [Template reference variables](#ref-vars)
+  * [Références de variables dans les Templates](#ref-vars)
+  * [Input and output properties](#inputs-outputs)
+  * [Propriétés d'entrées et sorties](#inputs-outputs)
+  * [Template expression operators](#expression-operators)
+  * [Opérateurs d'expressions de template](#expression-operators)
+    * [pipe](#pipe)
+    * [les pipes](#pipe)
+    * [Opérateur de sécurité de référence (?.)](#safe-navigation-operator)
+    * [safe navigation operator (?.)](#safe-navigation-operator)
   The <live-example></live-example>
   demonstrates all of the syntax and code snippets described in this chapter.
+
+  la <live-example>démo</live-example>
+  présente toutes la syntaxe et les exemples de code décrit dans ce chapitre.
 
 .l-main-section
 :marked
   ## HTML
+  ## Le HTML
+
   HTML is the language of the Angular template. Our [QuickStart](../quickstart.html) application has a template that is pure HTML:
+
+  HTML est le language des templates Angular. Notre application [démarrage rapide](../quickstart.html) a un template en pure HTML:
 
 code-example(language="html" escape="html").
   <h1>My First Angular 2 App</h1>
@@ -49,19 +83,37 @@ code-example(language="html" escape="html").
 :marked
   Almost all HTML syntax is valid template syntax. The `<script>` element is a notable exception; it is forbidden, eliminating the risk of script injection attacks. (In practice, `<script>` is simply ignored.)
 
+  Quasiment toute la syntaxe HTML est valide pour les templates Angular. L'élement `<script>` est une exception notable;
+  qui est interdit, éliminant le risque d'attaque par injection de script. (En pratique, `<script>` est simplement ignoré.)
+
   Some legal HTML doesn’t make much sense in a template. The `<html>`, `<body>`, and `<base>` elements have no useful role in our repertoire. Pretty much everything else is fair game.
+
+  Quelques balises html valides n'ont pas de sens dans un template.
+  Les balises `<html>`, `<body>`, et `<base>` ne jouent aucun rôle utile dans un template.
+  À peu près tout le reste fonctionne de la même façon.
 
   We can extend the HTML vocabulary of our templates with components and directives that appear as new elements and attributes. In the following sections we are going to learn how to get and set DOM (Document Object Model) values dynamically through data binding.
 
+  Nous pouvons étendre le vocabulaire HTML de nos templates avec les composants et les directives qui apparaissent comme des nouveaux éléments et attibuts.
+  Dans les sections suivantes, nous allons apprendre comment nous définissons et optenons les valeurs du DOM (Document Object Model : Modèle Object du Document) dynamiquement via la liaison de données.
+
   Let’s turn to the first form of data binding &mdash; interpolation &mdash; to see how much richer template HTML can be.
+
+  Passons maintenant à notre premier formulaire utilisant le type de liaison de données &mdash; interpolation &mdash; pour découvrir comment les templates peuvent être puissant.
 
 .l-main-section
 :marked
   ## Interpolation
+  ## l'Interpolation
+
   We met the double-curly braces of interpolation, `{{` and `}}`, early in our Angular education.
+
+  Nous avons rencontré l'interpolation via les accolades double, au début de notre apprentissage Angular.
 +makeExample('template-syntax/ts/app/app.component.html', 'first-interpolation')(format=".")
 :marked
   We use interpolation to weave calculated strings into the text between HTML element tags and within attribute assignments.
+
+  Nous utilisons l'interpolation pour incorporer des chaines de caractères caculées à l'intérieur du texte entre deux balises html et dans l'affectation des attributs.
 
 +makeExample('template-syntax/ts/app/app.component.html', 'title+image')(format=".")
 :marked
@@ -69,55 +121,99 @@ code-example(language="html" escape="html").
   string value of the corresponding component property. In the example above, Angular evaluates the `title` and `heroImageUrl` properties
   and "fills in the blanks", first displaying a bold application title and then a heroic image.
 
+  Le contenu entre les accolades est souvent le nom d'une propriété du composant.
+  Angular remplace ce nom avec la valeur en chaine de caractère de la propriété du composant correspondante.
+  Dans l'exemple au dessus, Angular évalue les propriétés `title` et `heroImageUrl` et "remplit les blancs",
+  affichant d'abord un titre d'application en gras et ensuite l'image d'un héro.
+
   More generally, the material between the braces is a **template expression** that Angular first **evaluates**
   and then **converts to a string**. The following interpolation illustrates the point by adding the two numbers within braces:
+
+  Plus généralement, le contenu entre les accolades est une **expression de template** que Angular **évalue** au préalable
+  et ensuite **convertis en chaine de caractère**. L'interpolation suivante illustre ce faît en additionnant les deux nombres à l'intérieur des accollades&nbsp;:
 +makeExample('template-syntax/ts/app/app.component.html', 'sum-1')(format=".")
 :marked
   The expression can invoke methods of the host component, as we do here with `getVal()`:
+
+  L'expression peut invoquer une méthode du composant hôte, comme nous le montrons ici avec `getVal()`&nbsp;:
 +makeExample('template-syntax/ts/app/app.component.html', 'sum-2')(format=".")
 :marked
   Angular evaluates all expressions in double curly braces, converts the expression results to strings, and links them with neighboring literal strings. Finally,
   it assigns this composite interpolated result to an **element or directive property**.
+
+  Angular évalue toute les expressions dans les doubles accollades, et convertis le résultat de l'expression en chaine de caractères,
+  le concatène avec le texte voisin. Finalement, assigne le résultat final de l'interpolation à **l'élément ou la propriété de la directive**.
 
   We appear to be inserting the result between element tags and assigning it to attributes.
   It's convenient to think so, and we rarely suffer for this mistake.
   Though this is not exactly true. Interpolation is a special syntax that Angular converts into a
   [property binding](#property-binding), and is explained below.
 
+  Nous croyons souvent qu'il s'agit d'une insertion du résultat entre l'élément et l'assignation à un attribut.
+  Il est commode de penser ainsi, et nous souffrons rarement de cette erreur.
+  Bien que ce soit pas exactement vrai. L'interpolation est une syntaxe spéciale que Angular convertit
+  en une liaison de données sur propriété, et cela sera expliqué plus tard.
+
   But first, let's take a closer look at template expressions and statements.
+
+  Mais d'abord, regardons de plus près les expressions et instructions de template.
 
 <a id="template-expressions"></a>
 .l-main-section
 :marked
   ## Template expressions
+
+  ## Expressions de template
+
   A template **expression** produces a value.
   Angular executes the expression and assigns it to a property of a binding target;
   the target might be an HTML element, a component, or a directive.
+
+  Une **expression** de template produit une valeur. Angular execute l'expression et l'assigne ensuite à une propriété de la cible lié;
+  la cible peut être un élément HTML, un composant, ou une directive.
 
   We put a template expression within the interpolation braces when we wrote `{{1 + 1}}`.
   We’ll see template expressions again in the [property binding](#property-binding) section,
   appearing in quotes to the right of the `=` symbol as in `[property]="expression"`.
 
+  Nous mettons une expression de template entre les accollades d'interpolation quand nous écrivons `{{1 + 1}}`.
+  Nous verrons de nouveau les expressions de template dans la section sur la liaison de propriétés,
+  apparaissant entre les guillements double à droite du symbole `=` comme dans `[property]="expression"`.
+
   We write template expressions in a language that looks like #{_JavaScript}.
   Many #{_JavaScript} expressions are legal template expressions, but not all.
+
+  Nous écrivons les expressions de template dans un language qui ressemble à #{_JavaScript}.
+  La plupart des expressions #{_JavaScript} sont valide dans les expressions de template, mais pas toutes.
 
   #{_JavaScript} expressions that have or promote side effects are prohibited,
   including:
 
+  Les expressions #{_JavaScript} qui ont ou provoquent des effets de bords sont interdit, incluant&nbsp;:
+
   * assignments (`=`, `+=`, `-=`, ...)
+  * les affectations (`=`, `+=`, `-=`, ...)
   * !{__new_op}
+  * l'opérateur !{__new_op}
   * chaining expressions with !{__chaining_op}
+  * L'enchainement d'expressions avec !{__chaining_op}
   * increment and decrement operators (`++` and `--`)
+  * Les opérateurs d'incrementation et de décrementation (`++` and `--`)
 
 :marked
   Other notable differences from #{_JavaScript} syntax include:
 
+  D'autres différences notables avec la syntaxe #{_JavaScript} comprennent:
+
 block notable-differences
   :marked
     * no support for the bitwise operators `|` and `&`
+    * pas de support pour les opérateurs binaires `|` and `&`
     * new [template expression operators](#expression-operators), such as `|` and `?.`
+    * les nouveaux [opérateurs d'expressions de template](#expression-operators), comme `|` et `?.`
 
 h3#expression-context Expression context
+h3#expression-context Contexte d'expression
 
 block template-expressions-cannot
   :marked
@@ -126,106 +222,203 @@ block template-expressions-cannot
     can’t call `console.log` or `Math.max`. They are restricted to referencing
     members of the expression context.
 
+    Plus surprenant, les expressions de templates ne peuvent pas accèder au namespace globale.
+    Il n'est pas possible d'accèder à `window` ou `document`, ni appeler `console.log` ou `Math.max`.
+    Elles sont restreintes aux seules membres référencés par le contexte de l'expression.
+
 :marked
   The *expression context* is typically the **component instance**, which is
   the source of binding values.
+
+  Le *contexte de l'expression* est typiquement l'**instance du composant**, qui est la source des valeurs liées.
 
   When we see *title* wrapped in double-curly braces, `{{title}}`,
   we know that `title` is a property of the data-bound component.
   When we see *isUnchanged* in `[disabled]="isUnchanged"`,
   we know we are referring to that component's `isUnchanged` property.
 
+  Quand nous voyons *title* entouré dans des double accollades, `{{title}}`,
+  nous savons que `title` est une propriété du composant lié.
+  Quand nous voyons *isUnchanged* dans `[disabled]="isUnchanged"`,
+  Nous savons que nous faisons référence à la propriété `isUnchanged` du composant
+
   The component itself is usually the expression *context*, in which case
   the template expression usually references that component.
+
+  Le composant lui-même est habituellement le *contexte* des expressions, dans ce cas
+  l'expression de template habituellement référence ce composant.
 
   The expression context can include objects other than the component.
   A [template reference variable](#ref-vars) is one such alternative context object.
 
+  Le contexte d'une expression peut inclure d'autres objets que ceux du composant.
+  Une [variable référence de template](#ref-vars) est un objet alternatif utilisable dans le context d'une expression.
+
 :marked
   <a id="no-side-effects"></a>
   ### Expression guidelines
+
+  ### Recommandations pour les expressions
+
   Template expressions can make or break an application.
   Please follow these guidelines:
 
+  Les expressions de Templace peuvent faire fonctionner ou empêcher de fonctionner une application.
+  Merci de suivre ces recommandations&nbsp;:
+
   * [No visible side effects](#no-visible-side-effects)
+  * [Pas d'effets secondaires visibles](#no-visible-side-effects)
   * [Quick execution](#quick-execution)
+  * [Execution rapide](#quick-execution)
   * [Simplicity](#simplicity)
+  * [Simplicité](#simplicity)
   * [Idempotence](#idempotence)
+  * [l'Idempotence](#idempotence)
 
   The only exceptions to these guidelines should be in specific circumstances that you thoroughly understand.
 
+  La seule exception à ces recommandations doivent être dans des circonstances exceptionnels que vous comprenez parfaitement.
+
   #### No visible side effects
+
+  #### Pas d'effets seconfaires visibles
 
   A template expression should not change any application state other than the value of the
   target property.
+
+  Une expression de template ne doit changer aucun état de l'application autre que la valeur de la propriété cible
 
   This rule is essential to Angular's "unidirectional data flow" policy.
   We should never worry that reading a component value might change some other displayed value.
   The view should be stable throughout a single rendering pass.
 
+  Cette règle est essentiel pour la politique d'angular de "flux de données unidirectionnel".
+  Nous ne devrions jamais considérer que lire une valeur d'un composante peut changer une autre valeur affichée.
+  La vue doit être stable tout au long de la phase de rendu unique de la vue.
+
   #### Quick execution
+
+  #### Execution rapide
   Angular executes template expressions more often than we think.
   They can be called after every keypress or mouse move.
   Expressions should finish quickly or the user experience may drag, especially on slower devices.
   Consider caching values computed from other values when the computation is expensive.
 
+  Angular exécute les templates d'expression plus souvent que nous l'imaginons.
+  Ils peuvent être exécutés après chaque appuie sur une touche ou déplacement de la souris.
+  Les expressions doivent finir rapidement ou l'expérience utilisateur peut ralentir, spécialement sur les appareils lents.
+  Envisager la mise en cache des valeurs calculées sur d'autres valeurs quand le calcul est coûteux.
+
   #### Simplicity
+
+  #### Simplecité
   Although it's possible to write quite complex template expressions, we really shouldn't.
+
+  Bien qu'il soit possible d'écrire des expressions de template complexe, vous devez éviter.
 
   A property name or method call should be the norm.
   An occasional Boolean negation (`!`) is OK.
   Otherwise, confine application and business logic to the component itself,
   where it will be easier to develop and test.
 
+  Un nom de propriété ou un appel de méthode doit être la norme.
+  Une expression booléenne de négation (`!`) occationnellement est acceptatable.
+  Autrement, confinez la logique métier et de l'application dans le composant lui même,
+  où cela est plus simple de développer et tester.
+
   #### Idempotence
+
+  #### l'Idempotence
   An [idempotent](https://en.wikipedia.org/wiki/Idempotence) expression is ideal because
   it is free of side effects and improves Angular's change detection performance.
 
+  Une expression [idempotent](https://fr.wikipedia.org/wiki/Idempotence) est idéale
+  parce qu'elle est exempt d'effets secondaires et améliore la performance de détection des changements par Angular.
+
   In Angular terms, an idempotent expression always returns *exactly the same thing* until
   one of its dependent values changes.
+
+  Dans les conditions d'Angular, une expressions idempotente retourne toujours *exactement la même valeur*
+  jusqu'à ce qu'une valeur dépendante change.
 :marked
   Dependent values should not change during a single turn of the event loop.
   If an idempotent expression returns a string or a number, it returns the same string or number
   when called twice in a row. If the expression returns an object (including #{_an} `#{_Array}`),
   it returns the same object *reference* when called twice in a row.
 
+  La valeur dépendante ne doit pas changer durant un simple tour de la boucle d'évènement.
+  Si une expression idempotente retourne une chaine de caractère ou un nombre, il retourne toujours la même chaine ou nombre
+  quand il est appelé deux fois dans une ligne. Si l'expression retourne un objet (incluant un `#{_Array}`),
+  Il retourne la même instance de l'objet quand il est appelé deux fois dans une ligne.
+
 .l-main-section#template-statements
 :marked
   ## Template statements
 
+  ## Instructions de template
+
   A template **statement** responds to an **event** raised by a binding target
   such as an element, component, or directive.
+
+  Une **instruction** de template répond à un **évènement* levé par une cible liée comme
+  un élément, un composant, ou une directive.
 
   We’ll see template statements in the [event binding](#event-binding) section,
   appearing in quotes to the right of the `=` symbol as in `(event)="statement"`.
 
+  Nous verrons des instructions de template dans la section [liaison d'évènement](#event-binding),
+  apparaissant entre des guillemets double à droite du symbole `=` comme dans `(event)="instruction"`.
+
   A template statement *has a side effect*.
   It's how we update application state from user input.
   There would be no point to responding to an event otherwise.
+
+  Une instruction de template *a un effet de bord*,
+  C'est la façon pour mettre à jour l'état d'une application à partir d'entrées de l'utilisateur.
+  Si ce n'est pas le cas, cela n'as pas d'interêt de répondre à un évènement.
 
 .l-sub-section
   :marked
     Responding to events is the other side of Angular's "unidirectional data flow".
     We're free to change anything, anywhere, during this turn of the event loop.
 
+    Réagir à un évènement est l'autre aspect du "flux de données unidirectionnel" d'Angular.
+    Nous sommes libre de changer tout, n'importe où durant l'exécution de la boucle d'évènement.
+
 :marked
   Like template expressions, template *statements* use a language that looks like #{_JavaScript}.
   The template statement parser is different than the template expression parser and
-  specifically supports both basic assignment (`=`) and chaining expressions 
+  specifically supports both basic assignment (`=`) and chaining expressions
   (with !{__chaining_op}).
 
+  Comme les expressions de template, les *instructions* de template utilise un language qui resemble à #{_JavaScript}.
+  Le parseur d'instructions de template est différent que le parseur d'expression avec entre autre le support
+  des assignements basic (`=`) et les suites d'expressions (avec !{__chaining_op}).
+
   However, certain #{_JavaScript} syntax is not allowed:
+
+  Toutefois, certaines syntaxes de #{_JavaScript} ne sont pas autorisées&nbsp;:
   * !{__new_op}
+  * l'opérateur !{__new_op}
   * increment and decrement operators, `++` and `--`
+  * l'opérateur d'incrément ou décrément, `++` et `--`
   * operator assignment, such as `+=` and `-=`
+  * L'opérateur d'assignement, comme `+=` et `-=`
   * the bitwise operators `|` and `&`
+  * Les opérateurs binaires `|` et `&`
   * the [template expression operators](#expression-operators)
+  * Les [opérateurs d'expression de template](#expression-operators)
 
 :marked
   ### Statement context
 
+  ### Contexte des instructions
+
   As with expressions, statements can refer only to what's in the statement context — typically the
   **component instance** to which we're binding the event.
+
+  Comme avec les expressions, les instructions peuvent se référer seulement à un ce qui est présent dans le context
+  — typiquement l'**instance du composant** auquel nous lions l'évènement.
 
 block statement-context
   :marked
@@ -233,98 +426,185 @@ block statement-context
     can’t refer to `window` or `document`. They can’t call `console.log` or
     `Math.max`.
 
+    Les instructions de templates ne peuvent aucunement à ce qui se trouve dans le namespace global.
+    Ils ne peuvent pas se référer à `window` ou `document`. Ils ne peuvent pas appeler `console.log` ou `Math.max`.
+
 :marked
   The *onSave* in `(click)="onSave()"` is sure to be a method of the data-bound component instance.
+
+  La méthode *onSave* dans `(click)="onSave()"` est assuré d'être une méthode de l'instance du composant lié.
 
   The statement context may include an object other than the component.
   A [template reference variable](#ref-vars) is one such alternative context object.
   We'll frequently see the reserved `$event` symbol in event binding statements,
   representing the "message" or "payload" of the raised event.
 
+  Le contexte des instructions peuvent inclure un objet autre que le composant comme par exemple une [variable de template](#ref-vars)
+  ou le symbole `$event` que l'on voit souvent dans les instructions de liaisons des évènements, représentatn le "message" ou "contenu" de l'évènement envoyé.
+
   ### Statement guidelines
+
+  ### Recommandations pour les instructions
 
   As with expressions, avoid writing complex template statements.
   A method call or simple property assignment should be the norm.
 
+  Comme pour les expressions, évitez d'écrire des instructions de template complexe.
+  Un appel de méthode ou un simple assignement de propriété doit être la norme.
+
   Now that we have a feel for template expressions and statements,
   we’re ready to learn about the varieties of data binding syntax beyond interpolation.
+
+  Maintenant que nous avons une bonne idée des expressions et instructions de templates,
+  nous sommes prêt pour en apprendre les différents syntaxes de liaisons de données en dessous de l'interpolation.
 
 .l-main-section
 :marked
   <a id="binding-syntax"></a>
   ## Binding syntax: An overview
+
+  ## Apperçu de la syntaxe des liaisons de données.
+
   Data binding is a mechanism for coordinating what users see with application data values.
   While we could push values to and pull values from HTML,
   the application is easier to write, read, and maintain if we turn these chores over to a binding framework.
   We simply declare bindings between binding sources and target HTML elements and let the framework do the work.
 
+  La liaison de donnée est un mechanisme pour coordonner ce que voient les utilisateurs avec les donées de l'application.
+  Tant que nous pouvons pousser ou récuppérer des valeurs de l'HTML, l'application est simple à écrire, lire et maintenir
+  si nous laisson cette corvée à un framework de liaison.
+  Nous déclarons simplement les liaisons entre la source et l'élement HTML cible et laissons le framework faire le travail.
+
   Angular provides many kinds of data binding, and we’ll discuss each of them in this chapter.
   First we'll take a high-level view of Angular data binding and its syntax.
 
+  Angular fournis plusieurs types de laisons de données, et nous allons étudier chacun dans ce chapitre.
+  Tout d'abord, nous allons faire un tour d'horizon des liasons de données et leurs syntaxes dans Angular.
+
   We can group all bindings into three categories by the direction in which data flows.
   Each category has its distinctive syntax:
+
+  Nous pouvons regrouper les liaisons dans trois catégories par la direction dans laquel se répandent les données.
+  Chaque categorie a sa propre syntaxe&nbsp;:
 table
   tr
-    th Data direction
-    th Syntax
-    th Binding type
+    th
+      :marked
+        Data direction
+
+        Direction des données
+    th
+      :marked
+        Syntax
+
+        Syntaxe
+    th
+      :marked
+        Binding type
+
+        Type de laison
   tr
-    td One-way<br>from data source<br>to view target
+    td
+      :marked
+        One-way<br>from data source<br>to view target
+
+        A sens unique<br>depuis la source de donnée<br>jusqu'à la vue
     td
       code-example().
         {{expression}}
         [target] = "expression"
         bind-target = "expression"
-    td.
-      Interpolation<br>
-      Property<br>
-      Attribute<br>
-      Class<br>
-      Style
+    td
+      :marked
+        Interpolation<br>Property<br>Attribute<br>Class<br>Style
+
+        Interpolation<br>Propriété<br>Attribut<br>Classe<br>Style<br>
     tr
-      td One-way<br>from view target<br>to data source
+      td
+        :marked
+          One-way<br>from view target<br>to data source
+
+          A sens unique<br>depuis la vue<br>jusqu'à la source de donnée
       td
         code-example().
           (target) = "statement"
           on-target = "statement"
-      td Event
+      td
+        :marked
+        Event
+
+        Évènements
     tr
-      td Two-way
+      td
+        :marked
+          Two-way
+
+          Deux-sens
       td
         code-example().
           [(target)] = "expression"
           bindon-target = "expression"
-      td Two-way
+      td
+        :marked
+          Two-way
+
+          Deux direction
 
 :marked
   Binding types other than interpolation have a **target name** to the left of the equal sign,
   either surrounded by punctuation (`[]`, `()`) or preceded by a prefix (`bind-`, `on-`, `bindon-`).
 
+  Les types de liaisons autres que l'interpolation ont un **nom de cible** à gauche du signe égale,
+  soit entouré par une ponctuation (`[]`, `()`) ou précédé par un préfix (`bind-`, `on-`, `bindon-`).
+
   What is that target? Before we can answer that question, we must challenge ourselves to look at template HTML in a new way.
 
+  Qu'es-ce que la cible ? Avant de répondre à cette question, nous devons nous remettre en question
+  pour regarder le HTML d'un template d'une nouvelle façon.
+
   ### A new mental model
+  ### Un nouveau modèle mental
 
   With all the power of data binding and our ability to extend the HTML vocabulary
   with custom markup, it is tempting to think of template HTML as *HTML Plus*.
+
+  Avec toute la puissance de la liaison de donnée et notre possibilité d'étendre le vocabulaire du HTML
+  avec les balises personnalisé, il est tentant de penser un template HTML comme *super-HTML*
 
   Well, it *is* HTML Plus.
   But it’s also significantly different than the HTML we’re used to.
   We really need a new mental model.
 
+  Bien, ce *n'est pas* du super-HTML.
+  Mais c'est vraiment différent du HTML que nous sommes habitués.
+  Nous avons vraiment besoin d'un nouveau modèle mental.
+
   In the normal course of HTML development, we create a visual structure with HTML elements, and
   we modify those elements by setting element attributes with string constants.
+
+  Dans un cours normal de développement HTML, nous créons une structure visuel avec des éléments HTML,
+  et nous modifions ces éléments en définissant les attributs des éléments avec des constantes
 
 +makeExample('template-syntax/ts/app/app.component.html', 'img+button')(format=".")
 :marked
   We still create a structure and initialize attribute values this way in Angular templates.
 
+  Nous créons encore une structre et initialisons les valeurs des attributs de cette façon dans les templates Angular.
+
   Then we learn to create new elements with components that encapsulate HTML
   and drop them into our templates as if they were native HTML elements.
+
+  Ensuite nous apprenons à créer de nouveaux éléments avec les composants qui contiennent du HTML et
+  nous les ajoutons dans notre template comme si ce sont des éléments HTML natifs.
 +makeExample('template-syntax/ts/app/app.component.html', 'hero-detail-1')(format=".")
 :marked
   That’s HTML Plus.
 
+  C'est du Super-HTML.
+
   Now we start to learn about data binding. The first binding we meet might look like this:
+
+  Maintenant nous commençons à apprendre la liaison de donnée. La première liaison de donnée rencontrée ressemble à cela&nbsp;:
 
 +makeExample('template-syntax/ts/app/app.component.html', 'disabled-button-1')(format=".")
 :marked
@@ -332,120 +612,243 @@ table
   our intuition tells us that we’re binding to the button's `disabled` attribute and setting
   it to the current value of the component’s `isUnchanged` property.
 
+  Nous verrons la notation particulière des doubles accollades dans un moment.
+  Au-delà de cela, notre intuition nous dit que lions l'attribut `disabled` du bouton
+  avec la valeur courante de la propriété du composant `isUnchaned`.
+
   Our intuition is wrong! Our everyday HTML mental model is misleading us.
   In fact, once we start data binding, we are no longer working with HTML *attributes*. We aren't setting attributes.
   We are setting the *properties* of DOM elements, components, and directives.
+
+  Notre intuition est fausse! Notre modèle mental actuel du HTML nous met en erreur.
+  En faite, une fois que nous commençons à utiliser la liaison de donnée, nous ne travaillons plus avec les *attributs* HTML.
+  Nous ne définissons pas un attributs. Nous définissons la *propriété* d'un élément DOM, d'un composant ou d'une directives.
 
 .l-sub-section
   :marked
     ### HTML attribute vs. DOM property
 
+    ### Attribut HTML vs. propriété du DOM
+
     The distinction between an HTML attribute and a DOM property is crucial to understanding how Angular binding works.
+
+    La distinction entre un attribut HTML et une propriété du DOM est curcial pour comprendre comment les liaisons Angular fonctionnent.
 
     **Attributes are defined by HTML. Properties are defined by the DOM (Document Object Model).**
 
+    **Les Attributs sont définis par le HTML. Les Propriétés sont définis par le DOM (Document Object Model : Modèle Objet du Document).**
+
     * A few HTML attributes have 1:1 mapping to properties. `id` is one example.
+
+    * Quelques attributs HTML ont une correspondance 1:1 avec une propriété. `id` est un exemple.
 
     * Some HTML attributes don't have corresponding properties. `colspan` is one example.
 
+    * Quelques attributs HTML n'ont pas de correspondance avec une propriété. `colspan` est un exemple.
+
     * Some DOM properties don't have corresponding attributes. `textContent` is one example.
+
+    * Quelques propriétés du DOM n'ont pas d'attributs correspondant. `textContent` est un exemple.
 
     * Many HTML attributes appear to map to properties ... but not in the way we might think!
 
+    * Beaucoup d'attributs HTML semble liés avec une propriété ... Mais pas dans le sens que l'on pourrait penser !
+
     That last category can be especially confusing ... until we understand this general rule:
+
+    Alors cette dernière catégorie peut sembler confus ... jusqu'à ce que nous comprenons cette règle générale&nbsp;:
 
     **Attributes *initialize* DOM properties and then they are done.
     Property values can change; attribute values can't.**
 
+    **Les attributs *initialisent* les propriétés du DOM et c'est tout. Les valeurs des propriétés peuvent changer; les valeurs des attributs non.**
+
     For example, when the browser renders `<input type="text" value="Bob">`, it creates a
     corresponding DOM node with a `value` property *initialized* to "Bob".
+
+    Par exemple, quand le navigateur rend `<input type="text" value="Bob">`, il crée un
+    noeud DOM correspondant avec une propriété `value` *initialisé* à "Bob".
 
     When the user enters "Sally" into the input box, the DOM element `value` *property* becomes "Sally".
     But the HTML `value` *attribute* remains unchanged as we discover if we ask the input element
     about that attribute: `input.getAttribute('value') // returns "Bob"`
 
+    Quand l'utilisateur entre dans le champ texte la valeur "Sally", la propriété `value` de l'élément DOM deviens "Sally".
+    Mais l'attribut HTML `value` reste inchangé comme nous pouvons le voir si nous demandant à l'élément input la valeur
+    de l'attribut&nbsp;: `input.getAttribute('value') // returns "Bob"`
+
     The HTML attribute `value` specifies the *initial* value; the DOM `value` property is the *current* value.
+
+    L'attribut HTTML `value` spécifie la valeur *initale*; la propriété DOM `value` est la valeur *courante*.
 
     The `disabled` attribute is another peculiar example. A button's `disabled` *property* is
     `false` by default so the button is enabled.
     When we add the `disabled` *attribute*, its presence alone initializes the  button's `disabled` *property* to `true`
     so the button is disabled.
 
+    L'attribut `disabled` est un autre exemple particulier. La *propriété* `disabled`d'un bouton est par dafaut à `false`
+    alors le bouton est actif.
+    Quand nous ajoutons l'*attribut* `disabled`, sa seule présence initialise la propriété `disabled` du bouton à `true`
+    alors le bouton est désactivé.
+
     Adding and removing the `disabled` *attribute* disables and enables the button. The value of the *attribute* is irrelevant,
     which is why we cannot enable a button by writing `<button disabled="false">Still Disabled</button>`.
+
+    Ajouter et supprimer l'*attribut* `disabled` désactive et active le bouton. La valeur de l'*attribut* est non significative,
+    C'est pourquoi nous ne pouvons activer un bouton en écrivant `<button disabled="false">Still Disabled</button>`.
 
     Setting the button's `disabled` *property*  (say, with an Angular binding) disables or enables the button.
     The value of the *property* matters.
 
+    Renseigner la *propriété* `disabled` d'un bouton (disons que nous utilisons la liaison Angular) désactive ou active le bouton.
+    La valeur de la *propriété* importe.
+
     **The HTML attribute and the DOM property are not the same thing, even when they have the same name.**
+
+    **L'attribut HTML et la propriété DOM ne sont pas la même chose, même si ils ont le même nom.**
 
 :marked
   This is so important, we’ll say it again.
 
+  Cela est un très important, alors nous allons le redire encore.
+
   **Template binding works with *properties* and *events*, not *attributes*.**
+
+  **La liaison dans les templates fonctionne avec les *propriétés* et les *événements*, et non les *attributs*.**
 
 .callout.is-helpful
   header A world without attributes
+  header Un monde sans attributs
   :marked
     In the world of Angular 2, the only role of attributes is to initialize element and directive state.
     When we data bind, we're dealing exclusively with element and directive properties and events.
     Attributes effectively disappear.
+
+    Dans le monde d'angular 2, le seul role des attributs est d'initiliser les éléments et l'état des directives.
+    Quand les données se lie, nous travaillons exclusivement avec les propriétés des éléments et directives et les évènements.
+    Les attributs disparraissent effectivement.
 :marked
   With this model firmly in mind, let's learn about binding targets.
 
+  Avec ce modèle ancré dans la tête, allons en apprendre plus sur les cibles de liaisons.
+
   ### Binding targets
+
+  ### Cibles de liaisons
   The **target of a data binding** is something in the DOM.
   Depending on the binding type, the target can be an
   (element | component | directive) property, an
   (element | component | directive) event, or (rarely) an attribute name.
   The following table summarizes:
 
+  La **cible de la liaison de données** est quelque chose dans le DOM.
+  En fonction du type de liaison, la cible peut être une propriété d'un élément, d'un composant ou d'une directive;
+  un événement d'un élément, d'un composant ou d'une directive; ou (rarement) d'un nom d'attribut.
+  Le tableau suivant résulte tous cela&nbsp;
+
 // If you update this table, UPDATE it in Dart & JS, too.
 <div width="90%">
 table
   tr
-    th Binding type
-    th Target
-    th Examples
+    th
+      :marked
+        Binding type
+
+        Type de liaisons
+    th
+      :marked
+        Target
+
+        Cible
+    th
+      :marked
+        Examples
+
+        Exemples
   tr
-    td Property
-    td.
-      Element&nbsp;property<br>
-      Component&nbsp;property<br>
-      Directive&nbsp;property
+    td
+      :marked
+        Property
+
+        Propriété
+    td
+      :marked
+        Element&nbsp;property<br>
+        Component&nbsp;property<br>
+        Directive&nbsp;property
+
+        Propriété&nbsp;d'un&nbsp;Element<br>
+        Propriété&nbsp;d'un&nbsp;Component<br>
+        Propriété&nbsp;d'une&nbsp;Directive
     td
       +makeExample('template-syntax/ts/app/app.component.html', 'property-binding-syntax-1')(format=".")
   tr
-    td Event
-    td.
-      Element&nbsp;event<br>
-      Component&nbsp;event<br>
-      Directive&nbsp;event
+    td
+      :marked
+        Event
+
+        Évènement
+    td
+      :marked
+        Element&nbsp;property<br>
+        Component&nbsp;property<br>
+        Directive&nbsp;property
+
+        Évènement&nbsp;d'un&nbsp;Element<br>
+        Évènement&nbsp;d'un&nbsp;Component<br>
+        Évènement&nbsp;d'une&nbsp;Directive
     td
       +makeExample('template-syntax/ts/app/app.component.html', 'event-binding-syntax-1')(format=".")
   tr
-    td Two-way
-    td.
-      Event and property
+    td
+      :marked
+        Two-way
+
+        Double-sens
+    td
+      :marked
+        Event and property
+
+        Évènement et propriété
     td
       +makeExample('template-syntax/ts/app/app.component.html', '2-way-binding-syntax-1')(format=".")
   tr
-    td Attribute
-    td.
-      Attribute
-      (the&nbsp;exception)
+    td
+      :marked
+        Attribute
+
+        Attribut
+    td
+      :marked
+        Attribute (the&nbsp;exception)
+
+        Attribut&nbsp;(l'exception)
     td
       +makeExample('template-syntax/ts/app/app.component.html', 'attribute-binding-syntax-1')(format=".")
   tr
-    td Class
-    td.
-      <code>class</code> property
+    td
+      :marked
+        Class
+
+        Classe CSS
+    td
+      :marked
+        <code>class</code> property
+
+        nom de <code>classe</code>
     td
       +makeExample('template-syntax/ts/app/app.component.html', 'class-binding-syntax-1')(format=".")
   tr
-    td Style
-    td.
-      <code>style</code> property
+    td
+      :marked
+        Style
+
+        Style CSS
+    td
+      :marked
+        <code>style</code> property
+
+        nom de <code>style</code> CSS
     td
       +makeExample('template-syntax/ts/app/app.component.html', 'style-binding-syntax-1')(format=".")
 </div>
@@ -453,38 +856,65 @@ table
 :marked
   Let’s descend from the architectural clouds and look at each of these binding types in concrete detail.
 
+  Redescendons de notre nuage architectural et regardons chaque type de liaisons dans le détail.
+
 .l-main-section
 :marked
   ## Property binding
+  ## Liaison de propriété
   We write a template **property binding** when we want to set a property of a view element to the value of
   a [template expression](#template-expressions).
 
+  Nous écrivons une **liaison de propriété** quand nous voulons définir une propriété d'un élément de la value
+  avec la valeur d'une [expression de template](#template-expressions).
+
   The most common property binding sets an element property to a component property value. An example is
   binding the `src` property of an image element to a component’s `heroImageUrl` property:
+
+  La plus commune des liaisons de propriétés définie une propriété d'un élément à la valeur d'une propriété d'un composant.
+  L'exemple suivant lie la propriété `src` d'un élément image à la propriété `heroImageUrl` d'un composant&nbsp;:
 +makeExample('template-syntax/ts/app/app.component.html', 'property-binding-1')(format=".")
 :marked
   Another example is disabling a button when the component says that it `isUnchanged`:
+
+  Un autre exemple désactive un bouton lorsque la propriété `isUnchanged` est vrai&nbsp;:
 +makeExample('template-syntax/ts/app/app.component.html', 'property-binding-2')(format=".")
 :marked
   Another is setting a property of a directive:
+
+  Ou encore en définissant la propriété d'une directive&nbsp;:
 +makeExample('template-syntax/ts/app/app.component.html', 'property-binding-3')(format=".")
 :marked
   Yet another is setting the model property of a custom component (a great way
   for parent and child components to communicate):
+
+  Encore un autre exemple qui définie la propriété d'un composant personnalisé
+  (un excellent moyen pour qu'un composant parent et enfant puisse communiquer)
 +makeExample('template-syntax/ts/app/app.component.html', 'property-binding-4')(format=".")
 :marked
   ### One-way *in*
+  ### Simple-sens en *entrée*
   People often describe property binding as *one-way data binding* because it flows a value in one direction,
   from a component’s data property into a target element property.
 
+  Les gens d'écrivent souvent la liaison de donnée sur les propriété comme la *liaison de donnée à sens-unique*
+  car il fait répendre une valeur dans une direction, de la propriété du composant vers la propriété de l'élément cible.
+
   We cannot use property binding to pull values *out* of the target element.
   We can't bind to a property of the target element to read it. We can only set it.
+
+  Nous ne pouvons pas utiliser la liaison de donnée sur les propriété pour extraire des valeurs de l'élément cible.
+  Nous ne pouvons pas lié une propriété d'un élément cible pour la lire. Nous ne pouvons seulement la définir.
 
 .l-sub-section
   :marked
     Nor can we use property binding to *call* a method on the target element.
 
+    Nous ne pouvons pas utiliser la liaison de propriété pour *appeler* une méthode sur un élément cible.
+
     If the element raises events we can listen to them with an [event binding](#event-binding).
+
+    Si l'élément déclanche des évènements nous pouvons les écouter avec une [liaison d'évènement](#event-binding).
 
     If we must read a target element property or call one of its methods,
     we'll need a different technique.
@@ -492,22 +922,38 @@ table
     [viewChild](../api/core/index/ViewChild-var.html) and
     [contentChild](../api/core/index/ContentChild-var.html).
 
+    Si nous devons lire une propriété d'un élément cible ou appeler une de ces méthodes, nous avons besoins d'une technique différente. Lisez la référence pour les API [viewChild](../api/core/index/ViewChild-var.html) et
+    [contentChild](../api/core/index/ContentChild-var.html).
+
 // TODO (global): once we have api docs everywhere, change /docs/ts/latest/ to ../
 
 :marked
   ### Binding target
+  ### Cible de liaison
   An element property between enclosing square brackets identifies the target property. The target property in the following code is the image element’s `src` property.
+
+  Une propriété d'un élément entouré de crochets identifie la propriété cible. La propriété cible dans
+  le code suivant est la propriété `src` de l'élément image.
 
 +makeExample('template-syntax/ts/app/app.component.html', 'property-binding-1')(format=".")
 :marked
   Some people prefer the `bind-` prefix alternative, known as the *canonical form*:
+
+  Certaines personnes préfèrent l'aternative avec le préfix `bind-`, connue comme la *forme canonique*&nbsp;:
 +makeExample('template-syntax/ts/app/app.component.html', 'property-binding-5')(format=".")
 :marked
   The target name is always the name of a property, even when it appears to be the name of something else. We see `src` and may think it’s the name of an attribute. No. It’s the name of an image element property.
 
+  Le nom de la cible est toujours le nom d'une propriété, même quand il apparait être le nom de quelque chose d'autre.
+  Nous voyons `src` et nous pouvons penser que c'est le nom d'un attribut.
+  Non. C'est le nom de la propriété de l'élément image.
+
   Element properties may be the more common targets,
   but Angular looks first to see if the name is a property of a known directive,
   as it is in the following example:
+
+  Les propriétés peuvent être la cible la plus courante, mais angular regarde d'abord si le nom est une propriété
+  d'une directive connue, comme dans l'exemple suivant&nbsp;:
 +makeExample('template-syntax/ts/app/app.component.html', 'property-binding-3')(format=".")
 
 .l-sub-section
@@ -515,8 +961,14 @@ table
     Technically, Angular is matching the name to a directive [input](#inputs-outputs),
     one of the property names listed in the directive’s `inputs` array or a property decorated with `@Input()`.
     Such inputs map to the directive’s own properties.
+
+    Techniquement, Angular va lié le nom avec l'[entrée](#inputs-outputs) d'une directive,
+    un des noms de propriétés listé dans le tableau `inputs` de la directive, ou une propriété décoré par `@Input()`.
+    Les entrées sont directement relié aux propre propriétés de la directives.
 :marked
   If the name fails to match a property of a known directive or element, Angular reports an “unknown directive” error.
+
+  Si le nom ne correspond à aucune propriété d'une directive connue ou un élément, Angular reporte alors une erreur “unknown directive”.
 
   ### Avoid side effects
   As we've already discussed, evaluation of a template expression should have no visible side effects. The expression language itself does its part to keep us safe. We can’t assign a value to anything in a property binding expression nor use the increment and decrement operators.
@@ -567,7 +1019,7 @@ a(id="one-time-initialization")
   The `[hero]` binding, on the other hand, remains a live binding to the component's `currentHero` property.
 
   ### Property binding or interpolation?
-  We often have a choice between interpolation and property binding. 
+  We often have a choice between interpolation and property binding.
   The following binding pairs do the same thing:
 +makeExample('template-syntax/ts/app/app.component.html', 'property-binding-vs-interpolation')(format=".")
 :marked
@@ -584,13 +1036,13 @@ a(id="one-time-initialization")
 :marked
   #### Content Security
   Imagine the following *malicious content*.
-+makeExample('template-syntax/ts/app/app.component.ts', 'evil-title')(format=".")    
++makeExample('template-syntax/ts/app/app.component.ts', 'evil-title')(format=".")
 :marked
   Fortunately, Angular data binding is on alert for dangerous HTML.
   It *sanitizes* the values before displaying them.
   It **will not** allow HTML with script tags to leak into the browser, neither with interpolation
   nor property binding.
-+makeExample('template-syntax/ts/app/app.component.html', 'property-binding-vs-interpolation-sanitization')(format=".")    
++makeExample('template-syntax/ts/app/app.component.html', 'property-binding-vs-interpolation-sanitization')(format=".")
 :marked
   Interpolation handles the script tags differently than property binding but both approaches render the
   content harmlessly.
@@ -1438,7 +1890,7 @@ block json-pipe
 
 block dart-safe-nav-op
   //- N/A
-  
+
 :marked
   Let’s elaborate on the problem and this particular solution.
 
