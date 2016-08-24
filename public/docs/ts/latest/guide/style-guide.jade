@@ -3,11 +3,11 @@ include ../_util-fns
 :marked
   Welcome to the Angular 2 Style Guide
   
-  Bienvenue dans le code typographique d'Angular 2
+  Bienvenue dans le code typographique d'Angular 2 (_Style Guide_)
 
   ## Purpose
   
-  ## L'objectif de ce document
+  ## L'object de ce document
 
   If you are looking for an opinionated style guide for syntax, conventions, and structuring Angular applications, then step right in.
   
@@ -25,7 +25,7 @@ include ../_util-fns
 
   Each guideline describes either a good or bad practice, and all have a consistent presentation.
   
-  Chaque directive décrit soit une bonne ou mauvaise pratique, et possèdent toutes une présentation détaillée.
+  Chaque directive décrit soit une bonne ou mauvaise pratique, et possède toute une présentation détaillée.
 
   The wording of each guideline indicates how strong the recommendation is.
   
@@ -80,43 +80,24 @@ a(id='toc')
   ## Table des matières
 
     1. [Single Responsibility](#single-responsibility)
-    
     1. [Responsabilité Unique](#single-responsibility)
-    
     1. [Naming](#naming)
-    
     1. [Nommage](#naming)
-    
     1. [Coding Conventions](#coding-conventions)
-    
     1. [Conventions de codage](#coding-conventions)
-    
     1. [Application Structure](#application-structure)
-    
     1. [Structure de l'application](#application-structure)
-    
     1. [Components](#components)
-    
     1. [Les composants](#components)
-    
     1. [Directives](#directives)
-    
     1. [Les directives](#directives)
-    
     1. [Services](#services)
-    
     1. [Les services](#services)
-    
     1. [Data Services](#data-services)
-    
     1. [Les services de données](#data-services)
-    
     1. [Lifecycle Hooks](#lifecycle-hooks)
-    
     1. [Les fonctions de cycle de vie](#lifecycle-hooks)
-    
     1. [Appendix](#appendix)
-    
     1. [Annexe](#appendix)
 
 .l-main-section
@@ -376,31 +357,46 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="02-03"></a>Components and Directives
+
+  ### <a id="02-03"></a>Composants et Directives
+
   #### <a href="#02-03">Style 02-03</a>
 
 .s-rule.do
   :marked
     **Do** use consistent names for all assets named after what they represent.
 
+    **Vous devez** utiliser des noms pour les ressources en cohérence avec ce qu'elles représentent.
+
 .s-rule.do
   :marked
     **Do** use upper camel case for symbols. Match the name of the symbol to the naming of the file.
+
+   **Vous devez**  utiliser une première lettre en majuscule pour les noms des classes. Donner le même nom aux classes et aux fichiers qui les contiennent.
 
 .s-rule.do
   :marked
     **Do** append the symbol name with the suffix that it represents.
 
+    **Vous devez** suffixer le nom de la classe avec ce qu'elle représente.
+
 .s-why
   :marked
     **Why?** Provides a consistent way to quickly identify and reference assets.
+
+    **Pourquoi ?** Cela offre un moyen rapide d'identifier et utiliser les ressources.
 
 .s-why
   :marked
     **Why?** Upper camel case is conventional for identifying objects that can be instantiated using a constructor.
 
+    **Pourquoi ?** La première lettre en majuscule est une convention utilisée pour identifier les objets pouvant être instancier à partir d'un constructeur de classe.
+
 .s-why.s-why-last
   :marked
     **Why?** The `Component` suffix is more commonly used and is more explicitly descriptive.
+
+    **Pourquoi ?** Le suffixe `Component` est largement utilisé. De plus, il est suffisamment explicite.
 
 - var top="vertical-align:top"
 table(width="100%")
@@ -458,31 +454,46 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="02-04"></a>Service Names
+
+   ### <a id="02-04"></a>Les noms des Services
+
   #### <a href="#02-04">Style 02-04</a>
 
 .s-rule.do
   :marked
     **Do** use consistent names for all services named after their feature.
 
+     **Vous devez** utiliser des noms pour les services en cohérence avec leur responsabilité.
+
 .s-rule.do
   :marked
     **Do** use upper camel case for services.
+
+    **Vous devez**  utiliser une première lettre en majuscule pour les noms des services.
 
 .s-rule.do
   :marked
     **Do** suffix services with `Service` when it is not clear what they are (e.g. when they are nouns).
 
+    **Vous devez** suffixer les services par `Service` lorsque leur rôle n'est pas clairement explicite (e. g. dans le cas où un service est représenté par un nom)
+
 .s-why
   :marked
     **Why?** Provides a consistent way to quickly identify and reference services.
+
+    **Pourquoi ?**  Cela offre un moyen rapide d'identifier et utiliser les services.
 
 .s-why
   :marked
     **Why?** Clear service names such as `Logger` do not require a suffix.
 
+    **Pourquoi ?** les noms des services suffisamment explicite tel que `Logger` ne requiert pas de suffixe.
+
 .s-why.s-why-last
   :marked
     **Why?** Service names such as `Credit` are nouns and require a suffix and should be named with a suffix when it is not obvious if it is a service or something else.
+
+    **Pourquoi ?** les noms des services tels que `Credit` sont des noms et requirent un suffixe. Ils devraient contenir un suffixe lorsqu'il n'est pas clair s'ils sont des services ou autre chose.
 
 - var top="vertical-align:top"
 table(width="100%")
@@ -524,23 +535,34 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="02-05"></a>Bootstrapping
+
+  ### <a id="02-05"></a>Initialisation de l'application 
+
   #### <a href="#02-05">Style 02-05</a>
 
 .s-rule.do
   :marked
     **Do** put bootstrapping and platform logic for the app in a file named `main.ts`.
 
+    **Vous devez** placer la configuration de l'application et la logique relative à la plateforme cible dans un fichier nommé `main.ts`
+
 .s-rule.avoid
   :marked
     **Avoid** putting app logic in the `main.ts`. Instead consider placing it in a Component or Service.
+
+    **Evitez** de placer de la logique applicative dans le fichier `main.ts`. Placez-là plutôt dans un composant ou un service.
 
 .s-why
   :marked
     **Why?** Follows a consistent convention for the startup logic of an app.
 
+    **Pourquoi ?** Cela permet de respecter une certaine convention pour la phase d'initialisation de l'application. 
+
 .s-why.s-why-last
   :marked
     **Why?** Follows a familiar convention from other technology platforms.
+
+    **Pourquoi ?** Cela permet de respecter des conventions établies dans d'autres technologies. 
 
 a(href="#toc") Back to top
 
@@ -549,19 +571,28 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="02-06"></a>Directive Selectors
+
+  ### <a id="02-06"></a>Sélecteurs de Directives
+
   #### <a href="#02-06">Style 02-06</a>
 
 .s-rule.do
   :marked
     **Do** Use lower camel case for naming the selectors of our directives.
 
+    **Vous devez** utiliser une première lettre en minuscule pour les noms des directives. 
+
 .s-why
   :marked
     **Why?** Keeps the names of the properties defined in the directives that are bound to the view consistent with the attribute names.
 
+    **Pourquoi ?** Cela permet de garder une cohérence entre les noms des propriétés définit dans les directives, et utilisés dans la vue, et les les noms des attributs.
+
 .s-why.s-why-last
   :marked
     **Why?** The Angular 2 HTML parser is case sensitive and will recognize lower camel case.
+
+    **Pourquoi ?** Le parser d'HTML d'Angular 2 est sensible à la casse et fera donc la différence entre les minuscules et majuscules.
 
 a(href="#toc") Back to top
 
@@ -570,27 +601,40 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="02-07"></a>Custom Prefix for Components
+
+   ### <a id="02-07"></a>Des préfixes personnalisés pour les composants
+
   #### <a href="#02-07">Style 02-07</a>
 
 .s-rule.do
   :marked
     **Do** use a custom prefix for the selector of our components. For example, the prefix `toh` represents from **T**our **o**f **H**eroes and the prefix `admin` represents an admin feature area.
 
+    **Vous devez** utiliser des préfixes pour les sélecteurs des composants. Par exemple, le préfixe `ton` représente notre **T**our **o**f **H**eroes et le préfixe `admin` représente une fonctionnalité d'administration.
+
 .s-rule.do
   :marked
     **Do** use a prefix that identifies the feature area or the app itself.
+
+     **Vous devez** utiliser un préfixe qui identifie clairement le périmètre de la fonctionnalité ou l'application elle même.
 
 .s-why
   :marked
     **Why?** Prevents name collisions.
 
+    **Pourquoi ?** Cela permet d'éviter les collisions de nommage. 
+
 .s-why
   :marked
     **Why?** Makes it easier to promote and share our feature in other apps.
 
+    **Pourquoi ?**  Cela permet de partager notre fonctionnalité et rend son utilisation dans d'autres applications chose aisée. 
+
 .s-why.s-why-last
   :marked
     **Why?** Our Components and elements are easily identified.
+
+    **Pourquoi ?** Nos composants et éléments sont facilement identifiables. 
 
 +makeExample('style-guide/ts/02-07/app/heroes/hero.component.avoid.ts', 'example', 'app/heroes/hero.component.ts')(avoid=1)
 :marked
@@ -606,19 +650,28 @@ a(href="#toc") Retour en haut
 
 :marked
   ### <a id="02-08"></a>Custom Prefix for Directives
+
+  ### <a id="02-08"></a>Des préfixes personnalisés pour les directives
+
   #### <a href="#02-08">Style 02-08</a>
 
 .s-rule.do
   :marked
     **Do** use a custom prefix for the selector of our directives (for instance below we use the prefix `toh` from **T**our **o**f **H**eroes).
 
+    **Vous devez ?** utiliser un préfixe personnalisé pour les directives (par exemple nous avons utilisé le préfixe `toh` pour **T**our **o**f **H**eroes).
+
 .s-why
   :marked
     **Why?** Prevents name collisions.
 
+    **Pourquoi ?** Cela permet d'éviter les collisions de nommage. 
+
 .s-why.s-why-last
   :marked
     **Why?** Our Directives are easily identified.
+
+    **Pourquoi ?** Nos directives sont facilement identifiables. 
 
 +makeExample('style-guide/ts/02-08/app/shared/validate.directive.avoid.ts', 'example', 'app/shared/validate.directive.ts')(avoid=1)
 :marked
@@ -633,15 +686,22 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="02-09"></a>Pipe Names
+
+   ### <a id="02-09"></a>Les noms des Pipes
+
   #### <a href="#02-09">Style 02-09</a>
 
 .s-rule.do
   :marked
     **Do** use consistent names for all pipes, named after their feature.
 
+    **Vous devez** utiliser des noms cohérents pour tous les pipes, des noms en rapport avec leur responsabilités. 
+
 .s-why.s-why-last
   :marked
     **Why?** Provides a consistent way to quickly identify and reference pipes.
+
+    **Pourquoi ?** Cela offre un moyen rapide d'identifier et références les pipes. 
 
 - var top="vertical-align:top"
 table(width="100%")
@@ -675,23 +735,35 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="02-10"></a>Unit Test File Names
+
+  ### <a id="02-10"></a>Les noms des fichiers de tests unitaires 
+
   #### <a href="#02-10">Style 02-10</a>
 
 .s-rule.do
   :marked
     **Do** name test specification files the same as the component they test.
 
+    **Vous devez** nommer les tests de spécifications de la même manière que les composants qu'ils testent. 
+
 .s-rule.do
   :marked
     **Do** name test specification files with a suffix of `.spec`.
+
+    **Vous devez** nommer les tests de spécifications avec un suffixe `.spec`. 
 
 .s-why
   :marked
       **Why?** Provides a consistent way to quickly identify tests.
 
+      **Pourquoi ?** Offre un moyen rapide d'identifier les tests. 
+
 .s-why.s-why-last
   :marked
       **Why?** Provides pattern matching for [karma](http://karma-runner.github.io/) or other test runners.
+     
+      **Pourquoi ?** Offre un schéma de filtrage pour [karma](http://karma-runner.github.io) ou d'autres lanceurs de tests. 
+
 
 :marked
 - var top="vertical-align:top"
