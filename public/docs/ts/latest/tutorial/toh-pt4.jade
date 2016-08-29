@@ -206,7 +206,7 @@ code-example(language="bash").
   We already have mock `Hero` data sitting in the `AppComponent`.  It doesn't belong there. It doesn't belong *here* either.
   We'll move the mock data to its own file.
 
-  Nous avons déjà utiliser de fausses données `Hero`dans notre `AppComponent`. Ce ne sont pas leurs places.
+  Nous avons déjà utilisé de fausses données `Hero`dans notre `AppComponent`. Ce ne sont pas leurs places.
   Nous allons mettre ces données dans un fichier à part.
 
   Cut the `HEROES` array from `app.component.ts` and paste it to a new file in the `app` folder named `mock-heroes.ts`.
@@ -245,7 +245,7 @@ code-example(language="bash").
 
   We're ready to use the `HeroService` in other components starting with our `AppComponent`.
 
-  Nous somme maintenant prêt à utiliser notre `HeroService` dans d'autres composants en commençant par le `AppComponent`.
+  Nous sommes maintenant prêt à utiliser notre `HeroService` dans d'autres composants en commençant par le `AppComponent`.
 
   We begin, as usual, by importing the thing we want to use, the `HeroService`.
 
@@ -313,11 +313,11 @@ code-example(language="bash").
 
   We get it. Really we do.
 
-  Bon nous avons compris.
+  Bon... nous avons compris.
 
   But it is so ridiculously easy to avoid these problems that there is no excuse for doing it wrong.
 
-  C'est tellement facile d'éviter tout ces problèmes que nous n'avons aucunes excuses pour ne pas faire les choses bien.
+  C'est tellement facile d'éviter tout ces problèmes que nous n'avons aucune excuse pour ne pas faire les choses bien.
 
   ### Inject the *HeroService*
 
@@ -415,7 +415,7 @@ a#child-component
   Years of experience and bitter tears have taught us to keep complex logic out of the constructor,
   especially anything that might call a server as a data access method is sure to do.
 
-  Des années d'expériences plus ou moins douloureuses, nous ont appris à isoler la logique complexe hors de notre constructeur,
+  Des années d'expériences plus ou moins douloureuses nous ont appris à isoler la logique complexe hors de notre constructeur,
   surtout ce qui concerne les appels à un serveur pour accéder aux données.
 
   The constructor is for simple initializations like wiring constructor parameters to properties.
@@ -563,7 +563,7 @@ a#child-component
     The [ES2015 arrow function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
     in the callback is more succinct than the equivalent function expression and gracefully handles *this*.
 
-    Les [fonctions fléchées d'ES2015](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+    Les [fonctions fléchées d'ES2015](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Fonctions/Fonctions_fl%C3%A9ch%C3%A9es)
     sont plus concises que leurs équivalentes traditionelles et elles gèrent le *this* de façon plus élégante.
 :marked
   Our callback sets the component's `heroes` property to the array of heroes returned by the service. That's all there is to it!
