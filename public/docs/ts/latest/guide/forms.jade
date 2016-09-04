@@ -20,14 +20,14 @@ include ../_util-fns
   *Ceci* requiert des compétence en design, pour être franc, c'est hors du contexte de ce chapitre.
 
   Dans un formulaire, il faut pouvoir gérer 
-  **le binding bidirectionnel des données, le suivi des changements, la validation des champs et la gestion des erreurs**.
+  **la liaison bidirectionnelle des données, le suivi des changements, la validation des champs et la gestion des erreurs**.
   ... nous allons traiter ces différents points tout au long de ce chapitre.
 
   Nous allons construire un formulaire simple à partir de zéro, pas à pas, durant lequel nous apprendrons
 
   - à construire un formulaire Angular en utilisant un composant et un modèle
 
-  - le binding bidirectionnel des données avec la syntaxe de `[(ngModel)]` pour lire et écrire les valeurs des formulaires de saisie
+  - la liaison bidirectionnelle des données avec la syntaxe de `[(ngModel)]` pour lire et écrire les valeurs des formulaires de saisie
 
   - l'utilisation de `ngModel` pour suivre les changements et la validité des valeurs dans un formulaire
 
@@ -100,7 +100,7 @@ figure.image-display
   1. Créer la classe du modèle `Hero`
   1. Créer le composant qui contrôlera le formulaire
   1. Créer une vue avec la mise en page du formulaire initiale
-  1. Lier les propriétés à chaque champ avec la syntaxe de binding bidirectionnel de `ngModel`
+  1. Lier les propriétés à chaque champ avec la syntaxe de liaison bidirectionnelle de `ngModel`
   1. Ajouter l'attribut **#name** pour chaque champ du formulaire
   1. Personnaliser le CSS pour fournir une meilleur interaction utilisateur
   1. Afficher et cacher les message d'erreurs
@@ -221,7 +221,7 @@ code-example(format="").
 
   Nous avons un bouton *Submit* en bas avec quelques classes dessus.
 
-  **Nous n'utilisons pas encore Angular**. Il n'y a pas de binding. Ni de directives. Juste de l'affichage.
+  **Nous n'utilisons pas encore Angular**. Il n'y a pas de liaison. Ni de directives. Juste de l'affichage.
 
   Les classes `container`,`form-group`, `form-control`, et `btn`
   viennent de [Twitter Bootstrap](http://getbootstrap.com/css/). Juste du style.
@@ -296,7 +296,7 @@ figure.image-display
     
 
 :marked
-  Concentrons nous sur la syntaxe de binding: `[(ngModel)]="..."`.
+  Concentrons nous sur la syntaxe de liaison: `[(ngModel)]="..."`.
 
   Si nous lançons l'application maintenant et commençons à modifier le champ *Nom*,
   nous verrons nos modifications apparaître à côté
@@ -306,7 +306,7 @@ figure.image-display
   img(src="/resources/images/devguide/forms/ng-model-in-action.png" width="400px" alt="ngModel in action")
 :marked
   Nous pouvons voir clairement le flux aller du champ vers le model et revenir.
-  **C'est le binding bidirectionnel!**
+  **C'est la liaison bidirectionnelle!**
 
   Notez que nous avons également ajouter un attribut `name` à notre balise `<input>`. C'est obligatoire lorsque nous utilisons `[(ngModel)]` avec un formulaire, nous pouvons donc facilement faire référence à la valeur dans le formulaire global et sa validité.
 
@@ -314,7 +314,7 @@ figure.image-display
   
   Nous supprimons la précédents interpolation de debug
   et ajoutons la propriété `diagnostic` en haut du formulaire.
-  Nous pourrons donc confirmer que le binding bidirectionnel fonctionne *pour le modèle Hero*.
+  Nous pourrons donc confirmer que la liaison bidirectionnelle fonctionne *pour le modèle Hero*.
 
   Notre formulaire devrais être assemblé à trois `[(ngModel)]`,
   comme ceci :
@@ -329,28 +329,28 @@ figure.image-display
   L'interpolation `diagnostic` en haut du formulaire
   confirme que tous les changements sont reporter au modèle.
 
-  **Supprimer** l'interpolation `{{diagnostic}}` du haut puisque qu'on a confirmé le binding bidirectionnel.
+  **Supprimer** l'interpolation `{{diagnostic}}` du haut puisque qu'on a confirmé la liaison bidirectionnelle.
 
 .l-sub-section
   :marked
     ### Fonctionnement interne de [(ngModel)]
     *Cette section sur [(ngModel)] est optionnelle. Pas intéressé(e)? Sautez cette section!*
     
-    La syntaxe de binding, <span style="font-family:courier"><b>[()]</b></span>, peut nous donner une idée sur ce qui ce passe.
+    La syntaxe de liaison, <span style="font-family:courier"><b>[()]</b></span>, peut nous donner une idée sur ce qui ce passe.
 
     Dans un Binding de Propriété, une valeur se déplace du modèle à une propriété cible sur l'écran.
     Nous identifions cette propriété cible en entourant son nom entre crochets, <span style="font-family:courier"><b>[]</b></span>.
-    C'est le binding unidirectionnelle **du modèle à la vue**.
+    C'est la liaison unidirectionnelle **du modèle à la vue**.
 
     Dans le Binding d'Événement, nous déplaçons la valeur de la propriété cible sur l'écran vers le modèle.
     Nous identifions cette propriété cible en entourant son nom entre parenthèses, <span style="font-family:courier"><b>()</b></span>.
-    C'est le binding unidirectionnel dans le sens opposé **de la vue au modèle**.
+    C'est la liaison unidirectionnelle dans le sens opposé **de la vue au modèle**.
 
     C'est donc normal que Angular choisi de combiner les ponctuations comme ceci <span style="font-family:courier"><b>[()]</b></span>
-    pour faire une binding bidirectionnel et **déplacer la donnée dans les deux sens**.
+    pour faire une liaison bidirectionnelle et **déplacer la donnée dans les deux sens**.
 
-    En fait, nous pouvons séparer le binding de `Ng model` en deux modes distinct
-    comme décrit ci-dessous avec le binding du `<input>` "Name":
+    En fait, nous pouvons séparer la liaison de `Ng model` en deux modes distinct
+    comme décrit ci-dessous avec la liaison du `<input>` "Name":
   +makeExample('forms/ts/app/hero-form.component.html', 'ngModel-3','app/hero-form.component.html (excerpt)')(format=".")
 
   :marked
@@ -358,7 +358,7 @@ figure.image-display
 
     Le `ngModelChange` n'est pas un événement de l'élément `input`.
     C'est en fait une propriété d'événement de la directive `NgModel`.
-    Quand Angular voit une cible de binding sous la forme <span style="font-family:courier">[(x)]</span>,
+    Quand Angular voit une cible de liaison sous la forme <span style="font-family:courier">[(x)]</span>,
     Il s'attend à ce que la directive `x` ai une propriété d'entrée `x` et une propriété de sortie `xChange`.
 
     L'autre singularité est l'expression, `model.name = $event`.
@@ -368,19 +368,19 @@ figure.image-display
     nous devrons assigner à la propriété `name` du model.
 
     Bon à savoir, mais est-ce pratique? La plupart du temps, nous préférerons utiliser `[(ngModel)]`.
-    Nous pourrons séparer le binding bidirectionnel si nous avons des choses spéciales à faire dans
+    Nous pourrons séparer la liaison bidirectionnelle si nous avons des choses spéciales à faire dans
     la gestion des événements tel que du debounce ou pour limiter le nombre d'événement mettant à jour le modèle.
 
-    Vous pouvez en apprendre plus sur `NgModel` et sur d'autres syntaxe de binding dans le 
+    Vous pouvez en apprendre plus sur `NgModel` et sur d'autres syntaxe de liaison dans le 
     chapitre [Syntaxe de Template](./template-syntax.html).
 
 .l-main-section
 :marked
   ## Traquer les changements et la validité avec **ngModel**
 
-  Faire un formulaire ne se résume pas par faire le binding des données. Nous voulons aussi savoir l'état des champs du formulaire
+  Faire un formulaire ne se résume pas par faire la liaison des données. Nous voulons aussi savoir l'état des champs du formulaire
 
-  L'utilisation `ngModel` dans un formulaire nous offre plus que juste le binding bidirectionnel. Il est aussi possible de savoir quand un utilisateur touche un champ, si une valeur a changé, ou si une valeur est devenu invalide.
+  L'utilisation `ngModel` dans un formulaire nous offre plus que juste la liaison bidirectionnelle. Il est aussi possible de savoir quand un utilisateur touche un champ, si une valeur a changé, ou si une valeur est devenu invalide.
 
   `ngModel` ne se contente pas de suivre l'état d'un valeur; Il met à jour le champ avec une spéciale classe CSS d'Angular.
   Nous pouvons utilise ces noms de classes pour changer le style des 
@@ -581,7 +581,7 @@ figure.image-display
 
   Une "soumission de formulaire" est inutile pour l'instant.
   Pour la rendre utile, nous allons mettre à jour la balise `<form>` avec une autre directive d'Angular , `NgSubmit`,
-  et la lier à la méthode `HeroFormComponent.submit()` avec un binding d'événement
+  et la lier à la méthode `HeroFormComponent.submit()` avec une liaison d'événement
 +makeExample('forms/ts/app/hero-form.component.html', 'ngSubmit')(format=".")
 
 :marked
@@ -629,7 +629,7 @@ figure.image-display
     Rien de surprenant pour la démo. Pour être honnête,
     jouer avec ne nous apprendra rien de nouveau sur les formulaires.
     Mais c'est une opportunité d'exercer certaines de nos nouvelles
-    compétences de binding.
+    compétences de liaison.
     Si cela ne vous intéresse pas, you pouvez passer cette conclusion
     vous ne manquerez rien.
 :marked
@@ -657,7 +657,7 @@ figure.image-display
 +makeExample('forms/ts/app/hero-form.component.html', 'submitted', 'app/hero-form.component.html (excerpt)')
 
 :marked
-  Voici notre héros de nouveau, affiché en lecture seule avec le binding d'interpolation.
+  Voici notre héros de nouveau, affiché en lecture seule avec la liaison d'interpolation.
   Ce morceau de HTML s'affiche uniquement tant que le composant est en cours de soumission.
 
   Nous avons ajouter un bouton Edit qui a son événement click lié à une expression
@@ -677,7 +677,7 @@ figure.image-display
   - Un composant de formulaire avec le décorateur `Component`.
   - La directive `ngSubmit` pour gérer la soumission du formulaire.
   - Des références de template comme `#heroForm`, `#name`, `#alter-ego` et `#power`.
-  - La syntaxe `[(ngModel)]` pour le binding bidirectionnel, la validation et le suivi des modification.
+  - La syntaxe `[(ngModel)]` pour la liaison bidirectionnelle, la validation et le suivi des modification.
   - La propriété `valid` de la référence de template des champs pour vérifier su un champ est valide et afficher/masquer des message d'erreurs.
   - Contrôler l'état du bouton de soumission en se liant à la validité de `NgForm`.
   - Des classes CSS personnalisés pour apporter un retour visuel sur les champs non valides.
