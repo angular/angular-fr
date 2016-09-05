@@ -135,8 +135,8 @@
   },
 
   "structural-directives": {
-    "title": "Structural Directives",
-    "intro": "Angular has a powerful template engine that lets us easily manipulate the DOM structure of our elements."
+    "title": "Directives Structurelles",
+    "intro": "Angular dispose d'un moteur de template puissant qui nous permet de manipuler facilement la structure DOM de nos éléments."
   },
 
   "testing": {
