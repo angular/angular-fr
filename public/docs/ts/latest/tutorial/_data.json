@@ -26,7 +26,7 @@
     "nextable": true
   },
   "toh-pt5": {
-    "title": "Routing",
+    "title": "Routage",
     "intro": "Ajoutons le composant Router d'Angular et apprenons à naviguer entre nos vues",
     "nextable": true
   },
