@@ -1,35 +1,35 @@
 {
   "index": {
-    "hero": "home",
-    "title": "One framework.",
-    "subtitle": "Mobile and desktop."
+    "hero": "Accueil",
+    "title": "Une plate-forme.",
+    "subtitle": "Mobile et bureau."
   },
 
   "features": {
-    "title": "Features & Benefits"
+    "title": "Nouveautés & Avantages"
   },
 
   "contribute": {
-    "title": "Contribute to Angular",
-    "subtitle": "Help us build the framework of the future!",
+    "title": "Contibuer à Angular",
+    "subtitle": "Aidez-nous à construire l'environnement du futur!",
     "autoformat": "true"
   },
 
   "news": {
-    "title": "News"
+    "title": "Nouveautés"
   },
 
   "events": {
-    "title": "Events",
-    "subtitle": "Where we'll be presenting"
+    "title": "Évènements",
+    "subtitle": "Où nous allons présenter"
   },
 
   "support": {
-    "title": "Support",
-    "subtitle": "Get help from the Angular Community"
+    "title": "Aide",
+    "subtitle": "Obtenez de l'aide de la communauté Angular"
   },
 
   "presskit": {
-    "title": "Press Kit"
+    "title": "Dossier de presse"
   }
 }
