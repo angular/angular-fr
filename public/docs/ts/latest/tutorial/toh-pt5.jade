@@ -2,50 +2,24 @@ include ../_util-fns
 
 :marked
   # Routing Around the App
-
-  # Le routage dans notre application
-
   We received new requirements for our Tour of Heroes application:
-
-  Nous avons reçu de nouvelles exigences pour notre application du Guide des Héros&nbsp;:
-
   * Add a *Dashboard* view.
-
-  * Ajouter une vue *Tableau de bord*.
-
   * Navigate between the *Heroes* and *Dashboard* views.
-
-  * Naviguer entre les vues de la *liste des Héros* et le *tableau de bord*.
-
   * Clicking on a hero in either view navigates to a detail view of the selected hero.
-
-  * Cliquer sur un héros dans n'importe quelle vue permet de naviguer vers la vue détail du héros sélectionné.
-
   * Clicking a *deep link* in an email opens the detail view for a particular hero;
 
-  * Cliquer sur un *lien* dans un email ouvre la vue détail pour un héros en particulier
-
   When we’re done, users will be able to navigate the app like this:
-
-  Quand tout cela sera fait, les utilisateurs seront capables de naviguer dans l'application comme cela&nbsp;:
 figure.image-display
   img(src='/resources/images/devguide/toh/nav-diagram.png' alt="View navigations")
 :marked
   We'll add Angular’s *Component Router* to our app to satisfy these requirements.
-
-  Nous allons ajouter le *Composant Router* de Angular à notre application pour satisfaire ces exigences.
 .l-sub-section
   :marked
     The [Routing and Navigation](../guide/router.html) chapter covers the router in more detail
     than we will in this tutorial.
 
-    Le chapitre sur le [Routage et la Navigation](../guide/router.html) couvre le routeur de façon plus détaillée
-    que dans ce tutorial.
-
 :marked
   Run the <live-example></live-example> for this part.
-
-  Exécutez la <live-example>démo</live-example> correspondante à cette partie.
 
 .l-sub-section
   img(src='/resources/images/devguide/plunker-separate-window-button.png' alt="pop out the window" align="right" style="margin-right:-20px")
@@ -53,20 +27,11 @@ figure.image-display
     To see the URL changes in the browser address bar,
     pop out the preview window by clicking the blue 'X' button in the upper right corner:
 
-    Pour observer les changements d'URL dans la barre d'adresse du navigateur,
-    affichez la fenêtre de prévisualisation en cliquant sur le bouton bleu marqué d'un 'X' dans le coin en haut à droite&nbsp;:
-
 .l-main-section
 :marked
   ## Where We Left Off
-
-  ## Où nous étions-nous arrêtés ?
-
   Before we continue with our Tour of Heroes, let’s verify that we have the following structure after adding our hero service
   and hero detail component. If not, we’ll need to go back and follow the previous chapters.
-
-  Avant de continuer notre Guide des Héros, vérifions que nous avons bien la structure suivante après avoir ajouté notre service héros
-  et le composant de détail d'un héros. Si ce n'est pas le cas, vous devez revenir en arrière et suivre les étapes du chapitre précédent.
 
 .filetree
   .file angular2-tour-of-heroes
@@ -89,15 +54,8 @@ figure.image-display
     .file typings.json
 :marked
   ### Keep the app transpiling and running
-
-  ### Laissons l'application tourner
-
-
   Open a terminal/console window and enter the following command to
   start the TypeScript compiler, start the server, and watch for changes:
-
-  Ouvrez un terminal ou une console.
-  Démarrez le compilateur TypeScript, observez les changements et démarrez le serveur en tapant la commande suivante&nbsp;:
 
 code-example(language="bash").
   npm start
@@ -105,269 +63,124 @@ code-example(language="bash").
 :marked
   The application runs and updates automatically as we continue to build the Tour of Heroes.
 
-  L'application s'exécute et se met à jour automatiquement pendant que nous continuons à travailler sur notre Guide des Héros.
-
   ## Action plan
-
-  ## Objectifs
-
-  Voici notre plan d'action&nbsp;:
+  Here's our plan:
 
   * Turn `AppComponent` into an application shell that only handles navigation
-
-  * Transformer le `AppComponent` en coquille applicative qui ne gère que la navigation
-
   * Relocate the *Heroes* concerns within the current `AppComponent` to a separate `HeroesComponent`
-
-  * Déplacer tout ce qui concerne les *Héros* du `AppComponent` vers un `HeroesComponent` séparé.
-
   * Add routing
-
-  * Ajouter le routage
-
   * Create a new `DashboardComponent`
-
-  * Créer un nouveau `DashboardComponent`
-
   * Tie the *Dashboard* into the navigation structure
-
-  * Ajouter ce *tableau de bord* à la navigation
 
 .l-sub-section
   :marked
     *Routing* is another name for *navigation*. The *router* is the mechanism for navigating from view to view.
 
-    *Le routage* est un synonyme de *navigation*. Le *routeur* correspond au mécanisme impliqué dans la navigation entre les vues.
-
 .l-main-section
 :marked
   ## Splitting the *AppComponent*
 
-  ## Découpons le *AppComponent*
-
   Our current app loads `AppComponent` and immediately displays the list of heroes.
-
-  Actuellement notre application charge le `AppComponent` et affiche immédiatement une liste de héros.
 
   Our revised app should present a shell with a choice of views (*Dashboard* and *Heroes*) and then default to one of them.
 
-  Notre application revisitée devra afficher une coquille avec un choix de vues (*Tableau de bord* et *Liste de Héros*) et en afficher une par défaut.
-
   The `AppComponent` should only handle navigation.
   Let's move the display of *Heroes* out of `AppComponent` and into its own `HeroesComponent`.
-
-  Le `AppComponent` devra gérer uniquement la navigation.
-  Déplaçons l'affichage des *Héros* du `AppComponent` dans son propre `HeroesComponent`.
 
   ### *HeroesComponent*
   `AppComponent` is already dedicated to *Heroes*.
   Instead of moving anything out of `AppComponent`, we'll just rename it `HeroesComponent`
   and create a new `AppComponent` shell separately.
 
-  Le `AppComponent` est déjà dédié aux *Héros*.
-  Plutôt que de tout copier du `AppComponent`, nous allons juste le renommer en `HeroesComponent`
-  et créer un nouvelle coquille `AppComponent` séparément.
-
   The steps are to rename:
-
-  Vous devez renommer&nbsp;:
-
   * `app.component.ts` file to `heroes.component.ts`
-
-  * Le fichier `app.component.ts` en `heroes.component.ts`
-
   * `AppComponent` class to `HeroesComponent`
-
-  * La classe `AppComponent` en `HeroesComponent`
-
   * Selector `my-app` to `my-heroes`
-
-  * Le sélecteur `my-app` en `my-heroes`
 
 :marked
 +makeExample('toh-5/ts/app/heroes.component.ts', 'heroes-component-renaming', 'app/heroes.component.ts (showing renamings only)')(format=".")
 
 :marked
   ## Create *AppComponent*
-
-  ## Créons le *AppComponent*
-
   The new `AppComponent` will be the application shell.
   It will have some navigation links at the top and a display area below for the pages we navigate to.
 
-  Le nouveau `AppComponent` sera la coquille de notre application.
-  On y retrouvera des liens de navigation dans la partie supérieure et une zone en dessous pour afficher les pages sur lesquelles nous naviguons.
-
   The initial steps are:
 
-  Pour cela nous allons&nbsp;:
-
   * create a new file named `app.component.ts`.
-
-  * créer un nouveau fichier appelé `app.component.ts`.
-
   * define an `AppComponent` class.
-
-  * définir une classe `AppComponent`.
-
   * `export` it so we can reference it during bootstrapping in `main.ts`.
-
-  * l'`exporter` pour pouvoir la référencer durant le démarrage dans le fichier `main.ts`.
-
   * expose an application `title` property.
-
-  * exposer une propriété `title` représentant le titre de l'application.
-
   * add the `@Component` metadata decorator above the class with a `my-app` selector.
-
-  * ajouter la métadonnée du décorateur `@Component` au dessus de la classe avec le sélecteur `my-app`.
-
   * add a template with `<h1>` tags surrounding a binding to the `title` property.
-
-  * ajouter un template avec une balise `<h1>` contenant une liaison vers la propriété `title`.
-
   * add the `<my-heroes>` tags to the template so we still see the heroes.
-
-  * ajouter la balise `<my-heroes>` au template pour continuer à voir les héros.
-
   * add the `HeroesComponent` to the `directives` array so Angular recognizes the `<my-heroes>` tags.
-
-  * ajouter le `HeroesComponent` au tableau de `directives` pour que Angular reconnaisse la balise `<my-heroes>`.
-
   * add the `HeroService` to the `providers` array because we'll need it in every other view.
-
-  * ajouter le `HeroService` au tableau de `providers` car nous en aurons besoin dans les autres vues.
-
   * add the supporting `import` statements.
 
-  * ajouter les instructions d'`import`.
-
   Our first draft looks like this:
-
-  Notre première version ressemble à ça&nbsp;:
-
 +makeExample('toh-5/ts/app/app.component.1.ts', null, 'app/app.component.ts (v1)')
 :marked
 .callout.is-critical
   header Remove <i>HeroService</i> from the <i>HeroesComponent</i> providers
-  header Supprimons le <i>HeroService</i> des providers du <i>HeroesComponent</i>
   :marked
     Go back to the `HeroesComponent` and **remove the `HeroService`** from its `providers` array.
     We are *promoting* this service from the `HeroesComponent` to the `AppComponent`.
     We ***do not want two copies*** of this service at two different levels of our app.
-
-    Retournons au `HeroesComponent` et **supprimons le `HeroService`** de son tableau de `providers`.
-    Nous allons *proposer* ce service à partir du `AppComponent` plutôt que du `HeroesComponent`.
-    Nous ***ne voulons pas deux copies*** de ce service à deux niveaux différents de notre application.
 :marked
   The app still runs and still displays heroes.
   Our refactoring of `AppComponent` into a new `AppComponent` and a `HeroesComponent` worked!
   We have done no harm.
 
-  L'application tourne toujours et continue à afficher des héros.
-  Notre transformation du `AppComponent` en un nouveau `AppComponent` et un  `HeroesComponent` fonctionne!
-  Nous n'avons pas causé de dégat.
-
 :marked
   ## Add Routing
-
-  ## Ajoutons le routage
 
   We're ready to take the next step.
   Instead of displaying heroes automatically, we'd like to show them *after* the user clicks a button.
   In other words, we'd like to navigate to the list of heroes.
 
-  Nous sommes prêts à passer à l'étape suivante.
-  Plutôt que d'afficher automatiquement la liste des héros, nous voudrions les montrer *après* que l'utilisateur ait cliqué sur un bouton.
-  En d'autres termes, nous aimerions naviguer vers la liste des héros.
-
   We'll need the Angular *Component Router*.
 
-  Nous allons avoir besoin du *Composant Routeur* de Angular.
-
   ### Set the base tag
-
-  ### Initialisons la balise base
-
   Open the `index.html` and add `<base href="/">` at the top of the `<head>` section.
-
-  Ouvrez le fichier `index.html` et ajoutez `<base href="/">` en haut de la section `<head>`.
 +makeExample('toh-5/ts/index.html', 'base-href', 'index.html (base href)')(format=".")
 .callout.is-important
   header base href is essential
-  header base href est essentielle
   :marked
     See the *base href* section of the [Router](../guide/router.html#!#base-href) chapter to learn why this matters.
-
-    Reportez-vous à la section  *base href* du chapitre sur le [Router](../guide/router.html#!#base-href) pour voir en quoi cela est important.
 :marked
   The Angular router is a combination of multiple provided services (`provideRouter`), multiple directives (`ROUTER_DIRECTIVES`),
   and a configuration (`RouterConfig`). We'll configure our routes first:
 
-  Le routeur Angular est une combinaison de plusieurs services fournis (`provideRouter`), directives (`ROUTER_DIRECTIVES`)
-  et de configuration (`RouterConfig`). Nous allons d'abord configurer nos routes.
-
   ### Configure and add the router
-
-  ### Configurons et ajoutons le routeur
 
   Our application doesn't have a router yet. We'll create a configuration file for our routes that
   does two things
-
-  Notre application n'a pas encore de routeur. Nous allons créer un fichier de configuration pour nos routes qui&nbsp;
-
   (a) configure that router with *routes*. (b) provide an export to add the router to our bootstrap
-
-  (a) configure le routeur avec des *routes*. (b) fournit un export pour ajouter ce routeur à notre séquence de démarrage
 
   *Routes* tell the router which views to display when a user clicks a link or
   pastes a URL into the browser address bar.
 
-  Les *Routes* indiquent au routeur quelle vue afficher quand un utilisateur clique sur un lien
-  ou copie une URL dans la barre d'adresse du navigateur.
-
   Let's define our first route, a route to the `HeroesComponent`.
-
-  Commençons par définir notre première route, celle du `HeroesComponent`.
-
 +makeExample('toh-5/ts/app/app.routes.2.ts', '', 'app/app.routes.ts')(format=".")
 :marked
   The `RouterConfig` is an array of *route definitions*.
   We have only one route definition at the moment but rest assured, we'll add more.
 
-  Le `RouterConfig` est un tableau de *définitions de routes*.
-  Nous n'avons pour le moment qu'une seule définition de route mais soyez assurés que nous en ajouterons plus.
-
   This *route definition* has two parts:
-
-  Cette *définition de route* est constituée de deux parties&nbsp;:
-
   * **path**: the router matches this route's path to the URL in the browser address bar (`/heroes`).
 
-  * **path**&nbsp;: le routeur compare le chemin de cette route à l'URL affichée dans la barre d'adresse du navigateur (`/heroes`).
-
   * **component**: the component that the router should create when navigating to this route (`HeroesComponent`).
-
-  * **component**&nbsp;: le composant que le routeur devra créer quand on navigue sur cette route (`HeroesComponent`).
 
 .l-sub-section
   :marked
     Learn more about defining routes with RouterConfig in the [Routing](../guide/router.html) chapter.
 
-    Apprenez-en plus sur la défintion de routes avec le RouterConfig dans le chapitre [Routage](../guide/router.html).
-
 :marked
   ### Make the router available.
-
-  ### Rendons le routeur disponible
-
   The *Component Router* is a service. We have to import our `appRouterProviders` which
   contains our configured router and make it available to the application by adding it to
   the `bootstrap` array.
-
-  Le *Composant Routeur* est un service. Nous devons importer notre `appRouterProviders` qui
-  contient notre routeur configuré et le rendre disponible à l'application en l'ajoutant au
-  tableau de la méthode `bootstrap`.
 +makeExample('toh-5/ts/app/main.ts', '', 'app/main.ts')(format=".")
 
 :marked
@@ -377,138 +190,71 @@ code-example(language="bash").
   the router should match it to the `'Heroes'` route and display the `HeroesComponent`.
   But where?
 
-  Si nous copions le chemin, `/heroes`, dans la barre d'adresse,
-  le routeur devra l'associer à la route `'Heroes'` et afficher le `HeroesComponent`.
-  Mais où?
-
   We have to ***tell it where*** by adding `<router-outlet>` marker tags to the bottom of the template.
   `RouterOutlet` is one of the `ROUTER_DIRECTIVES`.
   The router displays each component immediately below the `<router-outlet>` as we navigate through the application.
 
-  Nous devons ***le lui dire*** en ajoutant une balise `<router-outlet>` en bas de notre template.
-  `RouterOutlet` fait partie des `ROUTER_DIRECTIVES`.
-  Le routeur affiche chaque composant immédiatement dans la balise `<router-outlet>` lorsque nous naviguons dans l'application.
-
   ### Router Links
-
-  ### Liens de Routeur
-
   We don't really expect users to paste a route URL into the address bar.
   We add an anchor tag to the template which, when clicked, triggers navigation to the `HeroesComponent`.
 
-  Nous ne nous attendons pas vraiment à ce que les utilisateurs tapent les URL dans la barre d'adresse.
-  Ajoutons une ancre au template qui, lorsque l'on clique dessus, déclenche une navigation vers le `HeroesComponent`.
-
   The revised template looks like this:
-
-  Le template ressemble alors à ça&nbsp;:
 +makeExample('toh-5/ts/app/app.component.2.ts', 'template', 'app/app.component.ts (template v1)')(format=".")
 :marked
   Notice the `[routerLink]` binding in the anchor tag.
   We bind the `RouterLink` directive (another of the `ROUTER_DIRECTIVES`) to an array
   that tells the router where to navigate when the user clicks the link.
 
-  Observez la liaison`[routerLink]` dans la balise de l'ancre.
-  Nous lions la directive `RouterLink` (elle aussi issue des `ROUTER_DIRECTIVES`) à un tableau
-  qui indique au routeur où naviguer lorsque l'utilisateur clique dessus.
-
   We define a *routing instruction* with a *link parameters array*.
   The array only has one element in our little sample, the quoted ***path* of the route** to follow.
   Looking back at the route configuration, we confirm that `'/heroes'` is the path of the route to the `HeroesComponent`.
-
-  Nous avons défini *une instruction de routage* à l'aide d'un  *tableau de paramètres de lien*.
-  Ce tableau n'a qu'un élément dans notre simple exemple, le chemin de la route à atteindre.
-  Si nous revenons à notre configuration de route, nous constatons en effet que `'/heroes'` est le chemin de la route vers le `HeroesComponent`.
 .l-sub-section
   :marked
     Learn about the *link parameters array* in the [Routing](../guide/router.html#link-parameters-array) chapter.
-
-    Apprenez-en plus sur le *tableau de paramètres de lien* dans le chapitre sur le [Routage](../guide/router.html#link-parameters-array).
 :marked
   Refresh the browser.  We see only the app title. We don't see the heroes list.
-
-  Raffraichissez la page.  Nous n'avons plus que le titre de l'application. Nous ne voyons plus de liste de héros.
 .l-sub-section
   :marked
     The browser's address bar shows `/`.
     The route path to `HeroesComponent` is `/heroes`, not `/`.
     We don't have a route that matches the path `/`, so there is nothing to show.
     That's something we'll want to fix.
-
-    La barre d'adresse du navigateur contient `/`.
-    Le chemin de la route vers  `HeroesComponent` est `/heroes` et non `/`.
-    Nous n'avons pas de route qui corresponde au chemin `/`, Il n'y a donc rien à afficher.
-    Nous allons y remédier.
 :marked
   We click the "Heroes" navigation link, the browser bar updates to `/heroes`,
   and now we see the list of heroes. We are navigating at last!
 
-  Nous cliquons sur le lien de navigation "Heroes", la barre d'adresse du navigateur affiche alors `/heroes`,
-  et nous voyons maintenant une liste de héros. Au moins nous naviguons.
-
   At this stage, our `AppComponent` looks like this.
-
-  A ce point, notre `AppComponent` ressemble à ça&nbsp;:
 +makeExample('toh-5/ts/app/app.component.2.ts',null, 'app/app.component.ts (v2)')
 :marked
   The  *AppComponent* is now attached to a router and displaying routed views.
   For this reason and to distinguish it from other kinds of components,
   we call this type of component a *Router Component*.
 
-  Le  *AppComponent* est désormais attaché au routeur et affiche les vues vers lequelles nous naviguons.
-  Pour cette raison et pour le distinguer des autres types de composants
-  nous l'appelons un *Composant Routeur*.
-
 
 :marked
   ## Add a *Dashboard*
-
-  ## Ajoutons un *tableau de bord*
-
   Routing only makes sense when we have multiple views. We need another view.
 
-  Le Routage n'a de sens qu'avec plusieurs vues. Nous avons besoin d'une autre vue.
-
   Create a placeholder `DashboardComponent` that gives us something to navigate to and from.
-
-  Créez un squelette `DashboardComponent` qui nous fournira de quoi naviguer.
 +makeExample('toh-5/ts/app/dashboard.component.1.ts',null, 'app/dashboard.component.ts (v1)')(format=".")
 :marked
   We’ll come back and make it more useful later.
 
-  Nous y reviendrons plus tard pour le rendre plus utile.
-
   ### Configure the dashboard route
-
-  ### Configurons la vue du tableau de bord
-
   Go back to `app.routes.ts` and teach it to navigate to the dashboard.
-
-  Revenons au fichier `app.routes.ts` et apprenons lui à naviguer vers le tableau de bord.
 
   Import the `DashboardComponent` so we can reference it in the dashboard route definition.
 
-  Importez le `DashboardComponent` pour pouvoir le référencer dans la définition de route du tableau de bord.
-
   Add the following `'Dashboard'` route definition to the `RouterConfig` array of definitions.
-
-  Ajoutez la défintion de route `'Dashboard'` ci-dessous au tableau de défintions `RouterConfig`.
 +makeExample('toh-5/ts/app/app.routes.1.ts','dashboard-route', 'app/app.routes.ts (Dashboard route)')(format=".")
 .l-sub-section
   :marked
     **Redirect**
 
-    **La redirection**
-
     We want the app to show the dashboard when it starts and
     we want to see a nice URL in the browser address bar that says `/dashboard`.
     Remember that the browser launches with `/` in the address bar.
     We can use a redirect route to make this happen.
-
-    Nous voulons que l'application affiche le tableau de bord au démarrage et
-    nous voulons une belle URL dans la barre d'adresse qui indique `/dashboard`.
-    Rappelez-vous que le navigateur démarre avec `/` dans sa barre d'adresse.
-    Nous pouvons utiliser une route de redirection pour arriver à ce résultat.
 
 +makeExample('toh-5/ts/app/app.routes.1.ts','redirect-route', 'app/app.routes.ts (Redirect route)')(format=".")
 
@@ -516,41 +262,23 @@ code-example(language="bash").
   :marked
     Learn about the *redirects* in the [Routing](../guide/router.html#!#redirect) chapter.
 
-    Apprenez-en plus sur les *redirections* dans le chapitre sur le [Routage](../guide/router.html#!#redirect).
-
 :marked
   Finally, add a dashboard navigation link to the template, just above the *Heroes* link.
-
-  Pour finir, ajoutez un lien de navigation au template, juste au-dessus du lien *Heroes*.
 
 +makeExample('toh-5/ts/app/app.component.ts','template', 'app/app.component.ts (template)')(format=".")
 .l-sub-section
   :marked
     We nestled the two links within `<nav>` tags.
     They don't do anything yet but they'll be convenient when we style the links a little later in the chapter.
-
-    Nous ajoutons les deux liens à une balise `<nav>`.
-    Elle ne sert à rien pour le moment, mais nous l'utiliserons plus tard dans le chapitre pour ajouter du style.
 :marked
   Refresh the browser. The app displays the dashboard and
   we can navigate between the dashboard and the heroes.
 
-  Rafraichissez la page. L'application affiche le tableau de bord et
-  nous pouvons naviguer entre le tableau de bord et la liste de héros
-
   ## Dashboard Top Heroes
-
-  ## Le tableau de bord des meilleurs héros
-
   Let’s spice up the dashboard by displaying the top four heroes at a glance.
-
-  Affichons les quatre meilleurs héros d'un coup dans le tableau de bord.
 
   Replace the `template` metadata with a `templateUrl` property that points to a new
   template file.
-
-  Remplacez la métadonnée `template` par une propriété `templateUrl` qui pointe vers un nouveau
-  fichier de template.
 
 +makeExample('toh-5/ts/app/dashboard.component.ts', 'template-url', 'app/dashboard.component.ts (templateUrl)')(format=".")
 .l-sub-section
@@ -558,323 +286,166 @@ code-example(language="bash").
     We specify the path _all the way back to the application root_ &mdash; `app/` in this case &mdash;
     because Angular doesn't support relative paths _by default_.
     We _can_ switch to [component-relative paths](../cookbook/component-relative-paths.html) if we prefer.
-
-    Nous utilisons le chemin complet à partir _de la racine de l'application_ &mdash; `app/` dans notre cas &mdash;
-    car Angular ne supporte pas les chemins relatifs _par défaut_.
-    Nous _pouvons_ utiliser des [chemins relatifs vers les composants](../cookbook/component-relative-paths.html) si nous le souhaitons.
 :marked
   Create that file with these contents:
-
-  Créez un fichier avec le contenu suivant&nbsp;:
 +makeExample('toh-5/ts/app/dashboard.component.html', null, 'app/dashboard.component.html')(format=".")
 :marked
   We use `*ngFor` once again to iterate over a list of heroes and display their names.
   We added extra `<div>` elements to help with styling later in this chapter.
 
-  Nous utilisons à nouveau `*ngFor` pour itérer sur une liste de héros et afficher leur nom.
-  Nous ajoutons une balise `<div>` qui nous aidera à mettre du style plus tard.
-
   There's a `(click)` binding to a `gotoDetail` method we haven't written yet and
   we're displaying a list of heroes that we don't have.
   We have work to do, starting with those heroes.
 
-  Il y a également une liaison `(click)` vers la méthode `gotoDetail` que nous n'avons pas encore écrite
-  et nous affichons une liste de héros inexistante.
-  Il nous reste du boulot, commençons par la liste de héros.
-
   ### Share the *HeroService*
 
-  ### Partageons le *HeroService*
-
   We'd like to re-use the `HeroService` to populate the component's `heroes` array.
-
-  Nous aimerions réutiliser le `HeroService` pour alimenter le tableau `heroes` de notre composant.
 
   Recall earlier in the chapter that we removed the `HeroService` from the `providers` array of the `HeroesComponent`
   and added it to the `providers` array of the top level `AppComponent`.
 
-  Rappelez-vous, nous avons précédemment supprimé le `HeroService` du tableau `providers` du `HeroesComponent`
-  pour l'ajouter à celui du `AppComponent`.
-
   That move created a singleton `HeroService` instance, available to *all* components of the application.
   Angular will inject `HeroService` and we'll use it here in the `DashboardComponent`.
 
-  Cela consiste à créer une instance singleton du `HeroService`, disponible pour  *tous* les composants de l'application.
-  Angular injectera le `HeroService` et nous l'utiliserons dans le `DashboardComponent`.
-
   ### Get heroes
-
-  ### Récupérons la liste de héros
-
   Open the `dashboard.component.ts` and add the requisite `import` statements.
-
-  Ouvrez le fichier `dashboard.component.ts` et ajoutez l'instruction `import` requise.
 +makeExample('toh-5/ts/app/dashboard.component.2.ts','imports', 'app/dashboard.component.ts (imports)')(format=".")
 :marked
   We need `OnInit` interface because we'll initialize the heroes in the `ngOnInit` method as we've done before.
   We need the `Hero` and `HeroService` symbols in order to reference those types.
 
-  Nous avons besoin de l'interface `OnInit` car nous voulons initialiser la liste de héros dans la méthode `ngOnInit` comme nous l'avons déjà fait.
-  Nous avons besoin des symboles `Hero` et `HeroService` pour utiliser leurs types comme références.
-
   Now implement the `DashboardComponent` class like this:
-
-  Implémentez la classe `DashboardComponent` comme ceci&nbsp;:
 +makeExample('toh-5/ts/app/dashboard.component.2.ts','component', 'app/dashboard.component.ts (class)')
 :marked
   We saw this kind of logic before in the `HeroesComponent`.
-
-  Nous avons déjà fait cela dans le `HeroesComponent`.
-
   * create a `heroes` array property
-
-  * créez un tableau dans la propriété `heroes`
-
   * inject the `HeroService` in the constructor and hold it in a private `heroService` field.
-
-  * injectez le `HeroService` dans le constructeur et enregistrez-le dans un champ privé `heroService`.
-
   * call the service to get heroes inside the Angular `ngOnInit` lifecycle hook.
-
-  * appelez le service pour récupérer les héros dans la méthode de cycle de vie `ngOnInit` de Angular.
 
   The noteworthy differences: we cherry-pick four heroes (2nd, 3rd, 4th, and 5th) with *slice*
   and stub the `gotoDetail` method until we're ready to implement it.
 
-  La seule différence: nous ne prenons que quatre héros (les 2nd, 3ème, 4ème  et 5ème) avec la méthode *slice*
-  et nous bouchonnons la méthode `gotoDetail` jusqu'à ce que nous soyons prêts à l'implémenter.
-
   Refresh the browser and see four heroes in the new dashboard.
-
-  Rafraichissez la page et vous verrez quatre héros dans le nouveau tableau de bord.
 
 .l-main-section
 :marked
   ## Navigate to Hero Details
 
-  ## Naviguons vers le détail d'un héros
-
   Although we display the details of a selected hero at the bottom of the `HeroesComponent`,
   we don't yet *navigate* to the `HeroDetailComponent` in the three ways specified in our requirements:
-
-  Bien que nous affichions le détail d'un héros sélectionné en bas du `HeroesComponent`,
-  nous ne *naviguons* pas encore vers le `HeroDetailComponent` des trois façons spécifiées dans le contrat&nbsp;:
-
   1. from the *Dashboard* to a selected hero.
-
-  1. du *tableau de bord* en sélectionnant un héros.
-
   1. from the *Heroes* list to a selected hero.
-
-  1. de  *la liste des héros* en sélectionnant un héros.
-
   1. from a "deep link" URL pasted into the browser address bar.
-
-  1. à partir de l'URL "d'un lien" copié dans la barre d'adresse du navigateur.
 
   Adding a `'HeroDetail'` route seem an obvious place to start.
 
-  Ajoutons une route `'HeroDetail'`, ça semble être un bon départ.
-
   ### Routing to a hero detail
 
-  ### Le routage vers le détail d'un héros
-
   We'll add a route to the `HeroDetailComponent`  in the `AppComponent` where our other routes are configured.
-
-  Nous allons ajouter une route vers le `HeroDetailComponent` dans le `AppComponent` là ou les autres sont configurées.
 
   The new route is a bit unusual in that we must tell the `HeroDetailComponent` *which hero to show*.
   We didn't have to tell the `HeroesComponent` or the `DashboardComponent` anything.
 
-  Cette nouvelle route est un peu inhabituelle dans la mesure où nous devons indiquer au `HeroDetailComponent` *quel héros afficher*.
-  Nous n'avions pas à renseigner le  `HeroesComponent`  ou le `DashboardComponent` sur quoi que ce soit.
-
   At the moment the parent `HeroesComponent` sets the component's `hero` property to a hero object with a binding like this.
-
-  Pour le moment le `HeroesComponent` intialise la propriété `hero` à partir d'un objet héros à l'aide d'une liaison comme ci-dessous.
 code-example(format='').
   &lt;my-hero-detail [hero]="selectedHero">&lt;/my-hero-detail>
 :marked
   That clearly won't work in any of our routing scenarios.
   Certainly not the last one; we can't embed an entire hero object in the URL! Nor would we want to.
 
-  Cela ne va clairement pas marcher dans notre scénario de routage et certainement pas dans notre dernier exemple;
-  nous ne pouvons pas embarquer un objet représentant un héros dans l'URL. Et nous ne le souhaitons pas.
-
   ### Parameterized route
-
-  ### Route paramétrée
-
   We *can* add the hero's `id` to the URL. When routing to the hero whose `id` is 11, we could expect to see an URL such as this:
-
-  Nous *pouvons* ajouter l'`id` d'un héros à l'URL. Lorsque nous naviguons vers un héros dont l'`id` est 11, nous pouvons nous attendre à une URL de la forme suivante&nbsp;:
 code-example(format='').
   /detail/11
 :marked
   The `/detail/` part of that URL is constant. The trailing numeric `id` part changes from hero to hero.
   We need to represent that variable part of the route with a *parameter* (or *token*) that stands for the hero's `id`.
 
-  La partie `/detail/` de l'URL est constante. La partie numérique de l'`id` qui suit change d'un héros à l'autre.
-  Nous avons besoin d'identifier cette partie variable d'une route avec un *paramètre* (ou *token*) qui  représente l'`id` d'un héros.
-
   ### Configure a Route with a Parameter
 
-  ### Configurons une Route avec un Paramètre
-
   Here's the *route definition* we'll use.
-
-  Voici la *définition de route* que nous allons utiliser
 +makeExample('toh-5/ts/app/app.routes.1.ts','hero-detail-route', 'app/app.routes.ts (route to HeroDetailComponent)')(format=".")
 :marked
   The colon (:) in the path indicates that `:id` is a placeholder to be filled with a specific hero `id`
   when navigating to the `HeroDetailComponent`.
-
-  Les deux points (:) dans le chemin indique que `:id` est un emplacement qui sera remplacé par l'`id` d'un héros en particulier
-  lorsque nous naviguerons vers le `HeroDetailComponent`.
 .l-sub-section
   :marked
     Of course we have to import the `HeroDetailComponent` before we create this route:
-
-    Nous devons bien sur importer le `HeroDetailComponent` avant de créer cette route&nbsp;:
   +makeExample('toh-5/ts/app/app.routes.1.ts','hero-detail-import')(format=".")
 :marked
   We're finished with the application routes.
-
-  Nous en avons fini avec les routes de notre application.
 
   We won't add a `'Hero Detail'` link to the template because users
   don't click a navigation *link* to view a particular hero.
   They click a *hero* whether that hero is displayed on the dashboard or in the heroes list.
 
-  Nous n'allons pas ajouter un  lien `'Hero Detail'` dans le template car les utilisateurs
-  ne cliquent pas sur un *lien* de navigation pour voir un héros en particulier.
-  Ils cliquent sur le *héros* à l'endroit où il est affiché dans le tableau de bord ou la liste de héros.
-
   We'll get to those *hero* clicks later in the chapter.
   There's no point in working on them until the `HeroDetailComponent`
   is ready to be navigated *to*.
 
-  Nous reviendrons sur ce clic de *héros* plus tard dans le chapitre.
-  Ce n'est pas la peine de s'y atteler tant que l'on ne peut pas naviguer *vers* le `HeroDetailComponent`
-
   That will require an `HeroDetailComponent` overhaul.
-
-  Nous allons devoir retravailler le `HeroDetailComponent`.
 
 .l-main-section
 :marked
   ## Revise the *HeroDetailComponent*
 
-  ## Modifions le *HeroDetailComponent*
-
   Before we rewrite the `HeroDetailComponent`, let's review what it looks like now:
-
-  Avant de réécrire le `HeroDetailComponent`, voyons où nous en sommes&nbsp;:
 +makeExample('toh-4/ts/app/hero-detail.component.ts', null, 'app/hero-detail.component.ts (current)')
 :marked
   The template won't change. We'll display a hero the same way. The big changes are driven by how we get the hero.
-
-  Le template ne va pas changer. Nous afficherons un héros de la même façon. Le principal changement vient de la façon d'obtenir le héros.
 
   We will no longer receive the hero in a parent component property binding.
   The new `HeroDetailComponent` should take the `id` parameter from the `params` observable
   in the `ActivatedRoute` service and use the `HeroService` to fetch the hero with that `id`.
 
-  Nous n'allons plus recevoir un héros du parent par l'itermédiaire d'une liaison de propriété.
-  Le nouveau `HeroDetailComponent` devra récupérer le paramètre `id` à partir de l'observable `params`
-  du service `ActivatedRoute` et utiliser le `HeroService` pour récupérer le héros avec cet `id`.
-
   We need an import statement to reference the `ActivatedRoute`.
-
-  Nous avons besoin d'une instruction d'import pour référencer cette `ActivatedRoute`.
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'import-activated-route')(format=".")
 :marked
   We import the `HeroService`so we can fetch a hero.
-
-  Nous importons le `HeroService` pour récupérer le héros.
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'import-hero-service')(format=".")
 :marked
   We import the `OnInit` and `OnDestroy` interfaces because we'll call the `HeroService` inside the `ngOnInit` component lifecycle hook
   and we'll clean up our `params` subscription in the `ngOnDestroy`.
-
-  Nous importons les interfaces `OnInit` et `OnDestroy` car nous appellerons le  `HeroService` dans la méthode du cycle de vie `ngOnInit`
-  et nous nettoierons notre souscription à `params` dans la méthode `ngOnDestroy`.
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'import-oninit')(format=".")
 :marked
   We inject the both the `ActivatedRoute` service and the `HeroService` into the constructor as we've done before,
   making private variables for both:
-
-  Nous injectons à la fois le service `ActivatedRoute` et le `HeroService` dans le constructeur comme auparavant
-  en créant des variables privées pour les deux&nbsp;:
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'ctor', 'app/hero-detail.component.ts (constructor)')(format=".")
 :marked
   We tell the class that we want to implement the `OnInit` and `OnDestroy` interfaces.
-
-  Nous indiquons à la classe que nous voulons implémenter les interfaces `OnInit` et `OnDestroy`.
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'implement')(format=".")
 :marked
   Inside the `ngOnInit` lifecycle hook, we _subscribe_ to the `params` observable to
   extract the `id` parameter value from the `ActivateRoute` service
   and use the `HeroService` to fetch the hero with that `id`.
-
-  Dans la méthode du cycle de vie `ngOnInit`, nous _souscrivons_ à l'observable `params` pour
-  extraire la valeur du paramètre `id` du service `ActivateRoute`
-  et utilisons le `HeroService` pour récupérer le héros avec cet `id`.
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'ng-oninit', 'app/hero-detail.component.ts (ngOnInit)')(format=".")
 :marked
   Inside the `ngOnDestroy` lifecycle hook, we _unsubscribe_ from the `params` subscription.
-
-  Dans la méthode du cycle de vie `ngOnDestroy`, nous nous _désabonnons_ de cette souscription  à `params`.
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'ng-ondestroy', 'app/hero-detail.component.ts (ngOnDestroy)')(format=".")
 :marked
   Notice how we extract the `id` by calling the `subscribe` method
   which will deliver our array of route parameters.
-
-  Vous remarquerez que nous avons extrait l'`id` en appelant la méthode `subscribe`
-  qui nous fournit un tableau de paramètres de route.
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'get-id')(format=".")
 :marked
   The hero `id` is a number. Route parameters are *always strings*.
   So we convert the route parameter value to a number with the JavaScript (+) operator.
 
-  L'`id` du héros est un nombre. Les paramètres de route sont *toujours des chaînes de caractères*.
-  Nous allons donc devoir convertir la valeur du paramètre en nombre avec l'opérateur JavaScript (+).
-
   ### Add *HeroService.getHero*
-
-  ### Ajoutons une méthode *HeroService.getHero*
-
   The problem with this bit of code is that `HeroService` doesn't have a `getHero` method!
   We better fix that quickly before someone notices that we broke the app.
 
-  Le problème avec ce code est que le `HeroService` n'a pas de méthode `getHero`&nbsp;!
-  Nous avons intérêt à y remédier rapidement avant que quelqu'un constate que nous avons cassé l'application.
-
   Open `HeroService` and add a `getHero` method that filters the heroes list from `getHeroes` by `id`:
-
-  Ouvrez le `HeroService` et ajoutez une méthode `getHero`qui filtre par `id` la liste de héros provenant de la méthode `getHeroes`&nbsp;:
 +makeExample('toh-5/ts/app/hero.service.ts', 'get-hero', 'app/hero.service.ts (getHero)')(format=".")
 :marked
   Return to the `HeroDetailComponent` to clean up loose ends.
 
-  Retournons au `HeroDetailComponent` pour finaliser tout cela.
-
   ### Find our way back
-
-  ### Pour retrouver notre chemin
 
   We can navigate *to* the `HeroDetailComponent` in several ways.
   How do we navigate somewhere else when we're done?
 
-  Nous pouvons naviguer *vers* le `HeroDetailComponent` de plusieurs façons.
-  Comment repartir quand nous en avons terminé&nbsp;?
-
   The user could click one of the two links in the `AppComponent`. Or click the browser's back button.
   We'll add a third option, a `goBack` method that navigates backward one step in the browser's history stack
-
-  L'utilisateur peut cliquer sur un des deux liens du `AppComponent` ou sur le bouton précédent du navigateur.
-  Nous allons ajouter une troisième option, une méthode `goBack` pour naviguer en arrière d'une page dans l'historique du navigateur.
 
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'go-back', 'app/hero-detail.component.ts (goBack)')(format=".")
 .l-sub-section
@@ -882,201 +453,103 @@ code-example(format='').
    Going back too far could take us out of the application.
    That's acceptable in a demo. We'd guard against it in a real application,
    perhaps with the [*CanDeactivate* guard](../api/router/index/CanDeactivate-interface.html).
-
-   Repartir trop loin en arrière pourrait nous faire sortir de l'application.
-   C'est acceptable pour la démonstration. Nous ajouterions toutefois des garde-fous pour une vraie application,
-   avec peut-être la [protection *CanDeactivate*](../api/router/index/CanDeactivate-interface.html).
 :marked
   Then we wire this method with an event binding to a *Back* button that we add to the bottom of the component template.
-
-  Puis nous connectons cette méthode avec une liaison par événement, à un bouton *Back* ajouté en bas du template de notre composant.
 +makeExample('toh-5/ts/app/hero-detail.component.html', 'back-button')(format=".")
 :marked
   Modifing the template to add this button spurs us to take one more incremental improvement and migrate the template to its own file
   called `hero-detail.component.html`
-
-  La modification du template pour l'ajout de ce  bouton nous amène à une amélioration supplémentaire en déplaçant le template dans son propre fichier
-  appelé `hero-detail.component.html`
 +makeExample('toh-5/ts/app/hero-detail.component.html', '', 'app/hero-detail.component.html')(format=".")
 :marked
   We update the component metadata with a `templateUrl` pointing to the template file that we just created.
-
-  Nous modifions les métadonnées du composant avec une propriété `templateUrl` pointant sur le fichier de template que nous venons de créer.
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'template-url', 'app/hero-detail.component.ts (templateUrl)')(format=".")
 :marked
   Here's the (nearly) finished `HeroDetailComponent`:
-
-  Et voici le composant `HeroDetailComponent` (presque) fini&nbsp;:
 +makeExample('toh-5/ts/app/hero-detail.component.ts', 'v2', 'app/hero-detail.component.ts (latest)')(format=".")
 
 .l-main-section
 :marked
   ## Select a *Dashboard* Hero
-
-  ## Sélectionnons un héros du *Tableau de bord*
-
   When a user selects a hero in the dashboard, the app should navigate to the `HeroDetailComponent` to view and edit the selected hero.
 
-  Lorsqu'un utilisateur choisit un héros dans le tableau de bord, l'application doit naviguer vers le `HeroDetailComponent` pour afficher et éditer le héros sélectionné.
-
   In the dashboard template we bound each hero's click event to the `gotoDetail` method, passing along the selected `hero` entity.
-
-  Dans le template du tableau de bord nous relions les clics sur chaque héros à la méthode `gotoDetail`, en lui passant le `héros` sélectionné.
 +makeExample('toh-5/ts/app/dashboard.component.html','click', 'app/dashboard.component.html (click binding)')(format=".")
 :marked
   We stubbed the `gotoDetail` method when we rewrote the `DashboardComponent`.
   Now we give it a real implementation.
-
-  Nous avons bouchonné la méthode `gotoDetail` lors de le réécriture du `DashboardComponent`.
-  Il est temps de lui fournir une véritable implémentation.
 +makeExample('toh-5/ts/app/dashboard.component.ts','goto-detail', 'app/dashboard.component.ts (gotoDetail)')(format=".")
 :marked
   The `gotoDetail` method navigates in two steps:
-
-  La méthode `gotoDetail` navigue en deux étapes&nbsp;:
-
   1. set a route *link parameters array*
-
-  1. en initialisant un *tableau de paramètres de lien*
-
   1. pass the array to the router's navigate method.
-
-  1. en passant ce tableau à la méthode navigate du routeur.
 
   We wrote *link parameters arrays* in the `AppComponent` for the navigation links.
   Those arrays had only one element, the path of the destination route.
 
-  Nous avons déjà réalisé des *tableaux de paramètres de lien* dans le `AppComponent` pour les liens de navigation.
-  Ces tableaux n'avaientt qu'un élement, le chemin de la route ciblée.
-
   This array has two elements, the ***path*** of the destination route and a ***route parameter***
   with an `id` field set to the value of the selected hero's `id`.
 
-  Ce tableau a deux éléments, le ***chemin*** de la route cible et un ***paramètre de route***
-  avec un champ `id` initialisé à la valeur de l'`id` du héros sélectionné.
-
   The two array items align with the ***path*** and ***:id*** token in the parameterized `HeroDetail` route configuration we added to `app.routes.ts` earlier in the chapter.
-
-  Ces deux éléments du tableau sont relatifs aux deux paramètres ***path*** et ***:id*** de la configuration de la route du `HeroDetail` ajoutée précédemment au fichier `app.routes.ts`.
 +makeExample('toh-5/ts/app/app.routes.1.ts','hero-detail-route', 'app/app.routes.ts (hero detail route)')(format=".")
 :marked
   The `DashboardComponent` doesn't have the router yet. We obtain it in the usual way:
   import the `router` reference and inject it in the constructor (along with the `HeroService`):
-
-  Le `DashboardComponent` n'a pas encore de routeur. Nous allons l'obtenir de façon traditionnelle&nbsp;:
-  importez la référence du `router` et injectez-la dans le constructeur (avec le `HeroService`):
 
 +makeExample('toh-5/ts/app/dashboard.component.ts','import-router', 'app/dashboard.component.ts (excerpts)')(format=".")
 +makeExample('toh-5/ts/app/dashboard.component.ts','ctor')(format=".")
 :marked
   Refresh the browser and select a hero from the dashboard; the app should navigate directly to that hero’s details.
 
-  Rafraichissez la page et sélectionnez un héros dans le tableau de bord; l'application devrait naviguer directement vers le détail du héros.
-
 .l-main-section
 :marked
   ## Select a Hero in the *HeroesComponent*
-
-  ## Sélectionnons un héros dans le *HeroesComponent*
-
   We'll do something similar in the `HeroesComponent`.
-
-  Nous allons faire quelque chose de similaire dans le `HeroesComponent`.
 
   That component's current template exhibits a "master/detail" style with the list of heroes
   at the top and details of the selected hero below.
-
-  Le template de ce composant utilise un style "maître/détail" avec la liste de héros
-  en haut et le détail du héros sélectionné en dessous.
 +makeExample('toh-4/ts/app/app.component.ts','template', 'app/heroes.component.ts (current template)')(format=".")
 :marked
   Delete the last line of the template with the `<my-hero-detail>` tags.
 
-  Supprimez la dernière ligne du template contenant la balise `<my-hero-detail>`.
-
   We'll no longer show the full `HeroDetailComponent` here.
   We're going to display the hero detail on its own page and route to it as we did in the dashboard.
-
-  Nous n'afficherons plus le `HeroDetailComponent` ici.
-  Nous allons afficher le détail d'un héros sur sa propre page comme nous l'avons fait avec le tableau de bord.
 
   But we'll throw in a small twist for variety.
   When the user selects a hero from the list, we *won't* go to the detail page.
   We'll show a *mini-detail* on *this* page instead and make the user click a button to navigate to the *full detail *page.
 
-  Mais nous allons ajouter quelques spécificités pour varier les plaisirs.
-  Lorsque l'utilisateur choisira un héros dans la liste, nous *n'irons* pas directement sur la page de détail.
-  Nous afficherons plutôt un *mini-detail* sur *cette* page et nous nous assurerons que l'utilisateur clique sur un bouton pour naviguer sur la *version complète* de la page.
-
   ### Add the *mini-detail*
-
-  ### Ajoutons le *mini-detail*
-
   Add the following HTML fragment at the bottom of the template where the `<my-hero-detail>` used to be:
-
-  Ajoutez le fragment HTML suivant en bas du template à l'endroit où se trouvait la balise `<my-hero-detail>`&nbsp;:
 +makeExample('toh-5/ts/app/heroes.component.html','mini-detail')(format=".")
 :marked
   After clicking a hero, the user should see something like this below the hero list:
-
-  Après avoir cliqué sur un héros, l'utilisateur devrait voir sous la liste de héros quelque chose ressemblant à ça&nbsp;:
 
 figure.image-display
   img(src='/resources/images/devguide/toh/mini-hero-detail.png' alt="Mini Hero Detail" height="70")
 :marked
   ### Format with the *UpperCasePipe*
 
-  ### Formatage avec le *UpperCasePipe*
-
   Notice that the hero's name is displayed in CAPITAL LETTERS. That's the effect of the `UpperCasePipe`
   that we slipped into the interpolation binding. Look for it right after the pipe operator ( | ).
-
-  Remarquez que le nom du héros est affiché en LETTRES MAJUSCULES. C'est du à l'effet du `UpperCasePipe`
-  que nous avons ajouté dans notre interpolation. Vous le retrouvez tout à droite après l'opérateur pipe ( | ).
 +makeExample('toh-5/ts/app/heroes.component.html','pipe')(format=".")
 :marked
   Pipes are a good way to format strings, currency amounts, dates and other display data.
   Angular ships with several pipes and we can write our own.
-
-  Les _Pipes_ sont une bonne façon de formater des chaînes de caractères, des monnaies, des dates et tout type de données affichées.
-  Angular propose des pipes natifs et nous pouvons aussi écrire les notres.
 .l-sub-section
   :marked
     Learn about pipes in the [Pipes](../guide/pipes.html) chapter.
-
-    Apprenez-en plus sur les pipes dans le chapitre [Pipes](../guide/pipes.html).
 :marked
   ### Move content out of the component file
-
-  ### Déplaçons du code hors du fichier du composant
-
   We are not done. We still have to update the component class to support navigation to the
   `HeroDetailComponent` when the user clicks the *View Details* button.
-
-  Nous n'avons pas terminé. Nous avons encore à mettre à jour la classe du composant pour supporter la navigation vers le
-  `HeroDetailComponent` lorsque l'utilisateur clique sur le bouton *View Details*.
 
   This component file is really big. Most of it is either template or CSS styles.
   It's difficult to find the component logic amidst the noise of HTML and CSS.
 
-  Le fichier de ce composant devient volumineux. La plus grande partie correspond à du template ou à des styles CSS.
-  Il devient difficile de repérer la logique du composant au milieu du bruit engendré par le HTML et la CSS.
-
   Let's migrate the template and the styles to their own files before we make any more changes:
-
-  Occupons nous de déplacer le template et le style dans leur propre fichier avant de faire d'autres changements au composant&nbsp;:
-
   1. *Cut-and-paste* the template contents into a new `heroes.component.html` file.
-
-  1. *Copiez et collez* le contenu du template dans un nouveau fichier `heroes.component.html`.
-
   1. *Cut-and-paste* the styles contents into a new `heroes.component.css` file.
-
-  1. *Copiez et collez* le contenu du style dans un nouveau fichier `heroes.component.css`.
-
   1. *Set* the component metadata's `templateUrl` and `styleUrls` properties to refer to both files.
-
-  1. *Renseignez* les propriétés `templateUrl` et `styleUrls` des métadonnées du composant en faisant référence à ces deux nouveaux fichiers.
 
   Because the template for `HeroesComponent` no longer uses `HeroDetailComponent`
   directly &mdash; instead using the router to _navigate_ to it &mdash; we can
@@ -1084,35 +557,15 @@ figure.image-display
   list is now empty, so we can remove the `directives` property. The revised
   `@Component` looks like this:
 
-  Parce que le template du `HeroesComponent` n'utilise plus le `HeroDetailComponent`
-  directement &mdash; il fait appel au routeur pour y _naviguer_ &mdash; nous pouvons
-  supprimer le `HeroDetailComponent` de la liste de directives. Cette
-  liste étant maintenant vide nous pouvons supprimer également la propriété `directives`. Le
-  décorateur `@Component` ainsi modifié ressemble à ça&nbsp;:
-
 +makeExample('toh-5/ts/app/heroes.component.ts', 'metadata', 'app/heroes.component.ts (revised metadata)')(format=".")
 :marked
   Now we can see what's going on as we update the component class along the same lines as the dashboard:
-
-  Nous voyons très bien ce qu'il reste à faire dans la mesure ou nous l'avons déjà fait pour le tableau de bord&nbsp;:
-
   1. Import the `router`
-
-  1. Importer le `router`
-
   1. Inject the `router` in the constructor (along with the `HeroService`)
-
-  1. Injecter le `router` dans le constructeur (avec le `HeroService`)
-
   1. Implement the `gotoDetail` method by calling the `router.navigate` method
   with a two-part `HeroDetail` *link parameters array*.
 
-  1. Implémenter la méthode `gotoDetail` en appelant la méthode `router.navigate`
-  avec un *tableau de paramètres de lien* du `HeroDetail`.
-
   Here's the revised component class:
-
-  Voici la classe modifiée&nbsp;:
 +makeExample('toh-5/ts/app/heroes.component.ts', 'class', 'app/heroes.component.ts (class)')
 :marked
   Refresh the browser and start clicking.
@@ -1120,50 +573,24 @@ figure.image-display
   for heroes list to the mini-detail to the hero details and back to the heroes again.
   We can jump back and forth between the dashboard and the heroes.
 
-  Rafraichissez la page et commencez à cliquer.
-  Nous pouvons naviguer dans l'application, du tableau de bord à la page de détail d'un héros et revenir,
-  de la liste de héros au mini-détail puis au détail d'un héros et revenir à la liste.
-  Nous pouvons aller et venir du tableau de bord à la liste de héros.
-
   We've met all of the navigational requirements that propelled this chapter.
-
-  Nous avons parcouru tous les impératifs de navigation qui ont motivés ce chapitre.
 
 .l-main-section
 :marked
   ## Styling the App
-
-  ## Stylons l'application
-
   The app is functional but pretty ugly.
   Our creative designer team provided some CSS files to make it look better.
 
-  L'application est fonctionnelle mais elle reste assez moche.
-  Notre équipe de designers nous a fourni des fichiers CSS pour qu'elle fasse meilleure figure.
-
   ### A Dashboard with Style
-
-  ### Un tableau de bord avec du style
-
   The designers think we should display the dashboard heroes in a row of rectangles.
   They've given us ~60 lines of CSS for this purpose including some simple media queries for responsive design.
-
-  Les designers pensent que nous devrions afficher le tableau de bord avec des rectangles en lignes.
-  Ils nous ont fourni environ 60 lignes de CSS pour remplir cet objectif incluant de simple _media queries_ pour le design responsive.
 
   If we paste these ~60 lines into the component `styles` metadata,
   they'll completely obscure the component logic.
   Let's not do that. It's easier to edit CSS in a separate `*.css` file anyway.
 
-  Si nous copions ces 60 lignes dans la métadonnée `styles` de notre composant,
-  elles vont complètement offusquer la logique du composant.
-  Ne le faisons pas. Cela sera de toute façon plus facile d'éditer de la CSS dans un fichier `*.css` à part.
-
   Add a `dashboard.component.css` file to the `app` folder and reference
   that file in the component metadata's `styleUrls` array property like this:
-
-  Ajoutez un fichier `dashboard.component.css` au répertoire `app` et référencez-le
-  dans la propriété `styleUrls` des métadonnées du composant comme cela&nbsp;:
 +makeExample('toh-5/ts/app/dashboard.component.ts', 'css', 'app/dashboard.component.ts (styleUrls)')(format=".")
 :marked
 .l-sub-section
@@ -1171,28 +598,14 @@ figure.image-display
     The `styleUrls` property is an array of style file names (with paths).
     We could list multiple style files from different locations if we needed them.
     As with `templateUrl`, we must specify the path _all the way back to the application root_.
-
-    La propriété `styleUrls` correspond à un tableau de noms de fichiers de style (avec leur chemin).
-    Nous pouvons ainsi lister plusieurs fichiers de styles localisés à différents endroits si nous le souhaitons.
-    Comme avec le `templateUrl`, nous devons indiquer le chemin _complet vers la racine de l'application_.
 :marked
   ### Stylish Hero Details
-
-  ### Stylons le détail d'un héros
-
   The designers also gave us CSS styles specifically for the `HeroDetailComponent`.
-
-  Les designers nous ont également donné des styles CSS spécialement pour le `HeroDetailComponent`.
 
   Add a `hero-detail.component.css` to the `app` folder and refer to that file inside
   the `styleUrls` array as we did for `DashboardComponent`.
 
-  Ajoutez un fichier `hero-detail.component.css` au répertoire `app` et référencez-le dans le
-  tableau `styleUrls` comme avec le  `DashboardComponent`.
-
   Here's the content for the aforementioned component CSS files.
-
-  Voici le contenu des fichiers CSS mentionnés.
 +makeTabs(
   `toh-5/ts/app/hero-detail.component.css,
   toh-5/ts/app/dashboard.component.css`,
@@ -1201,66 +614,35 @@ figure.image-display
   app/dashboard.component.css`)
 :marked
   ### Style the Navigation Links
-
-  ### Stylons les liens de navigation
-
   The designers gave us CSS to make the navigation links in our `AppComponent` look more like selectable buttons.
   We cooperated by surrounding those links in `<nav>` tags.
 
-  Les designers nous ont donné de la CSS pour faire ressembler les liens de navigation du `AppComponent` à des boutons sélectionnables.
-  Nous nous sommes préparés en insérant ces liens dans une balise `<nav>`.
-
   Add a `app.component.css` file to the `app` folder with the following content.
-
-  Ajoutez le fichier `app.component.css` au répertoire `app` avec le contenu suivant&nbsp;:
 +makeExample('toh-5/ts/app/app.component.css', '', 'app/app.component.css (navigation styles)')
 .l-sub-section
   :marked
     **The *routerLinkActive* directive**
 
-    **La directive *routerLinkActive* **
-
     The Angular Router provides a `routerLinkActive` directive we can use to
     add a class to the HTML navigation element whose route matches the active route.
     All we have to do is define the style for it. Sweet!
-
-    Le routeur Angular fournit une directive `routerLinkActive` qui peut être utilisée
-    pour ajouter une classe aux éléments HTML de navigation dont la route correspond à la route courante.
-    Tout ce que nous avons à faire c'est de définir un style pour cela. Génial&nbsp;!
 +makeExample('toh-5/ts/app/app.component.3.ts', 'router-link-active', 'app/app.component.ts (active router links)')(format=".")
 :marked
   Set the `AppComponent`’s `styleUrls` property to this CSS file.
-
-  Indiquez dans la propriété `styleUrls` du `AppComponent` la référence à ce fichier CSS.
 +makeExample('toh-5/ts/app/app.component.ts','style-urls', 'app/app.component.ts (styleUrls)')(format=".")
 :marked
   ### Global application styles
-
-  ### Style global de l'application
-
   When we add styles to a component, we're keeping everything a component needs
   &mdash; HTML, the CSS, the code &mdash; together in one convenient place.
   It's pretty easy to package it all up and re-use the component somewhere else.
 
-  Lorsque nous ajoutons du style à un composant, nous gardons regroupé tout ce dont le composant à besoin
-  &mdash; le HTML, la CSS, le code &mdash;  dans un endroit aproprié.
-  Il est ainsi plus facile de tout packager pour réutiliser le composant ailleurs.
-
   We can also create styles at the *application level* outside of any component.
-
-  Nous pouvons également créer un style *au niveau de l'application* en dehors d'un quelconque composant.
 
   Our designers provided some basic styles to apply to elements across the entire app.
   These correspond to the full set of master styles that we
   introduced earlier (see
   [QuickStart, "Add some style"](../quickstart.html#!#add-some-style)).
   Here is an excerpt.
-
-  Nos designers nous ont fourni quelques styles basiques à appliquer à tous les éléments de l'application.
-  Ils correspondent a l'ensemble de style que nous avons introduit plus tôt
-  (voir
-  [Démarrage, "Ajouter un peu de style"](../quickstart.html#!#add-some-style)).
-  En voici un extrait.
 
 +makeExample('toh-5/ts/styles.1.css', 'toh-excerpt', 'styles.css (app styles excerpt)')(format=".")
 
@@ -1270,17 +652,10 @@ figure.image-display
   Add a new file named `styles.css` in the root folder, if there isn't one already.
   Ensure that it contains the [master styles given here](!{styles_css}).
 
-  Ajoutez un nouveau fichier appelé `styles.css` dans le répertoire racine, s'il ne s'y trouve pas déjà.
-  Assurez-vous qu'il contient [le style principal fourni ici](!{styles_css}).
-
   If necessary, also edit `index.html` to refer to this stylesheet.
-
-  Au besoin, éditez aussi le fichier `index.html` pour référencer cette feuille de style.
 +makeExample('toh-5/ts/index.html','css', 'index.html (link ref)')(format=".")
 :marked
  Look at the app now. Our dashboard, heroes, and navigation links are styling!
-
- Regardez notre application maintenant. Le tableau de bord, la liste de héros et les liens de navigation sont stylisés&nbsp;!
 
 figure.image-display
   img(src='/resources/images/devguide/toh/dashboard-top-heroes.png' alt="View navigations")
@@ -1289,13 +664,8 @@ figure.image-display
 :marked
   ## Application structure and code
 
-  ## Structure et code de notre application
-
   Review the sample source code in the <live-example></live-example> for this chapter.
   Verify that we have the following structure:
-
-  Retrouvez l'ensemble du code dans la <live-example>démo</live-example> correspondante à ce chapitre.
-  Vérifiez que vous avez bien la structure suivante&nbsp;:
 
 .filetree
   .file angular2-tour-of-heroes
@@ -1331,52 +701,18 @@ figure.image-display
 :marked
   ## Recap
 
-  ## Recapitulatif
-
   ### The Road Behind
-
-  ### Qu'avons nous accompli ?
-
   We travelled a great distance in this chapter.
-
-  Nous avons parcouru beaucoup de chemin dans ce chapitre
-
   - We added the Angular *Component Router* to navigate among different components.
-
-  - Nous avons ajouté le *Composant Routeur* de Angular pour naviguer à travers les différents composants
-
   - We learned how to create router links to represent navigation menu items.
-
-  - Nous avons appris à créer des liens de routage pour représenter des entrées dans un menu de navigation.
-
   - We used router parameters to navigate to the details of user selected hero.
-
-  - Nous avons utilisé les paramètres de routes pour naviguer vers le détail d'un héros sélectionné.
-
   - We shared the `HeroService` among multiple components.
-
-  - Nous avons partagé le `HeroService` entre plusieurs composants.
-
   - We moved HTML and CSS out of the component file and into their own files.
-
-  - Nous avons sorti le HTML et la CSS des composants pour les placer dans leur propre fichier.
-
   - We added the `uppercase` pipe to format data.
 
-  - Nous avons ajouté le pipe `uppercase` pour formater les données.
-
   ### The Road Ahead
-
-  ### Par la suite
-
   We have much of the foundation we need to build an application.
   We're still missing a key piece: remote data access.
 
-  Nous avons la plupart des bases pour construire une application.
-  Il nous manque une chose&nbsp;: l'accès à des données distantes.
-
   In the next chapter,
   we’ll replace our mock data with data retrieved from a server using http.
-
-  Dans le prochain chapitre,
-  nous allons remplacer nos données bouchonnées par des données récupérées sur le serveur en utilisant http.

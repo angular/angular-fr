@@ -11,7 +11,7 @@ class FetchJsonPipe extends PipeTransform {
   dynamic _fetchedJson;
   String _prevUrl;
 
-  dynamic transform(String url) {
+  dynamic transform(dynamic url, [List<dynamic> args]) {
     if (url != _prevUrl) {
       _prevUrl = url;
       _fetchedJson = null;

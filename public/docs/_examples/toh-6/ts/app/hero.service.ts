@@ -17,13 +17,13 @@ export class HeroService {
 
   constructor(private http: Http) { }
 
-  getHeroes() {
+  getHeroes(): Promise<Hero[]> {
     return this.http.get(this.heroesUrl)
     // #docregion to-promise
                .toPromise()
     // #enddocregion to-promise
     // #docregion to-data
-               .then(response => response.json().data as Hero[])
+               .then(response => response.json().data)
     // #enddocregion to-data
     // #docregion catch
                .catch(this.handleError);

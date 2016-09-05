@@ -2,34 +2,20 @@ include ../_util-fns
 
 :marked
   Welcome to the Angular 2 Style Guide
-  
-  Bienvenue dans le code typographique d'Angular 2
 
   ## Purpose
-  
-  ## L'objectif de ce document
 
   If you are looking for an opinionated style guide for syntax, conventions, and structuring Angular applications, then step right in.
-  
-  Si vous êtes à la recherche d'un code typographique opiniâtre pronant une syntaxe, des conventions et une structuration des applications Angular bien définit, alors vous êtes bien tombés.
 
   The purpose of this style guide is to provide guidance on building Angular applications by showing the conventions we use and, more importantly, why we choose them.
-  
-  Le but de ce code typographique est de proposer des indications quant à la création d'application Angular en montrant les conventions que nous utilisons, et plus imporant encore, pourquoi nous les avons choisi. 
 .l-main-section
 
 :marked
   ## Style Vocabulary
-  
-  ## Vocabulaire
 
   Each guideline describes either a good or bad practice, and all have a consistent presentation.
-  
-  Chaque directive décrit soit une bonne ou mauvaise pratique, et possèdent toutes une présentation détaillée.
 
   The wording of each guideline indicates how strong the recommendation is.
-  
-  Les formulations de chaque directive indique l'importance de la recommandation.
 
 .s-rule.do
   :marked
@@ -37,148 +23,76 @@ include ../_util-fns
     _Always_ might be a bit too strong of a word.
     Guidelines that literally should always be followed are extremely rare.
     On the other hand, we need a really unusual case for breaking a *Do* guideline.
-    
-    **Vous devez** est celle qui devrait toujours être suivie.
-    _Toujours_ pourrait être un peu fort comme mot.
-    Des directives que l'ont doit suivre litérallement sont extrêmement rares.
-    D'autre part, nous avons besoin d'une vraie raison qui nous empêcherait de suivre ce genre de directives.
 
 .s-rule.consider
   :marked
     **Consider** guidelines should generally be followed.
     If you fully understand the meaning behind the guideline and have a good reason to deviate, then do so. Please strive to be consistent.
-    
-    **Considérez** devrait être suivie en générale.
-    Si vous comprenez entièrement la signification de cette directive et que vous avez une très bonne raison pour ne pas la suivre, faites-en. Cependant, s'il vous plait, forcez-vous à rester cohérent dans l'ensemble.
 
 .s-rule.avoid
   :marked
     **Avoid** indicates something we should almost never do. Code examples to *avoid* have an unmistakeable red header.
-    
-    **Évitez** indique quelque chose que nous ne devrions jamais faire. Les exemples de code *à éviter* ont un ent-tête rouge que vous ne pouvez pas rater.
 .l-main-section
 
 :marked
   ## File Structure Conventions
-  
-  ## Les conventions liées à la structure des fichiers
 
   Some code examples display a file that has one or more similarly named companion files. (e.g. hero.component.ts and hero.component.html).
-  
-  Des exemples de code affichent un fichier accompagné d'autres fichiers ayants un nom similaire (e.g. hero.component.ts et hero.component.html).
 
   The guideline will use the shortcut `hero.component.ts|html|css|spec` to represent those various files. Using this shortcut makes this guide's file structures easier to read and more terse.
-  
-  La directive utilisera le raccourci  `hero.component.ts|html|css|spec` pour représenter ces fichiers. L'utilisation de ce raccourci rendra ainsi ce guide plus simple à lire et plus succinct.
 
 .l-main-section
 a(id='toc')
 
 :marked
   ## Table of Contents
-  
-  ## Table des matières
 
     1. [Single Responsibility](#single-responsibility)
-    
-    1. [Responsabilité Unique](#single-responsibility)
-    
     1. [Naming](#naming)
-    
-    1. [Nommage](#naming)
-    
     1. [Coding Conventions](#coding-conventions)
-    
-    1. [Conventions de codage](#coding-conventions)
-    
     1. [Application Structure](#application-structure)
-    
-    1. [Structure de l'application](#application-structure)
-    
     1. [Components](#components)
-    
-    1. [Les composants](#components)
-    
     1. [Directives](#directives)
-    
-    1. [Les directives](#directives)
-    
     1. [Services](#services)
-    
-    1. [Les services](#services)
-    
     1. [Data Services](#data-services)
-    
-    1. [Les services de données](#data-services)
-    
     1. [Lifecycle Hooks](#lifecycle-hooks)
-    
-    1. [Les fonctions de cycle de vie](#lifecycle-hooks)
-    
     1. [Appendix](#appendix)
-    
-    1. [Annexe](#appendix)
 
 .l-main-section
 :marked
   ## Single Responsibility
-  
-  ## Responsabilité Unique
 
   We apply the [Single Responsibility Principle](https://wikipedia.org/wiki/Single_responsibility_principle) to all Components, Services, and other symbols we create. This helps make our app cleaner, easier to read and maintain, and more testable.
-  
-  Nous appliquons le [principe de Responsabilité Unique](https://fr.wikipedia.org/wiki/Principe_de_responsabilit%C3%A9_unique) à tous les Composants, Services et autres fichiers que nous créons. Ceci rend le code de notre application plus propore, plus simple à relire et maintenir et surtout, plus simple à tester. 
 
   ### <a id="01-01"></a>Rule of One
-  
-  ### <a id="01-01"></a>La règle du Un
-  
   #### <a href="#01-01">Style 01-01</a>
 .s-rule.do
   :marked
     **Do** define one thing (e.g. service or component) per file.
-    
-    **Vous devez** définir une seule chose (e.g. service ou composant) par fichier.
 
 .s-rule.consider
   :marked
     **Consider** limiting files to 400 lines of code.
-    
-    **Considérez** la limite de 400 lignes de code par fichier.
 
 .s-why
   :marked
     **Why?** One component per file makes it far easier to read, maintain, and avoid collisions with teams in source control.
 
-    **Pourquoi ?** Un seul composant par fichier le rend très simple à lire, maintenir et évite d'avoir beacoup de conflicts dans les sources de contrôles.
-
 .s-why
   :marked
     **Why?** One component per file avoids hidden bugs that often arise when combining components in a file where they may share variables, create unwanted closures, or unwanted coupling with dependencies.
-    
-    **Pourquoi ?** Un composant par fichier évite d'avoir des bogues cachés souvent rencontrés lorsque nous créons plusieurs composants dans le même fichier; dans ce cas, ces composants peuvent partager des variables, créer des fermetures (closure) non désirées ou encore des couplages non souhaités avec d'autres dépendances. 
 
 .s-why.s-why-last
   :marked
     **Why?** A single component can be the default export for its file which facilitates lazy loading with the Component Router.
-    
-    **Pourquoi ?** Un composant par fichier permet à ce dernier d'exporter par défaut son composant, ce qui facilite le chargement dynamique des composants proposer par le routeur.
-    
 :marked
   The key is to make the code more reusable, easier to read, and less mistake prone.
 
-  L'idée est de rendre le code réutilisable, simple à lire et moins sujets aux erreurs.
-
   The following *negative* example defines the `AppComponent`, bootstraps the app, defines the `Hero` model object, and loads heroes from the server ... all in the same file. *Don't do this*.
-  
-  Le contre exemple suivant définit le `AppComponent`, initialise l'application (bootstraps), définit un modèle `Hero`, et charge les héros depuis le serveur ... tout cela dans le même fichier. *Ne faites pas cela*. 
-  
 
 +makeExample('style-guide/ts/01-01/app/heroes/hero.component.avoid.ts', '', 'app/heroes/hero.component.ts')(avoid=1)
 :marked
   Better to redistribute the component and supporting activities into their own dedicated files.
-  
-  Le mieux est de redistribuer le composant ainsi que les autres tâches dans leurs propres fichiers.
 
 +makeTabs(
   `style-guide/ts/01-01/main.ts,
@@ -197,181 +111,116 @@ a(id='toc')
 
 :marked
   As the app grows, this rule becomes even more important.
-  
-  Plus l'application grossit, plus vous verez l'importance de cette règle.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
   ### <a id="01-02"></a>Small Functions
-  
-  ### <a id="01-02"></a>Des Fonctions Courtes
-  
   #### <a href="#01-02">Style 01-02</a>
 .s-rule.do
   :marked
     **Do** define small functions
-    
-    **Voud devez** définir des fonctions courtes
 
 .s-rule.consider
   :marked
     **Consider** limiting to no more than 75 lines.
-    
-    **Considérez** la limite de 75 lignes par fonction.
 
 .s-why
   :marked
     **Why?** Small functions are easier to test, especially when they do one thing and serve one purpose.
-    
-    **Pourquoi ?** Les fonctions courtes sont très simples à tester, surtout lorsqu'elles effectuent une seule tâche et répondent à un seul besoin.
 
 .s-why
   :marked
     **Why?** Small functions promote reuse.
-    
-    **Pourquoi ?** Les fonctions courtes encouragent la réutilisabilité.
 
 .s-why
   :marked
     **Why?** Small functions are easier to read.
-    
-    **Pourquoi ?** Les fonctions courtes sont facile à lire.
 
 .s-why
   :marked
     **Why?** Small functions are easier to maintain.
-    
-    **Pourquoi ?** Les fonctions courtes sont simple à maintenir.
 
 .s-why.s-why-last
   :marked
     **Why?** Small functions help avoid hidden bugs that come with large functions that share variables with external scope, create unwanted closures, or unwanted coupling with dependencies.
-    
-    **Pourquoi ?** Les fonctions courtes permettent d'éviter les bogues souvent rencontrés avec les fonctions longues qui partagent des variables avec des contextes externes, créent des fermetures non désirées, ou des couplages non souhaités avec d'autres dépendances. 
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
   ## Naming
-  
-  ## Nommage
 
   Naming conventions are hugely important to maintainability and readability. This guide recommends naming conventions for the file name and the symbol name.
-  
-  Le nommage est largement important pour la maintenabilité et la lecture. Ce guide recommande les conventions de nommage pour les noms des fichiers ainsi que les symbôles (classes, composants...).
 
 .l-main-section
 :marked
   ### <a id="02-01"></a>General Naming Guidelines
-  
-  ### <a id="02-01"></a>Directives Générales de Nommage
-  
   #### <a href="#02-01">Style 02-01</a>
 
 .s-rule.do
   :marked
     **Do** use consistent names for all symbols.
-    
-    **Vous devez** utiliser des noms cohérents pour tous les symbôles.
 
 .s-rule.do
   :marked
     **Do** follow a pattern that describes the symbol's feature then its type. The recommended pattern is `feature.type.ts`.
-    
-    **Vous devez** suivre un motif décrivant le fonction du symbôle suivi de son type. Le motif recommandé est `fonctionnalité.type.ts`.
 
 .s-why
   :marked
     **Why?** Naming conventions help provide a consistent way to find content at a glance. Consistency within the project is vital. Consistency with a team is important. Consistency across a company provides tremendous efficiency.
-    
-    **Pourquoi ?** Les conventions de nommage permettent d'avoir un moyen systématique de trouver du contenu en un seul coup d'oeil. Avoir une cohérence de nommage à travers toute l'entreprise est d'une  grande efficacité.
 
 .s-why
   :marked
     **Why?** The naming conventions should simply help us find our code faster and make it easier to understand.
-    
-    **Pourquoi ?** Les conventions de nommage devraient simplement nous aider à trouver rapidement notre code et le rendre facile à comprendre.
 
 .s-why.s-why-last
   :marked
     **Why?** Names of folders and files should clearly convey their intent. For example, `app/heroes/hero-list.component.ts` may contain a component that manages a list of heroes.
-    
-    **Pourquoi ?** Les noms des fichiers et répertoires devraient exprimser clairement leurs intentions. Par exemple, `app/heroes/hero-list.component.ts` pourrait contenir un composant permettant de gérer la liste de héros.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
   ### <a id="02-02"></a>Separate File Names with Dots and Dashes
-  
-  ### <a id="02-02"></a>Séparer les Noms des Fichiers par des Points et Tiret (demi-cadratin)
-  
   #### <a href="#02-02">Style 02-02</a>
 
 .s-rule.do
   :marked
     **Do** use dashes to separate words in the descriptive name.
-    
-    **Vous devez** utiliser des tirets pour séparer les mots dans le nom descriptif.
 
 .s-rule.do
   :marked
     **Do** use dots to separate the descriptive name from the type.
 
-    **Vous devez** utiliser des points pour séparer les noms du type.
-
 .s-rule.do
   :marked
     **Do** use consistent type names for all components following a pattern that describes the component's feature then its type. A recommended pattern is `feature.type.ts`.
-    
-    **Vous devez** utiliser des noms cohérents pour tous les composants suivant un motif décrivant la fonction du composant suivi de son type. Le motif recommandé est `feature.type.ts`.
 
 .s-rule.do
   :marked
     **Do** use conventional type names including `.service`, `.component`, `.pipe`. 
     Invent additional type names if you must but take care not to create too many.
-    
-    **Vous devez** utiliser des noms conventionnels de types tels que `.service`, `.component`, `.pipe`.
-    Si vous avez besoin d'autres types, rajoutez-en mais faites attention de ne pas trop en créer.
 
 .s-why
   :marked
     **Why?** Type names provide a consistent way to quickly identify what is in the file.
-    
-    **Pourquoi ?** Les types permettent d'identifier rapidement ce qu'il y a dans le fichier.
 
 .s-why
   :marked
     **Why?** Make it easy to find a specific file type using an editor or IDE's fuzzy search techniques.
-    
-    **Pourquoi ?** Cela permet de trouver un fichier par son type en utilisant la fonction de recherche d'un éditeur ou IDE. 
 
 .s-why
   :marked
     **Why?** Unabbreviated type names such as `.service` are descriptive and unambiguous.
     Abbreviations such as `.srv`, `.svc`, and `.serv` can be confusing.
-    
-    **Pourquoi ?** Les noms de types non abrégé tels que `.service` sont univoque et descriptif.
-    Les abréviations telles que `.srv`, `.svc`, and `.serv` pourraient être confus.
 
 .s-why.s-why-last
   :marked
     **Why?** Provides pattern matching for any automated tasks.
-    
-    ***Pourquoi ?** Cela permet à n'importe quel outils d'effectuer un filtrage par motif.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -453,8 +302,6 @@ table(width="100%")
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="02-04"></a>Service Names
@@ -519,8 +366,6 @@ table(width="100%")
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="02-05"></a>Bootstrapping
@@ -544,8 +389,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="02-06"></a>Directive Selectors
@@ -564,8 +407,6 @@ a(href="#toc") Retour en haut
     **Why?** The Angular 2 HTML parser is case sensitive and will recognize lower camel case.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -628,8 +469,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="02-09"></a>Pipe Names
@@ -669,8 +508,6 @@ table(width="100%")
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -736,8 +573,6 @@ table(width="100%")
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="02-11"></a>End to End Test File Names
@@ -777,8 +612,6 @@ table(width="100%")
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ## Coding Conventions
@@ -809,8 +642,6 @@ a(href="#toc") Retour en haut
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -860,8 +691,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="03-03"></a>Interfaces
@@ -886,8 +715,6 @@ a(href="#toc") Retour en haut
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -922,8 +749,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="03-05"></a>Import Destructuring Spacing
@@ -944,8 +769,6 @@ a(href="#toc") Retour en haut
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -980,8 +803,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ## Application Structure
@@ -991,8 +812,6 @@ a(href="#toc") Retour en haut
   All of the app's code goes in a folder named `app`. All content is 1 feature per file. Each component, service, and pipe is in its own file. All 3rd party vendor scripts are stored in another folder and not in the `app` folder. We didn't write them and we don't want them cluttering our app. Use the naming conventions for files in this guide.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1013,8 +832,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="04-02"></a>Locate
@@ -1029,8 +846,6 @@ a(href="#toc") Retour en haut
     **Why?** We find this to be super important for a project. If we cannot find the files we need to work on quickly, we will not be able to work as efficiently as possible, and the structure will need to change. We may not know the file name or where its related files are, so putting them in the most intuitive locations and near each other saves a ton of time. A descriptive folder structure can help with this.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1059,8 +874,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="04-04"></a>Flat
@@ -1080,8 +893,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="04-05"></a>T-DRY (Try to be DRY)
@@ -1100,8 +911,6 @@ a(href="#toc") Retour en haut
     **Why?** Being DRY is important, but not crucial if it sacrifices the others in LIFT, which is why we call it T-DRY. We don’t want to type `hero-view.component.html` for a view because, well, it’s obviously a view. If it is not obvious or by convention, then we name it.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1170,8 +979,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="04-07"></a>Shared Folder
@@ -1231,8 +1038,6 @@ a(href="#toc") Retour en haut
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1308,8 +1113,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="04-09"></a>Layout Components
@@ -1359,8 +1162,6 @@ a(href="#toc") Retour en haut
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1451,8 +1252,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="04-11"></a>Lazy Loaded Folders
@@ -1469,8 +1268,6 @@ a(href="#toc") Retour en haut
     **Why?** The folder makes it easy to identify and isolate the feature content.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1507,8 +1304,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="04-13"></a>Never Directly Import Lazy Loaded Folders
@@ -1526,8 +1321,6 @@ a(href="#toc") Retour en haut
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1547,8 +1340,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="04-15"></a>Use Component Router to Lazy Load
@@ -1563,8 +1354,6 @@ a(href="#toc") Retour en haut
     **Why?** That's the easiest way to load a module on demand.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1593,8 +1382,6 @@ a(href="#toc") Retour en haut
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1632,8 +1419,6 @@ a(href="#toc") Retour en haut
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1675,8 +1460,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="05-12"></a>Decorate Input and Output Properties Inline
@@ -1714,8 +1497,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="05-13"></a>Avoid Renaming Inputs and Outputs
@@ -1745,8 +1526,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="05-14"></a>Member Sequence
@@ -1771,8 +1550,6 @@ a(href="#toc") Retour en haut
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1811,8 +1588,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="05-16"></a>Don't Prefix Output Properties
@@ -1850,8 +1625,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="05-17"></a>Put Presentation Logic in the Component Class
@@ -1877,15 +1650,11 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ## Directives
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -1912,8 +1681,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="06-03"></a>Use HostListener and HostBinding Class Decorators
@@ -1939,8 +1706,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ## Services
@@ -1965,8 +1730,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="07-02"></a>Single Responsibility
@@ -1989,8 +1752,6 @@ a(href="#toc") Retour en haut
     **Why?** When a service has multiple responsibilities, every Component or Service that injects it now carries the weight of them all.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -2027,8 +1788,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ### <a id="07-04"></a>Use the @Injectable() Class Decorator
@@ -2053,8 +1812,6 @@ a(href="#toc") Retour en haut
 :marked
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -2085,8 +1842,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ## Lifecycle Hooks
@@ -2094,8 +1849,6 @@ a(href="#toc") Retour en haut
   Use Lifecycle Hooks to tap into important events exposed by Angular.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -2119,8 +1872,6 @@ a(href="#toc") Retour en haut
 
 a(href="#toc") Back to top
 
-a(href="#toc") Retour en haut
-
 .l-main-section
 :marked
   ## Appendix
@@ -2128,8 +1879,6 @@ a(href="#toc") Retour en haut
   Useful tools and tips for Angular 2.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -2145,8 +1894,6 @@ a(href="#toc") Retour en haut
     **Consider** adjusting the rules in codelyzer to suit your needs.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut
 
 .l-main-section
 :marked
@@ -2172,5 +1919,3 @@ a(href="#toc") Retour en haut
     **Consider** using [snippets](https://github.com/mhartington/vim-angular2-snippets) for [Vim](http://www.vim.org/) that follow these styles and guidelines.
 
 a(href="#toc") Back to top
-
-a(href="#toc") Retour en haut

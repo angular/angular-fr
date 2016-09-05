@@ -2,49 +2,26 @@ include ../_util-fns
 
 :marked
   # Services
-
   The Tour of Heroes is evolving and we anticipate adding more components in the near future.
-
-  Le Guide des Héros évolue et nous anticipons l'ajout d'autres composants dans le futur.
-
-  Multiple components will need access to hero data and we don't want to copy and
+  
+  Multiple components will need access to hero data and we don't want to copy and 
   paste the same code over and over.
   Instead, we'll create a single reusable data service and learn to
   inject it in the components that need it.
-
-  Plusieurs composants auront besoin d'acceder aux données des héros et nous ne souhaitons pas copier et coller
-  le même code encore et encore.
-  Au lieu de cela, nous allons créer un service de données réutilisable et apprendre
-  à l'injecter dans les composants qui en auront besoin.
-
+  
   Refactoring data access to a separate service keeps the component lean and focused on supporting the view.
   It also makes it easier to unit test the component with a mock service.
-
-  Refactoriser l'accès aux données via un service dédié permet de laisser les composants légers et dédiés au support de la vue.
-  Cela facilite également la mise en place de tests unitaires pour le composant avec un faux service.
-
-  Because data services are invariably asynchronous,
+  
+  Because data services are invariably asynchronous, 
   we'll finish the chapter with a **!{_Promise}**-based version of the data service.
 
-  Parce que les services de données sont invariablement asynchrones,
-  nous terminerons ce chapitre avec une version de notre service basée sur les **Promesses**.
-
-
   Run the <live-example></live-example> for this part.
-
-  Exécutez la <live-example>démo</live-example> correspondante à cette partie.
 
 .l-main-section
 :marked
   ## Where We Left Off
-
-  ## Ou nous étions-nous arrêtés ?
-
-  Before we continue with our Tour of Heroes, let’s verify we have the following structure.
+  Before we continue with our Tour of Heroes, let’s verify we have the following structure. 
   If not, we’ll need to go back and follow the previous chapters.
-
-  Avant de continuer notre Guide des Héros, vérifiez que vous avez bien la structure suivante.
-  Si ce n'est pas le cas, vous devez revenir en arrière et suivre les étapes du chapitre précédent.
 
 .filetree
   .file angular2-tour-of-heroes
@@ -66,14 +43,8 @@ include ../_util-fns
 
 :marked
   ### Keep the app transpiling and running
-
-  ### Laissons l'application tourner
-
-  Open a terminal/console window.
+  Open a terminal/console window. 
   Start the TypeScript compiler, watch for changes, and start our server by entering the command:
-
-  Ouvrez un terminal ou une console.
-  Démarrez le compilateur TypeScript, observez les changements et démarrez le serveur en tapant la commande suivante&nbsp;:
 
 code-example(language="bash").
   npm start
@@ -81,513 +52,255 @@ code-example(language="bash").
 :marked
   The application runs and updates automatically as we continue to build the Tour of Heroes.
 
-  L'application s'exécute et se met à jour automatiquement pendant que nous continuons à travailler sur notre Guide des Héros.
-
   ## Creating a Hero Service
-
-  ## Créons un service pour les Héros
-
-  Our stakeholders have shared their larger vision for our app.
-  They tell us they want to show the heroes in various ways on different pages.
+  Our stakeholders have shared their larger vision for our app. 
+  They tell us they want to show the heroes in various ways on different pages. 
   We already can select a hero from a list.
   Soon we'll add a dashboard with the top performing heroes and create a separate view for editing hero details.
-  All three views need hero data.
-
-  Les chef de projets ont partagés leurs ambitions pour notre application.
-  Ils désirent afficher des héros de plusieurs façons et sur différentes pages.
-  Nous pouvons déjà sélectionner un héros dans la liste.
-  Bientôt nous ajouterons un tableau de bord contenant le classement des meilleurs héros puis nous créerons une vue dédiée pour l'édition des détails d'un héros.
-  Ces trois vues auront besoin des données des héros.
-
+  All three views need hero data. 
+  
   At the moment the `AppComponent` defines mock heroes for display.
   We have at least two objections.
-  First, defining heroes is not the component's job.
-  Second, we can't easily share that list of heroes with other components and views.
+  First, defining heroes is not the component's job. 
+  Second, we can't easily share that list of heroes with other components and views. 
 
-  Pour le moment le `AppComponent` uilise de fausses données pour l'affichage.
-  Nous avons au moins deux objections.
-  Premièrement, la définition des héros ne devrait pas être de la responsabilité du composant.
-  Deuxièmement, nous ne pouvons pas facilement partager cette liste de héros avec d'autres composants ou vues.
-
-  We can refactor this hero data acquisition business to a single service that provides heroes, and
+  We can refactor this hero data acquisition business to a single service that provides heroes, and 
   share that service with all components that need heroes.
 
-  Nous pouvons concentrer toute cette fonctionnalité d'acquisition des données en un seul service qui fournira les héros et
-  partager ce service entre les composants qui ont besoin de héros.
-
   ### Create the HeroService
-
-  ### Créons le HeroService
-
-  Create a file in the `app` folder called `hero.service.ts`.
-
-  Créez un fichier dans le répertoire `app` appelé `hero.service.ts`.
+  Create a file in the `app` folder called `hero.service.ts`. 
 .l-sub-section
   :marked
     We've adopted a convention in which we spell the name of a service in lowercase followed by `.service`.
     If the service name were multi-word, we'd spell the base filename in lower [dash-case](../guide/glossary.html#!#dash-case).
     The `SpecialSuperHeroService` would be defined in the `special-super-hero.service.ts` file.
-
-    Nous adoptons une convention de nommage dans laquelle le nom du service est en minuscule suivi de `.service`.
-    Si le nom du service est constitué de plusieurs mots, nous utilisons la syntaxe [dash-case](../guide/glossary.html#!#dash-case).
-    Ainsi le service `SpecialSuperHeroService` sera défini dans le fichier `special-super-hero.service.ts`.
 :marked
   We name the class `HeroService` and export it for others to import.
-
-  Nous appelons la classe `HeroService` et l'exportons pour que d'autres puissent l'importer.
 
 +makeExample('toh-4/ts/app/hero.service.1.ts', 'empty-class', 'app/hero.service.ts (starting point)')(format=".")
 
 :marked
   ### Injectable Services
-
-  ### Services injectables
-
   Notice that we imported the Angular `Injectable` function and applied that function as an `@Injectable()` decorator.
-
-  Vous remarquerez que nous importons la fonction `Injectable` d'Angular et nous l'appliquons comme décorateur `@Injectable()`.
-
 .callout.is-helpful
   :marked
     **Don't forget the parentheses!** Neglecting them leads to an error that's difficult to diagnose.
-
-    **N'oubliez pas les parenthèses&nbsp;!** Leur omission provoquera une erreur difficile à diagnostiquer.
 :marked
-  TypeScript sees the `@Injectable()` decorator and emits metadata about our service,
+  TypeScript sees the `@Injectable()` decorator and emits metadata about our service, 
   metadata that Angular may need to inject other dependencies into this service.
 
-  TypeScript voit le décorateur `@Injectable()` et produit des métadonnées à propos de notre service,
-  ces métadonnées seront nécessaires à Angular pour éventuellement injecter d'autres dépendances dans notre service.
-
   The `HeroService` doesn't have any dependencies *at the moment*. Add the decorator anyway.
-  It is a "best practice" to apply the `@Injectable()` decorator ​*from the start*​
+  It is a "best practice" to apply the `@Injectable()` decorator ​*from the start*​ 
   both for consistency and for future-proofing.
-
-  Le `HeroService` n'a pas d'autres dépendances *pour le moment*. Ajoutez quand même le décorateur.
-  C'est une "bonne pratique" d'appliquer le décorateur `@Injectable()` ​*dès le départ*​
-  par soucis de cohérence et d'évolutions futures.
 
 :marked
   ### Getting Heroes
-
-  ### Récupérons les Héros
-
   Add a `getHeroes` method stub.
-
-  Ajoutez le squelette d'une méthode `getHeroes`.
 +makeExample('toh-4/ts/app/hero.service.1.ts', 'getHeroes-stub', 'app/hero.service.ts (getHeroes stub)')(format=".")
 :marked
   We're holding back on the implementation for a moment to make an important point.
-
-  Mettons de coté l'implémentation pour le moment afin de nous concentrer sur un point très important.
-
-  The consumer of our service doesn't know how the service gets the data.
-  Our `HeroService` could get `Hero` data from anywhere.
+  
+  The consumer of our service doesn't know how the service gets the data. 
+  Our `HeroService` could get `Hero` data from anywhere. 
   It could get the data from a web service or local storage
   or from a mock data source.
-
-  Les utilisateurs de notre service ne savent pas d'où les données sont récupérées.
-  Notre `HeroService` pourrait récupérer les données `Hero` de n'importe où.
-  Elles pourraient venir d'un service web, d'un stockage local
-  ou même d'une fausse source de données.
-
+  
   That's the beauty of removing data access from the component.
   We can change our minds about the implementation as often as we like,
   for whatever reason, without touching any of the components that need heroes.
-
-  Et c'est là l'intérêt de sortir l'accès aux données du composant.
-  Nous pouvons changer notre stratégie d'implémentation comme nous le souhaitons
-  pour quelques raisons que ce soit, sans avoir à modifier les composants qui utilisent les héros.
-
-
-  ### Mock Heroes
-
-  ### De faux héros
+  
+  
+  ### Mock Heroes  
   We already have mock `Hero` data sitting in the `AppComponent`.  It doesn't belong there. It doesn't belong *here* either.
   We'll move the mock data to its own file.
 
-  Nous avons déjà utilisé de fausses données `Hero`dans notre `AppComponent`. Ce ne sont pas leurs places.
-  Nous allons mettre ces données dans un fichier à part.
-
   Cut the `HEROES` array from `app.component.ts` and paste it to a new file in the `app` folder named `mock-heroes.ts`.
   We copy the `import {Hero} ...` statement as well because the heroes array uses the `Hero` class.
-
-  Déplacez le tableau `HEROES` du `app.component.ts` dans un nouveau fichier `mock-heroes.ts` dans le répertoire `app`.
-  Nous copions également la ligne `import {Hero} ...` car le tableau de héros utilise cette classe `Hero`.
 
 +makeExample('toh-4/ts/app/mock-heroes.ts', null, 'app/mock-heroes.ts')
 :marked
   We export the `HEROES` constant so we can import it elsewhere &mdash; such as our `HeroService`.
 
-  Nous exportons la constante `HEROES` afin de pouvoir l'importer n'importe où &mdash; comme dans notre `HeroService`.
-
-  Meanwhile, back in `app.component.ts` where we cut away the `HEROES` array,
+  Meanwhile, back in `app.component.ts` where we cut away the `HEROES` array, 
   we leave behind an uninitialized `heroes` property:
-
-  En même temps, dans notre `app.component.ts` d'où nous avons enlevé le tableau `HEROES`,
-  nous avons laissé une propriété `heroes` non initialisée&nbsp;:
 +makeExample('toh-4/ts/app/app.component.1.ts', 'heroes-prop', 'app/app.component.ts (heroes property)')(format=".")
 :marked
   ### Return Mocked Heroes
-
-  ### Fournir de faux héros
-
   Back in the `HeroService`  we import the mock `HEROES` and return it from the `getHeroes` method.
   Our `HeroService` looks like this:
-
-  De retour dans notre `HeroService` nous importons les faux `HEROES` et les retournons dans la méthode `getHeroes`.
-  Notre `HeroService` ressemble alors à ça&nbsp;:
 +makeExample('toh-4/ts/app/hero.service.1.ts', null, 'app/hero.service.ts')(format=".")
 :marked
   ### Use the Hero Service
-
-  ### Utilisons le service de Héros
-
   We're ready to use the `HeroService` in other components starting with our `AppComponent`.
 
-  Nous sommes maintenant prêt à utiliser notre `HeroService` dans d'autres composants en commençant par le `AppComponent`.
-
   We begin, as usual, by importing the thing we want to use, the `HeroService`.
-
-  Nous commençons comme d'habitude par importer ce que nous voulons utiliser c'est à dire le `HeroService`.
 +makeExcerpt('toh-4/ts/app/app.component.ts', 'hero-service-import')
 :marked
-  Importing the service allows us to *reference* it in our code.
+  Importing the service allows us to *reference* it in our code. 
   How should the `AppComponent` acquire a runtime concrete `HeroService` instance?
-
-  Importer le service nous permet alors de le *référencer* dans notre code.
-  Mais comment le `AppComponent` peut récupérer au moment de l'éxécution une instance de notre `HeroService`&nbsp;?
-
+  
   ### Do we *new* the *HeroService*? No way!
-
-  ### Devons nous *construire* un nouveau *HeroService*&nbsp;? Pas du tout&nbsp;!
-
   We could create a new instance  of the `HeroService` with `new` like this:
-
-  Nous pourrions créer une nouvelle instance du `HeroService` avec l'opérateur `new` comme ci-dessous&nbsp;:
 +makeExample('toh-4/ts/app/app.component.1.ts', 'new-service')(format=".")
 :marked
   That's a bad idea for several reasons including
-
-  C'est une mauvaise idée et pour plusieurs raisons comme&nbsp;:
-
-  * Our component has to know how to create a `HeroService`.
-
-  * Notre composant doit alors savoir comment créer un `HeroService`.
-
-  If we ever change the `HeroService` constructor,
+  
+  * Our component has to know how to create a `HeroService`. 
+  If we ever change the `HeroService` constructor, 
   we'll have to find every place we create the service and fix it.
   Running around patching code is error prone and adds to the test burden.
-
-  Si nous modifions le constructeur du `HeroService`,
-  nous devrons alors trouver tous les endroits où nous créons le service pour les modifier.
-  Passez son temps à corriger ce code est source d'erreurs et est très chronophage.
-
-  * We create a new service each time we use `new`.
-
-  * Nous créons une nouvelle instance à chaque fois que nous utilisons l'opérateur `new`.
-
+    
+  * We create a new service each time we use `new`. 
   What if the service should cache heroes and share that cache with others?
   We couldn't do that.
-
-  Et comment faire si notre service gère un cache de héros qu'il partage avec d'autres éléments&nbsp;?
-  Nous ne pouvons pas le faire ainsi.
-
+  
   * We're locking the `AppComponent` into a specific implementation of the `HeroService`.
-
-  * Nous utilisons dans le `AppComponent` une implémentation spécifique du `HeroService`.
-
   It will be hard to switch implementations for different scenarios.
-  Can we operate offline?
+  Can we operate offline? 
   Will we need different mocked versions under test?
   Not easy.
-
-  Cela deviendra compliqué de passer d'une implémentation à une autre en fonction des scénarios.
-  Pouvons nous travailler en mode déconnecté&nbsp;?
-  Pourrions nous utiliser de fausses versions en mode test&nbsp;?
-  Ca ne va pas être facile.
-
+  
   *What if ... what if ... Hey, we've got work to do!*
-
-  *Et si ... Et si ... Hey, nous avons du travail à faire&nbsp;!*
-
-  We get it. Really we do.
-
-  Bon... nous avons compris.
-
+  
+  We get it. Really we do. 
   But it is so ridiculously easy to avoid these problems that there is no excuse for doing it wrong.
 
-  C'est tellement facile d'éviter tout ces problèmes que nous n'avons aucune excuse pour ne pas faire les choses bien.
-
   ### Inject the *HeroService*
-
-  ### Injectons le *HeroService*
-
+  
   Two lines replace the one line that created with *new*:
-
-  Deux lignes vont remplacer celle que nous avons créée avec l'opérateur *new*&nbsp;:
-
   1. We add a constructor that also defines a private property.
-
-  1. Nous ajoutons un constructeur qui définit une propriété privée.
-
-  2. We add to the component's `providers` metadata.
-
-  2. Nous l'ajoutons à la métadonnée `providers` du composant.
-
-
+  1. We add to the component's `providers` metadata.
+  
   Here's the constructor:
-
-  Voici le constructeur&nbsp;:
 +makeExample('toh-4/ts/app/app.component.1.ts', 'ctor', 'app/app.component.ts (constructor)')
 :marked
-  The constructor itself does nothing. The parameter simultaneously
+  The constructor itself does nothing. The parameter simultaneously 
   defines a private `heroService` property and identifies it as a `HeroService` injection site.
-
-  Le constructeur en soit ne fait rien. Le paramètre permet à la fois de
-  définir une propriété privée `heroService` et d'indiquer où injecter le `HeroService`.
 :marked
-  Now Angular will know to supply an instance of the `HeroService` when it creates a new `AppComponent`.
-
-  Maintenant Angular saura fournir une instance du `HeroService` quand il créera un nouveau `AppComponent`.
+  Now Angular will know to supply an instance of the `HeroService` when it creates a new `AppComponent`. 
 
 .l-sub-section
   :marked
     Learn more about Dependency Injection in the [Dependency Injection](../guide/dependency-injection.html) chapter.
-
-    Apprenez en plus sur l'injection de dépendances dans le chapitre [Injection de dépendances](../guide/dependency-injection.html).
 :marked
-  The *injector* does not know yet how to create a `HeroService`.
+  The *injector* does not know yet how to create a `HeroService`. 
   If we ran our code now, Angular would fail with an error:
-
-  L'*injecteur* ne sait pas comment créer un `HeroService`.
-  Si nous exécutons notre code maintenant Angular échouera avec l'erreur suivante&nbsp;:
 code-example(format="nocode").
-  EXCEPTION: No provider for HeroService! (AppComponent -> HeroService)
+    EXCEPTION: No provider for HeroService! (AppComponent -> HeroService)
 :marked
   We have to teach the *injector* how to make a `HeroService` by registering a `HeroService` **provider**.
   Do that by adding the following `providers` array property to the bottom of the component metadata
   in the `@Component` call.
 
-  Nous devons apprendre à l'*injecteur* comment créer un `HeroService` en enregistrant un **provider** pour le `HeroService`.
-  Pour cela, ajoutons le tableau `providers` comme propriété des métadonnées de notre composant
-  dans l'appel `@Component`.
-
 +makeExcerpt('toh-4/ts/app/app.component.1.ts', 'providers')
 :marked
   The `providers` array  tells Angular to create a fresh instance of the `HeroService` when it creates a new `AppComponent`.
   The `AppComponent` can use that service to get heroes and so can every child component of its component tree.
-
-  Le tableau `providers` indique à Angular de créer une nouvelle instance de `HeroService` quand il crée un nouveau `AppComponent`.
-  Le `AppComponent` peut alors utiliser ce service pour récupérer des héros ansi que chaque composant enfant de son arbre de composants.
 a#child-component
 :marked
   ### *getHeroes* in the *AppComponent*
-
-  ### *getHeroes* dans le *AppComponent*
-
   We've got the service in a `heroService` private variable. Let's use it.
-
-  Nous avons un service dans la variable privée `heroService`. Utilisons la.
-
+  
   We pause to think. We can call the service and get the data in one line.
-
-  Faisons une petite pause. Nous pouvons appeler le service et récupérer les données en une seule ligne.
 +makeExample('toh-4/ts/app/app.component.1.ts', 'get-heroes')(format=".")
 :marked
   We don't really need a dedicated method to wrap one line.  We write it anyway:
-
-  Nous n'avons pas vraiment besoin d'une méthode pour une seule ligne.  Mais nous allons quand même l'écrire&nbsp;:
 +makeExcerpt('toh-4/ts/app/app.component.1.ts', 'getHeroes')
 
 <a id="oninit"></a>
 :marked
   ### The *ngOnInit* Lifecycle Hook
-
-  ### La méthode *ngOnInit* du cycle de vie
-
   `AppComponent` should fetch and display heroes without a fuss.
   Where do we call the `getHeroes` method? In a constructor? We do *not*!
-
-  Le `AppComponent` devrait pouvoir récupérer et afficher des héros sans problème.
-  Où appeler la méthode `getHeroes`&nbsp;? Dans le constructeur?  *Non*&nbsp;!
-
+  
   Years of experience and bitter tears have taught us to keep complex logic out of the constructor,
   especially anything that might call a server as a data access method is sure to do.
-
-  Des années d'expériences plus ou moins douloureuses nous ont appris à isoler la logique complexe hors de notre constructeur,
-  surtout ce qui concerne les appels à un serveur pour accéder aux données.
-
+  
   The constructor is for simple initializations like wiring constructor parameters to properties.
-  It's not for heavy lifting. We should be able to create a component in a test and not worry that it
+  It's not for heavy lifting. We should be able to create a component in a test and not worry that it 
   might do real work &mdash; like calling a server!  &mdash; before we tell it to do so.
-
-  Le constructeur a pour simple objectif l'initialisation comme  par exemple associer ses paramètres à des propriétés.
-  Il n'est pas fait pour des traitements complexes. Nous devrions être capable de créer des composants dans des environnements de test
-  sans avoir à se soucier qu'il fasse des traitements complexes comme appeler un serveur &mdash; sans que nous le lui demandions.
-
+  
   If not the constructor, something has to call `getHeroes`.
-
-  Si ce n'est pas le constructeur, alors quelqu'un d'autre devra appeler la méthode `getHeroes`.
-
-
+  
   Angular will call it if we implement the Angular **ngOnInit** *Lifecycle Hook*.
   Angular offers a number of interfaces for tapping into critical moments in the component lifecycle:
   at creation, after each change, and at its eventual destruction.
-
-  Angular le fera si nous implémentons la méthode **ngOnInit** du *cycle de vie*.
-  Angular nous offre un certain nombre d'interfaces pour intervenir dans les phases critiques du cycle de vie de notre composant&nbsp;:
-  à la création, après chaque changement et eventuellement à la destruction.
-
+  
   Each interface has a single method. When the component implements that method, Angular calls it at the appropriate time.
-
-  Chaque interface possède une unique méthode. Lorsque le composant implémente cette méthode, Angular l'appellera au moment opportun.
 .l-sub-section
   :marked
     Learn more about lifecycle hooks in the [Lifecycle Hooks](../guide/lifecycle-hooks.html) chapter.
-
-    Apprenez en plus sur les méthodes du cycle de vie dans le chapitre sur les [méthodes du cycle de vie](../guide/lifecycle-hooks.html).
 :marked
   Here's the essential outline for the `OnInit` interface:
-
-  Voici le code nécessaire pour l'interface `OnInit`&nbsp;:
-
 +makeExample('toh-4/ts/app/app.component.1.ts', 'on-init', 'app/app.component.ts (ngOnInit stub)')(format=".")
 :marked
   We write an `ngOnInit` method with our initialization logic inside and leave it to Angular to call it
   at the right time. In our case, we initialize by calling `getHeroes`.
-
-  Nous définissons une méthode `ngOnInit` avec notre logique d'initialisation et laissons le soin à Angular de l'appeler
-  au bon moment. Dans notre cas nous l'initialisons en appelant la méthode `getHeroes`.
 +makeExcerpt('toh-4/ts/app/app.component.1.ts', 'ng-on-init')
 :marked
   Our application should be running as expected, showing a list of heroes and a hero detail view
   when we click on a hero name.
-
-  Notre application devrait fonctionner comme prévue, en affichant une liste de héros et une vue de détails d'un héros
-  lorsque l'on clique sur le nom de celui-ci.
-
+  
   We're getting closer. But something isn't quite right.
-
-  Nous en avons bientôt fini. Mais il reste quelque chose qui n'est pas tout à fait correct.
 
   <a id="async"></a>
   ## Async Services and !{_Promise}s
-
-  ## Services asynchrones et Promesses
-
-  Our `HeroService` returns a list of mock heroes immediately.
+  Our `HeroService` returns a list of mock heroes immediately. 
   Its `getHeroes` signature is synchronous
-
-  Notre `HeroService` retourne une liste de faux héros instantanément.
-  Sa méthode `getHeroes` est synchrone.
 +makeExample('toh-4/ts/app/app.component.1.ts', 'get-heroes')(format=".")
 :marked
   Ask for heroes and they are there in the returned result.
-
-  Demandons des héros et ils sont directement disponibles dans le résultat retourné.
-
+   
   Someday we're going to get heroes from a remote server. We don’t call http yet, but we aspire to in later chapters.
-
-  Nous serons amenés à demander nos héros à un serveur distant.
-  Nous ne parlons pas encore de http, mais nous aspirons à cela dans les derniers chapitres.
-
-  When we do, we'll have to wait for the server to respond and we won't be able to block the UI while we wait,
+  
+  When we do, we'll have to wait for the server to respond and we won't be able to block the UI while we wait, 
   even if we want to (which we shouldn't) because the browser won't block.
-
-  A ce moment, nous aurons à attendre que le serveur réponde et nous ne pourrons pas figer l'interface graphique en attendant,
-  même si nous le souhaiterions (ce qui ne devrait pas être le cas) car le navigateur ne se bloquerait pas.
-
+  
   We'll have to use some kind of asynchronous technique and that will change the signature of our `getHeroes` method.
-
-  Nous allons donc utiliser une technique asynchrone qui va changer la signature de notre méthode `getHeroes`.
-
+  
   We'll use *!{_Promise}s*.
+  
+  ### The Hero Service makes a !{_Promise}  
 
-  Nous allons utiliser des *Promesses*.
-
-  ### The Hero Service makes a !{_Promise}
-
-  ### Le service héro fait une promesse
-
-  A **!{_Promise}** is ... well it's a promise to call us back later when the results are ready.
-  We ask an asynchronous service to do some work and give it a callback function.
+  A **!{_Promise}** is ... well it's a promise to call us back later when the results are ready. 
+  We ask an asynchronous service to do some work and give it a callback function. 
   It does that work (somewhere) and eventually it calls our function with the results of the work or an error.
-
-  Une Promesse est ... bah en fait c'est la promesse de nous appeler plus tard quand le résultat sera prêt.
-  Nous demandons à un service asynchrone de faire un certain travail et nous lui passons une fonction à rappeler.
-  Il fait le travail (quelque part) et éventuellement il rappelle notre fonction en lui passant le résultat ou une erreur.
 .l-sub-section
   :marked
     We are simplifying. Learn about ES2015 Promises [here](http://exploringjs.com/es6/ch_promises.html) and elsewhere on the web.
-
-    Nous simplifions le concept ici. Apprenez en plus sur les *Promesses* ES2015 [ici](http://exploringjs.com/es6/ch_promises.html) et n'importe où sur le web.
 :marked
   Update the `HeroService` with this !{_Promise}-returning `getHeroes` method:
-
-  Modifiez le `HeroService` en retournant une Promesse dans la méthode `getHeroes`&nbsp;:
 +makeExample('toh-4/ts/app/hero.service.ts', 'get-heroes', 'app/hero.service.ts (excerpt)')(format=".")
 :marked
   We're still mocking the data. We're simulating the behavior of an ultra-fast, zero-latency server,
   by returning an **immediately resolved !{_Promise}** with our mock heroes as the result.
-
-  Nous utilisons encore de fausses données. Nous simulons juste le comportement d'un serveur ultra-rapide sans latence,
-  qui nous retourne une **Promesse résolue immédiatemment** avec nos faux héros en résultat.
-
+  
   ### Act on the !{_Promise}
-
-  ### Agissons sur la Promesse
-
   Returning to the `AppComponent` and its `getHeroes` method, we see that it still looks like this:
-
-  Retournons sur le `AppComponent` et sa méthode `getHeroes`, nous avons vu qu'elle ressemblait à ça&nbsp;:
-
 +makeExample('toh-4/ts/app/app.component.1.ts', 'getHeroes', 'app/app.component.ts (getHeroes - old)')(format=".")
 :marked
-  As a result of our change to `HeroService`, we're now setting `this.heroes` to a !{_Promise} rather than an array of heroes.
-
-  En réponse au changement du `HeroService`, nous allons maintenant enregistrer dans `this.heroes` une Promesse plutôt qu'un tableau de héros.
-
+  As a result of our change to `HeroService`, we're now setting `this.heroes` to a !{_Promise} rather than an array of heroes. 
+  
   We have to change our implementation to *act on the !{_Promise} when it resolves*.
   When the !{_Promise} resolves successfully, *then* we will have heroes to display.
-
-  Nous devons changer notre implémentation pour *agir sur la Promesse quand elle est résolue*.
-  Quand la Promesse se résout correctement, *alors* nous avons des héros à afficher.
-
+  
   We pass our callback function as an argument to the !{_Promise}'s **then** method:
-
-  Nous passons notre fonction de rappel à la méthode **then** de la Promesse&nbsp;:
 +makeExample('toh-4/ts/app/app.component.ts', 'get-heroes', 'app/app.component.ts (getHeroes - revised)')(format=".")
 .l-sub-section
   :marked
     The [ES2015 arrow function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
     in the callback is more succinct than the equivalent function expression and gracefully handles *this*.
-
-    Les [fonctions fléchées d'ES2015](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Fonctions/Fonctions_fl%C3%A9ch%C3%A9es)
-    sont plus concises que leurs équivalentes traditionelles et elles gèrent le *this* de façon plus élégante.
 :marked
   Our callback sets the component's `heroes` property to the array of heroes returned by the service. That's all there is to it!
-
-  Notre fonction de rappel enregistre sur la propriété `heroes` du composant le tableau de héros retourné par le service. C'est tout ce qu'il y a à faire&nbsp;!
-
+  
   Our app should still be running, still showing a list of heroes, and still
   responding to a name selection with a detail view.
-
-  Notre application devrait continuer à fonctionner, à afficher une liste de héros et
-  répondre à une sélection sur le nom en affichant la vue de détail.
 .l-sub-section
   :marked
     Checkout the "[Take it slow](#slow)" appendix to see what the app might be like with a poor connection.
-
-    Observez l'appendice "[Allons-y doucement](#slow)" pour voir comment l'application se comporte dans le cas d'une connection lente.
 :marked
   ### Review the App Structure
-
-  ### Revoyons la structure de notre application
-
   Let’s verify that we have the following structure after all of our good refactoring in this chapter:
-
-  Vérifions que nous avons bien la structure suivante après le travail effectué dans ce chapitre&nbsp;:
 
 .filetree
   .file angular2-tour-of-heroes
@@ -598,10 +311,10 @@ a#child-component
       .file hero.ts
       .file hero-detail.component.ts
       .file hero.service.ts
-      .file main.ts
+      .file main.ts      
       .file mock-heroes.ts
     .file node_modules ...
-    .file typings ...
+    .file typings ...      
     .file index.html
     .file package.json
     .file styles.css
@@ -611,92 +324,46 @@ a#child-component
 :marked
   Here are the code files we discussed in this chapter.
 
-  Voici l'ensemble du code évoqué dans ce chapitre.
-
-
 +makeTabs(`
-        toh-4/ts/app/hero.service.ts,
-toh-4/ts/app/app.component.ts,
-toh-4/ts/app/mock-heroes.ts
-        `,'',`
-        app/hero.service.ts,
-app/app.component.ts,
-app/mock-heroes.ts
-        `)
+  toh-4/ts/app/hero.service.ts,
+  toh-4/ts/app/app.component.ts,
+  toh-4/ts/app/mock-heroes.ts
+  `,'',`
+  app/hero.service.ts,
+  app/app.component.ts,
+  app/mock-heroes.ts
+  `)
 :marked
   ## The Road We’ve Travelled
-
-  ## Qu'avons nous accompli ?
-
   Let’s take stock of what we’ve built.
 
-  Revoyons ce que nous avons réalisé.
-
   * We created a service class that can be shared by many components.
-
-  * Nous avons créé une classe de service qui peut être partagée entre plusieurs composants.
-
   * We used the `ngOnInit` Lifecycle Hook to get our heroes when our `AppComponent` activates.
-
-  * Nous avons utilisé la méthode `ngOnInit` du cycle de vie pour récupérer nos héros lorsque le `AppComponent` est activé.
-
   * We defined our `HeroService` as a provider for our `AppComponent`.
-
-  * Nous avons défini notre `HeroService` comme *provider* pour notre `AppComponent`.
-
   * We created mock hero data and imported them into our service.
-
-  * Nous avons créé de fausses données de héros et les avons importées dans notre service.
-
   * We designed our service to return a !{_Promise} and our component to get our data from the !{_Promise}.
-
-  * Nous avons construit notre service de façon à ce qu'il retourne une Promesse et notre composant afin de récupérer les données à partir de la Promesse.
 
   Run the <live-example></live-example> for this part.
 
-  Exécutez la <live-example>démo</live-example> correspondante à cette partie.
-
   ### The Road Ahead
-
-  ### Par la suite
   Our Tour of Heroes has become more reusable using shared components and services.
   We want to create a dashboard, add menu links that route between the views, and format data in a template.
   As our app evolves, we’ll learn how to design it to make it easier to grow and maintain.
-
-  Notre Guide des Héros est devenu plus réutilisable grâce à l'utilisation de composants et de services partagés.
-  Nous voulons maintenant créer un tableau de bord, ajouter un menu de liens qui nous dirigeront vers les différentes vues et formater les données dans nos templates.
-  Au fur et à mesure que notre application évoluera, nous apprendrons à la structurer afin de la rendre plus facile à grossir et à maintenir.
-
+  
   We learn about Angular Component Router and navigation among the views in the [next tutorial](toh-pt5.html) chapter.
-
-  Nous en apprendrons plus sur le composant de routage d'Angular et la navigation entre les différentes vues dans le [prochain chapitre](toh-pt5.html) de ce tutorial.
-
+  
 .l-main-section
 <a id="slow"></a>
 :marked
   ### Appendix: Take it slow
-
-  ### Appendice: Allons-y doucement
-
+  
   We can simulate a slow connection.
-
-  Nous pouvons simuler une connection lente.
-
+  
   Import the `Hero` symbol and add the following `getHeroesSlowly` method to the `HeroService`
-
-  Importez le symbole `Hero` et ajoutez la méthode `getHeroesSlowly` ci-dessous à notre `HeroService`
 +makeExample('toh-4/ts/app/hero.service.ts', 'get-heroes-slowly', 'app/hero.service.ts (getHeroesSlowly)')(format=".")
 :marked
-  Like `getHeroes`, it also returns a !{_Promise}.
-
-  Tout comme la méthode `getHeroes`, elle retourne aussi une Promesse.
-
+  Like `getHeroes`, it also returns a !{_Promise}. 
   But this !{_Promise} waits 2 seconds before resolving the !{_Promise} with mock heroes.
-
-  Mais cette Promesse attends 2 secondes avant de se résoudre avec les faux héros.
-
+  
   Back in the `AppComponent`, replace `heroService.getHeroes` with `heroService.getHeroesSlowly`
   and see how the app behaves.
-
-  De retour dans le `AppComponent`, remplacez l'appel `heroService.getHeroes` par `heroService.getHeroesSlowly`
-  et observez comment l'application se comporte.

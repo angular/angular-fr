@@ -1,38 +1,38 @@
 {
   "index": {
-    "title": "Tutorial: Guide des Héros",
+    "title": "Tutorial: Tour of Heroes",
     "navTitle": "Introduction",
-    "intro": "Le Guide des Héros est un tutorial qui va nous permettre de créer pas à pas une application Angular en TypeScript.",
+    "intro": "The Tour of Heroes tutorial takes us through the steps of creating an Angular application in TypeScript.",
     "nextable": true
   },
   "toh-pt1": {
-    "title": "Editer un héro",
-    "intro": "Nous allons construire un simple éditeur pour héros",
+    "title": "The Hero Editor",
+    "intro": "We build a simple hero editor",
     "nextable": true
   },
   "toh-pt2": {
-    "title": "Maître/Détail",
-    "intro": "Construisons une page maître/détail qui affiche une liste de super-héros",
+    "title": "Master/Detail",
+    "intro": "We build a master/detail page with a list of heroes",
     "nextable": true
   },
   "toh-pt3": {
-    "title": "Plusieurs composants",
-    "intro": "Redécoupons la page principale en plusieurs composants",
+    "title": "Multiple Components",
+    "intro": "We refactor the master/detail view into separate components",
     "nextable": true
   },
   "toh-pt4": {
     "title": "Services",
-    "intro": "Créons un service réutilisable pour administrer les données de nos héros ",
+    "intro": "We create a reusable service to manage our hero data calls",
     "nextable": true
   },
   "toh-pt5": {
-    "title": "Routage",
-    "intro": "Ajoutons le composant Router d'Angular et apprenons à naviguer entre nos vues",
+    "title": "Routing",
+    "intro": "We add the Angular Component Router and learn to navigate among the views",
     "nextable": true
   },
   "toh-pt6": {
     "title": "Http",
-    "intro": "Modifions nos services et composants afin de leur faire utiliser Http",
+    "intro": "We convert our service and components to use Http",
     "nextable": true
   }
 }

@@ -8,9 +8,9 @@
   },
 
   "architecture": {
-    "title": "Aperçu de l'architecture",
+    "title": "Architecture Overview",
     "navTitle": "Architecture",
-    "intro": "Les composants de base pour une application Angular 2",
+    "intro": "The basic building blocks of Angular 2 applications",
     "nextable": true,
     "basics": true
   },
@@ -135,8 +135,8 @@
   },
 
   "structural-directives": {
-    "title": "Directives Structurelles",
-    "intro": "Angular dispose d'un moteur de template puissant qui nous permet de manipuler facilement la structure DOM de nos éléments."
+    "title": "Structural Directives",
+    "intro": "Angular has a powerful template engine that lets us easily manipulate the DOM structure of our elements."
   },
 
   "testing": {
