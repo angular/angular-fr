@@ -4,23 +4,13 @@ include _util-fns
 :marked
   # Angular 2 Glossary
 
-  # Glossaire Angular 2
-
   Angular 2 has a vocabulary of its own.
   Most Angular 2 terms are everyday English words
   with a specific meaning within the Angular system.
 
-  Angular 2 a un vocabulaire bien à lui.
-  La plupart des termes employés sont des mots anglais communs
-  avec un sens spécifique dans l'univers Angular.
-
   We have gathered here the most prominent terms
   and a few less familiar ones that have unusual or
   unexpected definitions.
-
-  Nous avons rassemblé ici les termes les plus emblématiques
-  et quelques-uns moins courants qui ont un sens inhabituel ou
-  inattendu.
 
   [A](#A) [B](#B) [C](#C) [D](#D) [E](#E) [F](#F) [G](#G) [H](#H) [I](#I)
   [J](#J) [K](#K) [L](#L) [M](#M) [N](#N) [O](#O) [P](#P) [Q](#Q) [R](#R)
@@ -36,29 +26,18 @@ include _util-fns
 .l-sub-section
   :marked
     In practice a synonym for [Decoration](#decorator).
-
-    En pratique un synonyme de [Décoration](#decorator).
 // #enddocregion a-1
 // #docregion a-2
 :marked
   ## Attribute Directive
-
-  ## Directive d'Attribut
 .l-sub-section
   :marked
     A category of [Directive](#directive) that can listen to and modify the behavior of
     other HTML elements, attributes, properties, and components. They are usually represented
     as HTML attributes, hence the name.
 
-    Une catégorie de [Directives](#directive) qui peuvent écouter et modifier le comportement
-    d'autres éléments HTML, attributs, propriétés, et composants. Elles sont habituellement représentées
-    comme des attributs HTML, d'où le nom.
-
     The `ngClass` directive for adding and removing CSS class names is a good example of
     an Attribute Directive.
-
-    La directive `ngClass` pour ajouter et supprimer des classes CSS est un bon exemple de
-    Directive d'Attribut
 // #enddocregion a-2
 
 // #docregion b-c
@@ -69,59 +48,42 @@ include _util-fns
 .l-main-section
 :marked
   ## Barrel
-
-  ## Baril (_Barrel_)
 .l-sub-section
   :marked
     A barrel is a way to *rollup exports* from several modules into a single convenience module.
     The barrel itself is a module file that re-exports *selected* exports of other modules.
-
-    Un baril est une façon de *regrouper les exports* de différents modules en un seul module, ce qui est plus pratique.
-    Le baril lui-même est un module dans un fichier qui ré-exporte les exports *choisis* d'autres modules.
-
+    
     Imagine three modules in a `heroes` folder:
-
-    Imaginez trois modules dans un dossier `heroes`&nbsp;:
   code-example.
     // heroes/hero.component.ts
     export class HeroComponent {}
-
+    
     // heroes/hero.model.ts
     export class Hero {}
-
+    
     // heroes/hero.service.ts
     export class HeroService {}
   :marked
     Without a barrel, a consumer would need three import statements:
-
-    Sans un baril, un utilisateur a besoin de trois imports différents&nbsp;:
   code-example.
     import { HeroComponent } from '../heroes/hero.component.ts';
     import { Hero }          from '../heroes/hero.model.ts';
     import { HeroService }   from '../heroes/hero.service.ts';
   :marked
     We can add a barrel to the `heroes` folder (called `index` by convention) that exports all of these items:
-
-    On peut ajouter un baril dans le dossier `heroes` (appelé `index` par convention) qui exporte toutes ces entrées&nbsp;:
   code-example.
     export * from './hero.model.ts';   // re-export all of its exports
     export * from './hero.service.ts'; // re-export all of its exports
     export { HeroComponent } from './hero.component.ts'; // re-export the named thing
   :marked
     Now a consumer can import what it needs from the barrel.
-
-    Maintenant, un utilisateur peut importer ce qu'il lui faut depuis le baril.
   code-example.
     import { Hero, HeroService } from '../heroes'; // index is implied
   :marked
     The Angular [scoped packages](#scoped-package) each have a barrel named `index`.
-
-    Les [_scoped-packages_](#scoped-package) Angular ont chacun un baril nommé `index`.
 // #enddocregion b-c
 :marked
   That's why we can write this:
-
-  C'est pour cela que nous pouvons écrire&nbsp;:
 +makeExcerpt('quickstart/ts/app/app.component.ts', 'import', '')
 // #docregion b-c
 
@@ -132,15 +94,9 @@ include _util-fns
     Almost always refers to [Data Binding](#data-binding) and the act of
     binding an HTML object property to a data object property.
 
-    Fait presque toujours référence au [Data Binding](#data-binding) et le fait de
-    lier une propriété d'un objet HTML à une propriété d'un objet du modèle.
-
     May refer to a [Dependency Injection](#dependency-injection) binding
     between a "token" or "key" and a dependency [provider](#provider).
     This more rare usage should be clear in context.
-
-    Peut aussi faire référence à un lien dans l'[Injection de Dépendances](#dependency-injection)
-    entre une "clé" (_Token_) et un [fournisseur](#provider) (_provider_) de dépendance.
 
 :marked
   ## Bootstrap
@@ -151,14 +107,7 @@ include _util-fns
     and optionally registers service [providers](#provider) with the
     [dependency injection system](#dependency-injection).
 
-    Nous lançons une application Angular en la "démarrant" avec la méthode `bootstrap`.
-    La méthode `bootstrap` identifie le [Composant](#component) (_Component_) "racine" d'une application
-    et éventuellement enregistre des [fournisseurs](#provider) (_providers_) de service avec le
-    [système d'injection de dépendances](#dependency-injection).
-
     One can bootstrap multiple apps in the same `index.html`, each with its own top level root.
-
-    Il est possible de démarrer plusieurs applications dans le même `index.html`, chacune avec sa propre racine.
 
 <a id="C"></a>
 .l-main-section
@@ -166,56 +115,32 @@ include _util-fns
   ## camelCase
 .l-sub-section
   :marked
-    The practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter
-    _except the first letter which is a lowercase letter_.
-
-    La pratique qui consiste à agréger les mots de façon à ce que chaque mot ou abréviation commence avec une majuscule
-    _à l'exception de la première lettre qui est une minuscule_.
-
+    The practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter 
+    _except the first letter which is a lowercase letter_. 
+    
     Function, property, and method names are typically spelled in camelCase. Examples include: `square`, `firstName` and `getHeroes`.
-
-    Fonctions, propriétés, et noms de méthodes sont typiquement écrits en camelCase. Par exemple&nbsp;: `square`, `firstName` et `getHeroes`.
-
+    
     This form is also known as **lower camel case**, to distinguish it from **upper camel case** which we call [PascalCase](#pascalcase).
     When we write "camelCase" in this documentation we always mean *lower camel case*.
 
-    Cette pratique est aussi connue sous le nom de *camelCase minuscule*, pour le distinguer de *camelCase majuscule* que l'on appelle [PascalCase](#pascalcase).
-    Quand nous écrivons "camelCase" dans cette documentation, nous parlons toujours de *camelCase minuscle
-
 :marked
   ## Component
-  
-  ## Composant
 .l-sub-section
   :marked
     An Angular class responsible for exposing data
     to a [View](#view) and handling most of the view’s display
     and user-interaction logic.
-    
-    Une classe Angular responsable d'exposer les données
-    à une [Vue](#view) et de gérer la majorité de l'affichage de la vue
-    et la logique des interactions utilisateurs.
 
     The Component is one of the most important building blocks in the Angular system.
     It is, in fact, an Angular [Directive](#directive) with a companion [Template](#template).
-    
-    Le composant est l'un des plus importants blocs de base dans Angular.
-    C'est, en fait, une [Directive](#directive) Angular avec un [Template](#template).
 
     The  developer applies the `#{atSym}Component` !{decorator} to
     the component class, thereby attaching to the class the essential component metadata
     that Angular needs to create a component instance and render it with its template
     as a view.
-    
-    Le développeur applique le [décorateur](#decorator) `#{atSym}Component` à
-    la classe du composant, attachant ainsi à la classe les métadonnées
-    dont Angular a besoin pour créer une instance de ce composant et l'afficher avec son template.
 
     Those familiar with "MVC" and "MVVM" patterns will recognize
     the Component in the role of "Controller" or "View Model".
-    
-    Ceux qui sont familiers avec les patterns "MVC" et "MVVM" reconnaîtront
-    le Composant dans le rôle du "Controlleur" ou du "Vue-Modèle".
 // #enddocregion b-c
 
 // #docregion d1
@@ -225,115 +150,61 @@ include _util-fns
   ## dash-case
 .l-sub-section
   :marked
-    The practice of writing compound words or phrases such that each word is separated by a dash or hyphen (`-`).
-
-    La pratique qui consiste à aggréger les mots de manière à ce que chaque mot soit séparé par un tiret (`-`).
-
-    Directive selectors and the root of filenames are often spelled in dash-case. Examples include: `my-app` and `hero-list.component.ts`.       
-
-    Les sélécteurs de directives et la racine des noms de fichiers sont souvent écrit en _dash-case_. Par exemple&nbsp;: `my-app` et `hero-list.component.ts`.
-
-    This form is also known as [kebab-case](#kebab-case).
+    The practice of writing compound words or phrases such that each word is separated by a dash or hyphen (`-`). 
     
-    Cette pratique est aussi connue sous le nom de [_kebab-case_](#kebab-case).
+    Directive selectors and the root of filenames are often spelled in dash-case. Examples include: `my-app` and `hero-list.component.ts`.
+    
+    This form is also known as [kebab-case](#kebab-case).
 
 :marked
   ## Data Binding
-  
-  ## Liaison de Données (_Data Binding_)
 .l-sub-section
   :marked
     Applications display data values to a user and respond to user
     actions (clicks, touches, keystrokes).
-  
-    Les applications affichent les valeurs des données à un utilisateur et répondent aux interactions de celui-ci
-    (clics, entrées clavier...)
 
     We could push application data values into HTML, attach
     event listeners, pull changed values from the screen, and
     update application data values ... all by hand.
-      
-    Nous pourrions pousser les valeurs des données applicatives dans le HTML, attacher
-    des écouteurs d'événement, récupérer les valeurs modifiées depuis l'écran, et
-    mettre à jour les données applicatives... tout cela manuellement.
 
     Or we could declare the relationship between an HTML widget
     and an application data source ... and let a data binding
     framework handle the details.
-    
-    Ou nous pourrions déclarer une relation entre un widget HTML
-    et une donnée applicative... et laisser un framework de liaison de données 
-    gérer les détails.
 
     Data Binding is that second approach. Angular has a rich
     data binding framework with a variety of data binding
     operations and supporting declaration syntax.
-  
-    La liaison de données est la seconde approche. Angular a un riche framework
-    de liaison de données avec une diversité 
-    d'opérations et de syntaxes de déclaration supportées.
 
      The many forms of binding include:
-        
-    Les différentes formes de liaison inclue&nbsp;:
-   
      * [Interpolation](/docs/ts/latest/guide/template-syntax.html#interpolation)
-     * [l'Interpolation](/docs/ts/latest/guide/template-syntax.html#interpolation)
      * [Property Binding](/docs/ts/latest/guide/template-syntax.html#property-binding)
-     * [la Liaison de Propriété (_Property Binding_)](/docs/ts/latest/guide/template-syntax.html#property-binding)
      * [Event Binding](/docs/ts/latest/guide/template-syntax.html#event-binding)
-     * [la Liaison d'Événement (_Event Binding_)](/docs/ts/latest/guide/template-syntax.html#event-binding)
      * [Attribute Binding](/docs/ts/latest/guide/template-syntax.html#attribute-binding)
-     * [la Liaison d'Attribut (_Attribute Binding_)](/docs/ts/latest/guide/template-syntax.html#attribute-binding)
      * [Class Binding](/docs/ts/latest/guide/template-syntax.html#class-binding)
-     * [la Liaison de Classe (_Class Binding_)](/docs/ts/latest/guide/template-syntax.html#class-binding)
      * [Style Binding](/docs/ts/latest/guide/template-syntax.html#style-binding)
-     * [la liaison de Style (_Style Binding_)](/docs/ts/latest/guide/template-syntax.html#style-binding)
      * [Two-way data binding with ngModel](/docs/ts/latest/guide/template-syntax.html#ng-model)
-     * [la Liaison de Données Bidirectionnelle avec ngModel (_Two-way data binding_)](/docs/ts/latest/guide/template-syntax.html#ng-model)     
 
     Learn more about data binding in the
     [Template Syntax](/docs/ts/latest/guide/template-syntax.html#data-binding) chapter.
-
-   Apprenez-en plus à propos de la Liaison de Données dans le chapitre
-   [Syntaxe de Template](/docs/ts/latest/guide/template-syntax.html#data-binding).
 
 // #enddocregion d1
 <a id="decorator"></a> <a id="decoration"></a>
 :marked
   ## Decorator | Decoration
-
-## Décorateur (_Decorator_) | Décoration
 .l-sub-section
   :marked
     A Decorator is a **function** that adds metadata to a class, its members (properties, methods) and function arguments.
 
-    Un Décorateur (_Decorator_) est une fonction qui ajoute des métadonnées à une classe, ses membres (propriétés, méthodes) et arguments de fonction.
-  
     Decorators are a JavaScript language [feature](https://github.com/wycats/javascript-decorators), implemented in TypeScript and proposed for ES2016 (AKA ES7).
 
-    Les décorateurs sont une [fonctionnalité](https://github.com/wycats/javascript-decorators) du language JavaScript, implémentée en TypeScript et proposée pour ES2017 (AKA ES7).
-  
     We apply a decorator by positioning it
     immediately above or to the left of the thing it decorates.
 
-    On applique un décorateur en le positionnant
-    immédiatement au dessus ou à gauche de ce que l'on veut décorer.
-    
     Angular has its own set of decorators to help it interoperate with our application parts.
     Here is an example of a `@Component` decorator that identifies a
     class as an Angular [Component](#component) and an `@Input` decorator applied to a property
     of that component.
-  
-    Angular a son propre ensemble de décorateurs pour l'aider à interopérer avec notre application.
-    Voici un exmeple de décorateur `@Component` qui identifie une 
-    classe comme un [Composant](#component) et un décorateur `@Input` appliqué à une propriété
-    de ce composant.
-    
     The elided object argument to the `@Component` decorator would contain the pertinent component metadata.
-    
-    L'objet élidé en argument du décorateur `@Component` contiendrait les métadonnées pertinentes pour ce composant.
-    
     ```
     @Component({...})
     export class AppComponent {
@@ -344,192 +215,99 @@ include _util-fns
     The scope of a decorator is limited to the language feature
     that it decorates. None of the decorations shown here will "leak" to other
     classes appearing below it in the file.
-    
-    La portée d'un décorateur est limitée à la fonctionnalité du language 
-    qu'il décore. Les décorateurs montrés ici n'affecterons que leurs classes directes
-    et n'iront pas modifier d'autres classes dans le fichier.
-
 
   .alert.is-important
     :marked
       Always include the parentheses `()` when applying a decorator.
       A decorator is a **function** that must be called when applied.
-      
-      Toujours inclure les parenthèses `()` quand on applique un décorateur.
-      Un décorateur est une **fonction** qui doit être appelée quand il (le décorateur) est appliqué.
-
 
 // #docregion d2
 :marked
   ## Dependency Injection
-  
-  ## Injection de Dépendances
-  
 .l-sub-section
   :marked
     Dependency Injection is both a design pattern and a mechanism
     for creating and delivering parts of an application to other
     parts of an application that request them.
-    
-    L'Injection de Dépendances est à la fois un _Design Pattern_ et un mécanisme
-    pour créer et fournir des parties de l'application à d'autres 
-    parties de l'application qui les demandent.
 
     Angular developers prefer to build applications by defining many simple parts
     that each do one thing well and then wire them together at runtime.
-    
-    Les développeurs Angular préfèrent construire des applications en définissant beaucoup de parties simples
-    qui font chacune très bien une chose et que l'on cable ensuite ensemble au démarrage.  
 
     These parts often rely on other parts. An Angular [Component](#component)
     part might rely on a service part to get data or perform a calculation. When a
     part "A" relies on another part "B", we say that "A" depends on "B" and
     that "B" is a dependency of "A".
-    
-    Ces parties s'appuient souvent sur d'autres parties. Un [Componsant](#component)
-    Angular peut s'appuyer sur un service pour recevoir des données ou effectuer un calcul. Quand une
-    partie "A" s'appuie sur une autre partie "B", on dit que "A" dépend de "B" et
-    que "B" est une dépendance de "A".
 
     We can ask a "Dependency Injection System" to create "A"
     for us and handle all the dependencies.
     If "A" needs "B" and "B" needs "C", the system resolves that chain of dependencies
     and returns a fully prepared instance of "A".
-    
-    On peut demander à un "Système d'Injection de Dépendances" de créer "A"
-    pour nous et de gérer toutes les dépendances.
-    Si "A" a besoin de "B" et "B" a besoin de "C", alors le système résout la chaîne des dépendances
-    et renvoie une instance toute prête de "A".
 
     Angular provides and relies upon its own sophisticated
     [Dependency Injection](dependency-injection.html) system
     to assemble and run applications by "injecting" application parts
     into other application parts where and when needed.
-    
-    Angular fournit et s'appuie sur son propre 
-    système d'[Injection de Dépendances](dependency-injection.html)
-    pour assembler les applications en "injectant" des parties de l'application
-    dans d'autres parties de l'application là où cela est nécessaire.
 
-    At the core there is an [`Injector`](#injector) that returns dependency values on request.
+    At the core is an [`Injector`](#injector) that returns dependency values on request.
     The expression `injector.get(token)` returns the value associated with the given token.
-        
-    Le coeur du système est un [`Injecteur`](#injector)(_Injector_) qui renvoie les dépendances à la demande.
-    L'expression `injector.get(token)` renvoie la valeur associée à la clé (_token_) donnée.
 
     A token is an Angular type (`OpaqueToken`). We rarely deal with tokens directly; most
     methods accept a class name (`Foo`) or a string ("foo") and Angular converts it
     to a token. When we write `injector.get(Foo)`, the injector returns
     the value associated with the token for the `Foo` class, typically an instance of `Foo` itself.
 
-    Une clé est un type Angular (`OpaqueToken`). On utilise rarement ces clés directement; la plupart
-    des méthodes acceptent un nom de classe (`Foo`) ou une chaîne de caractères ("foo") et Angular convertit cela
-    en une clé. Quand on écrit `injector.get(Foo)`, l'injecteur renvoie
-    la valeur associée à la clé pour la classe `Foo`, typiquement une instance de `Foo` elle-même.
-
     Angular makes similar requests internally during many of its operations
     as when it creates a [`Component`](#AppComponent) for display.
-    
-    Angular fait des requêtes similaires à l'intérieur même du framework pour beaucoup d'opérations
-    comme quand il crée un [Composant](#AppComponent) pour l'afficher.
 
     The `Injector` maintains an internal map of tokens to dependency values.
     If the `Injector` can't find a value for a given token, it creates
     a new value using a `Provider` for that token.
-    
-    L'`Injecteur` maintient un dictionnaire de clés et des dépendances correspondantes.
-    Si l'`Injecteur` ne peut pas trouver une valeur pour une clé donnée, il crée
-    une nouvelle valeur en utilisant un `Provider` pour cette clé.
 
     A [Provider](#provider) is a recipe for
     creating new instances of a dependency value associated with a particular token.
-    
-    Un [Provider](#provider) est une recette pour 
-    créer de nouvelles instances d'une dépendance associée à une clé particulière. 
 
     An injector can only create a value for a given token if it has
     a `Provider` for that token in its internal provider registry.
     Registering providers is a critical preparatory step.
-        
-    Un injecteur ne peut créer une valeur pour une clé donnée que s'il a
-    un `Provider` pour cette clé dans son registre interne.
 
     Angular registers some of its own providers with every injector.
     We can register our own providers. Quite often the best time to register a `Provider`
     is when we [bootstrap](#bootstrap) the application.
     There are other opportunities to register as well.
 
-    Angular enregistre certains de ses propres _providers_ dans tous les injecteurs.
-    Nous pouvons également enregistrer nos propres _providers_. Il est souvent plus pertinent de déclarer
-    un `Provider` quand nous démarrons (_bootstrap_) l'application.
-    Il existe également d'autres façons, à d'autres endroits de l'application, de procéder à ces enregistrements.
-
     Learn more in the [Dependency Injection](/docs/ts/latest/guide/dependency-injection.html) chapter.
-    
-    Vous pouvez en apprendre plus à ce sujet dans le chapitre [Injection de Dépendances](/docs/ts/latest/guide/dependency-injection.html).
-    
 :marked
   ## Directive
 .l-sub-section
   :marked
     An Angular class responsible for creating, re-shaping, and interacting with HTML elements
     in the browser DOM. Directives are Angular's most fundamental feature.
-    
-    Une classe Angular responsable de la création, mise en forme et interaction avec les éléments HTML
-    du DOM. Les directives sont l'une des fonctionnalités fondamentales d'Angular.
 
     A Directive is almost always associated with an HTML element or attribute.
     We often refer to such an element or attribute as the directive itself.
     When Angular finds a directive in an HTML template,
     it creates the matching directive class instance
     and gives that instance control over that portion of the browser DOM.
-    
-    Une directive est souvent associée à un élément HTML ou un attribut.
-    Nous faisons souvent référence à cet élément ou attribut comme la directive elle-même.
-    Quand Angular trouve une directive dans un template HTML,
-    il crée une instance de la classe correspondante
-    et donne à cette instance le contrôle sur cette portion du DOM.  
 
     Developers can invent custom HTML markup (e.g., `<my-directive>`) to
     associate with their custom directives. They add this custom markup to HTML templates
     as if they were writing native HTML. In this way, directives become extensions of
     HTML itself.
-    
-    Les développeurs peuvent inventer leurs propres balises HTML (e.g., `<my-directive>`) pour
-    être associées avec leurs propres directives. Ils ajoutent ces balises aux templates HTML
-    comme si c'étaient de vrais éléments HTML natifs. Les directives deviennent ainsi des extensions
-    de HTML lui-même.
 
     Directives fall into one of three categories:
-
-    Les directives se divisent en trois catégories&nbsp;:
 
     1. [Components](#component) that combine application logic with an HTML template to
     render application [views]. Components are usually represented as HTML elements.
     They are the building blocks of an Angular application and the
     developer can expect to write a lot of them.
 
-    1. Les [Composants](#component) qui combinent la logique applicative avec un template HTML pour
-    afficher la [vue](#view) de l'application. Les composants sont généralement représentés par des éléments HTML.
-    Ils sont les briques de base d'une application Angular et les
-    développeurs peuvent s'attendre à en écrire beaucoup.
-
     1. [Attribute Directives](#attribute-directive) that can listen to and modify the behavior of
     other HTML elements, attributes, properties, and components. They are usually represented
     as HTML attributes, hence the name.
 
-    1. Les [Directives d'Attribut](#attribute-directive) qui peuvent écouter et modifier le comportement des
-    autres éléments HTML, attributs, propriétés, et composants. Elles sont généralement représentées
-    comme des attributs HTML, d'où le nom.
-
     1. [Structural Directives](#structural-directive), a directive responsible for
     shaping or re-shaping HTML layout, typically by adding, removing, or manipulating
     elements and their children.
-    
-    1. Les [Directives Structurelles](#structural-directive) qui sont responsable de
-    former ou modifier la disposition des éléments HTML, typiquement en ajoutant, supprimant, ou manipulant des
-    éléments et leurs enfants.
-
 // #enddocregion d2
 
 // #docregion e1
@@ -543,31 +321,17 @@ include _util-fns
   :marked
     The [official JavaScript language specification](https://en.wikipedia.org/wiki/ECMAScript).
 
-    La [spécification officielle du langage JavaScript](https://en.wikipedia.org/wiki/ECMAScript). 
-
     The latest approved version of JavaScript is
     [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)
     (AKA "ES2015" or "ES6") and many Angular 2 developers will write their applications
     either in this version of the language or a dialect that strives to be
     compatible with it such as [TypeScript](#typesScript).
 
-    La dernière version approuvée de JavaScript est
-    [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)
-    (alias "ES2015" ou "ES6") et beaucoup de développeurs Angular 2 vont écrire leurs applications
-    soit dans cette version du langage soit dans un langage qui se veut
-    compatible comme [TypeScript](#typesScript).
-
     Most modern browsers today only support the prior "ECMAScript 5" (AKA ES5) standard.
     Applications written in ES2015 or one of its dialects must be "[transpiled](#transpile)"
     to ES5 JavaScript.
-    
-    La plupart des navigateurs modernes ne supportent aujourd'hui que la version précédente du standard "ECMAScript 5" (alias ES5).
-    Les applications modernes écrites en ES2015 ou avec un autre langage doivent être "[transpilées](#transpile)" ou transformées vers du JavaScript ES5.
 
     Angular 2 developers may choose to write in ES5 directly.
-    
-    Les développeurs Angular 2 peuvent choisir d'écrire en ES5 directement.
-
 :marked
   ## ECMAScript 2015
 .l-sub-section
@@ -575,37 +339,22 @@ include _util-fns
     The latest released version of JavaScript,
     [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)
     (AKA "ES2015" or "ES6")
-    
-    La dernière version de JavaScript,
-    [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)
-    (alias "ES2015" ou "ES6")
-
 :marked
   ## ES2015
 .l-sub-section
   :marked
     Short hand for "[ECMAScript 2015](#ecmascript=2015)".
-
-    Raccourci pour "[ECMAScript 2015](#ecmascript=2015)".
-
 :marked
   ## ES6
 .l-sub-section
   :marked
     Short hand for "[ECMAScript 2015](#ecmascript=2015)".
-
-    Raccourci pour "[ECMAScript 2015](#ecmascript=2015)".
-
 :marked
   ## ES5
 .l-sub-section
   :marked
     Short hand for "ECMAScript 5", the version of JavaScript run by most modern browsers.
     See [ECMAScript](#ecmascript).
-    
-    Raccourci pour "ECMAScript 5", la version de JavaScript qu'utilise la plupart des navigateurs modernes.
-    Voir [ECMAScript](#ecmascript). 
-
 // #enddocregion e2
 
 // #docregion f-l
@@ -616,17 +365,12 @@ include _util-fns
 .l-main-section
 :marked
   ## Injector
-  
-  ## Injecteur
 .l-sub-section
   :marked
     An object in the Angular [dependency injection system](#dependency-injection)
     that can find a named "dependency" in its cache or create such a thing
     with a registered [provider](#provider).
 
-    Un objet du [système d'injection de dépendances](#dependency-injection)
-    qui peut trouver une "dépendance" dans son cache ou créer un tel objet
-    grâce à un [_provider_](#provider) enregistré.
 :marked
   ## Input
 .l-sub-section
@@ -635,15 +379,8 @@ include _util-fns
     [Property Binding](/docs/ts/latest/guide/template-syntax.html#property-binding).
     Data values flow *into* this property from the data source identified
     in the template expression to the right of the equal sign.
-    
-    Une propriété des directives qui peut être la **cible** d'une
-    [Liaison de Propriété](/docs/ts/latest/guide/template-syntax.html#property-binding).
-    Les valeurs sont envoyées *dans* cette propriété depuis la source de données identifiée
-    dans l'expression du template à droite du signe égal.
 
     See the [Template Syntax](/docs/ts/latest/guide/template-syntax.html#inputs-outputs) chapter.
-    
-    Voir le chapitre [Syntaxe de Template](/docs/ts/latest/guide/template-syntax.html#inputs-outputs).
 
 :marked
   ## Interpolation
@@ -654,12 +391,6 @@ include _util-fns
     renders as text.  That text may be concatenated with neighboring text
     before it is assigned to an element property
     or displayed between element tags as in this example.
-    
-    Une forme de [Liaison de Données](#data-binding) dans laquelle une
-    [expression de template](#template-expression) entre double accolades
-    est affichée comme texte. Ce texte peut être concaténé avec le texte voisin
-    avant d'être assigné à la propriété d'un élément
-    ou affiché entre les balises d'un élément comme dans cet exemple.
 
   code-example(language="html" escape="html").
     <label>My current hero is {{hero.name}}</label>
@@ -667,9 +398,6 @@ include _util-fns
   :marked
     Learn more about interpolation in the
     [Template Syntax](/docs/ts/latest/guide/template-syntax.html#interpolation) chapter.
-    
-    Apprenez-en plus sur l'interpolation dans le
-    chapitre sur la [Syntaxe de Template](/docs/ts/latest/guide/template-syntax.html#interpolation).
 
 
 <a id="J"></a>
@@ -680,68 +408,38 @@ include _util-fns
   ## kebab-case
 .l-sub-section
   :marked
-    The practice of writing compound words or phrases such that each word is separated by a dash or hyphen (`-`).
+    The practice of writing compound words or phrases such that each word is separated by a dash or hyphen (`-`). 
     
-    La pratique qui consiste à aggréger les mots de manière à ce que chaque mot soit séparé par un tiret (`-`).
-
     Directive selectors and the root of filenames are often spelled in kebab-case. Examples include: `my-app` and `hero-list.component.ts`.
     
-    Les sélécteurs de directives et la racine des noms de fichiers sont souvent écrit en _dash-case_. Par exemple&nbsp;: `my-app` et `hero-list.component.ts`.
-
     This form is also known as [dash-case](#dash-case).
-    
-    Cette forme est aussi appelée [dash-case](#dash-case).
 
 <a id="L"></a>
 .l-main-section
 :marked
   ## Lifecycle Hooks
-  
-  ## Méthodes du Cycle de Vie (_Lifecycle Hooks_)
 .l-sub-section
   :marked
     [Directives](#directive) and [Components](#component) have a lifecycle
     managed by Angular as it creates, updates and destroys them.
-    
-    Les [Directives](#directive) et [Composants](#component) ont un cycle de vie
-    géré par Angular lorsqu'il crée, met à jour ou détruit ceux-ci.
 
     Developers can tap into key moments in that lifecycle by implementing
     one or more of the "Lifecycle Hook" interfaces.
-    
-    Les développeurs peuvent s'interfacer dans ces moment clés du cycle de vie en implémentant
-    une ou plusieurs interfaces décrivant ce cycle de vie.
 
     Each interface has a single hook method whose name is the interface name prefixed with `ng`.
     For example, the `OnInit` interface has a hook method names `ngOnInit`.
-    
-    Chaque interface a une seule méthode dont le nom est celui de l'interface préfixé par `ng`.
-    Par exemple, l'interface `OnInit` a une méthode nommée `ngOnInit`.
 
     Angular calls these hook methods in the following order:
-    
-    Angular appele ces méthodes dans l'ordre suivant&nbsp;:
-    
     * `ngOnChanges` - called when an [input](#input)/[output](#output) binding values change
-    * `ngOnChanges` - appelée quand une valeur d'un [input](#input)/[output](#output) change
     * `ngOnInit` - after the first `ngOnChanges`
-    * `ngOnInit` - après le premier `ngOnChanges`
     * `ngDoCheck` - developer's custom change detection
-    * `ngDoCheck` - détection de changement spéciale définie par le développeur
     * `ngAfterContentInit` - after component content initialized
-    * `ngAfterContentInit` - après que le contenu du composant soit initialisé
     * `ngAfterContentChecked` - after every check of component content
-    * `ngAfterContentChecked` - après évaluation de tout le contenu du composant 
     * `ngAfterViewInit` - after component's view(s) are initialized
-    * `ngAfterViewInit` - après l'initialisation de la vue (ou des vues) du composant.
     * `ngAfterViewChecked` - after every check of a component's view(s)
-    * `ngAfterViewChecked` - après évaluation de toute la vue (ou toutes les vues) du composant
     * `ngOnDestroy` - just before the directive is destroyed.
-    * `ngOnDestroy` - juste avant que la directive ne soit détruite.
 
     Learn more in the [Lifecycle Hooks](/docs/ts/latest/guide/lifecycle-hooks.html) chapter.
-    
-    Apprenez-en plus dans le chapitre sur [Méthodes du Cycle de Vie](/docs/ts/latest/guide/lifecycle-hooks.html).
 // #enddocregion f-l
 
 // #docregion m1
@@ -754,58 +452,31 @@ include _util-fns
 .l-sub-section
   :marked
     Angular apps are modular.
-    
-    Les applications Angular sont modulaires.
 
     In general, we assemble our application from many modules, both the ones we write ourselves
     and the ones we acquire from others.
-    
-    En général, on assemble notre application à partir de plusieurs modules, à la fois ceux que l'on écrit nous-même
-    et ceux que l'on récupère ailleurs.
 
     A typical module is a cohesive block of code dedicated to a single purpose.
-    
-    Un module typique est un ensemble cohérent de code dédié à un but unique.
 
     A module **exports** something of value in that code, typically one thing such as a class.
     A module that needs that thing, **imports** it.
-    
-    Un module **exporte** des valeurs depuis ce code, typiquement quelque chose comme une classe.
-    Un module qui a besoin de ces valeurs, les **importe**. 
 
     The structure of Angular modules and the import/export syntax
     is based on the [ES2015](#es2015) module standard
     described [here](http://www.2ality.com/2014/09/es6-modules-final.html).
-    
-    La structure des modules Angular et de la syntaxe import/export
-    est basée sur le standard de module [ES2015](#es2015)
-    décrit [ici](http://www.2ality.com/2014/09/es6-modules-final.html).
 
     An application that adheres to this standard requires a module loader to
     load modules on request and resolve inter-module dependencies.
     Angular does not ship with a module loader and does not have a preference
     for any particular 3rd party library (although most samples use SystemJS).
     Application developers may pick any module library that conforms to the standard
-    
-    Une application qui respecte ce standard a besoin d'un chargeur de modules (_module loader_) pour
-    charger les modules à la demande et résoudre les dépendances inter-module.
-    Angular n'embarque pas un chargeur de module et n'a pas de préférence
-    pour une librairie tierce particulière (même si beaucoup d'exemples utilisent SystemJS).
-    Les développeurs d'application peuvent choisir n'importe quel chargeur de modules qui respecte le standard.
 
     Modules are typically named after the file in which the exported thing is defined.
     The Angular [DatePipe](https://github.com/angular/angular/blob/master/modules/@angular/common/src/pipes/date_pipe.ts)
     class belongs to a feature module named `date_pipe` in the file `date_pipe.ts`.
-    
-    Les modules sont typiquement nommés d'après le fichier dans lequel l'objet exporté est défini.
-    La classe du pipe [DatePipe](https://github.com/angular/angular/blob/master/modules/@angular/common/src/pipes/date_pipe.ts)
-    appartient à un module fonctionnel nommé `date_pipe` dans un fichier nommé `date_pipe.ts`.
 
     Developers rarely access Angular feature modules directly.
     We usually import them from one of the Angular [scoped packages](#scoped-package) such as `@angular/core`.
-    
-    Les développeurs utilisent rarement les modules fonctionnels directement.
-    Nous les importons généralement plutôt depuis l'un des [_scopes packages_](#scoped-package) comme `@angular/core`.
 
 // #enddocregion m2
 
@@ -833,9 +504,9 @@ include _util-fns
   ## PascalCase
 .l-sub-section
   :marked
-    The practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter.
+    The practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter. 
     Class names are typically spelled in PascalCase. Examples include: `Person` and `Customer`.
-
+    
     This form is also known as **upper camel case**, to distinguish it from **lower camel case** which we simply call [camelCase](#camelcase).
     In this documentation, "PascalCase" means *upper camel case* and  "camelCase" means *lower camel case*.
 
@@ -908,9 +579,9 @@ include _util-fns
     `@angular/http`, and `@angular/router`.
 
     A [*scoped package*](https://docs.npmjs.com/misc/scope) is a way to group related *npm* packages.
-
-    We import a scoped package the same way we'd import a *normal* package.
-    The only difference, from a consumer perspective,
+    
+    We import a scoped package the same way we'd import a *normal* package. 
+    The only difference, from a consumer perspective, 
     is that the package name begins with the Angular *scope name*, `@angular`.
 
   +makeExcerpt('architecture/ts/app/app.component.ts', 'import', '')

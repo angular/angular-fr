@@ -4,153 +4,94 @@ include ../_util-fns
   [**Webpack**](https://webpack.github.io/) is a popular module bundler,
   a tool for bundling application source code in convenient _chunks_ 
   and for loading that code from a server into a browser.
-
-  [**Webpack**](https://webpack.github.io/) est un agrégateur de module populaire, 
-  un outil pour lier le code source d'application en _paquets_ adaptés 
-  et pour charger ce code à partir d'un serveur dans un navigateur.
-
+  
   It's an excellent alternative to the *SystemJS* approach we use throughout the documentation.
   In this guide we get a taste of Webpack and how to use it with Angular 2 applications.
-
-  C'est une excellente alternative à *SystemJS* que nous utilisons dans la documentation.
-  Dans ce guide, nous avons un aperçu de Webpack et comment l'utiliser avec des applications Angular 2.
   
   <a id="top"></a>
   ## Table of contents
-  ## Table des matières
   
-  * [What is Webpack?](#what-is-webpack)
-  * [Qu'est-ce que Webpack?](#what-is-webpack)
+  [What is Webpack?](#what-is-webpack)
+  
     * [Entries and outputs](#entries-outputs)
-    * [Entrées et sorties](#entries-outputs)
     * [Loaders](#loaders)
-    * [Les Chargeurs](#loaders)
     * [Plugins](#plugins)
-    * [Extensions](#plugins)
-  * [Configuring Webpack](#configure-webpack)
-  * [Configurer Webpack](#configure-webpack)
+    
+  [Configuring Webpack](#configure-webpack)
+  
     * [Common configuration](#common-configuration)
-    * [Configuration classique](#common-configuration)
     * [Development configuration](#development-configuration)
-    * [Configuration de développement](#development-configuration)
     * [Production configuration](#production-configuration)
-    * [Configuration de production](#production-configuration)
     * [Test configuration](#test-configuration)
-    * [Configuration de test](#test-configuration)
-  * [Trying it out](#try)
-  * [Essayez Webpack](#try)
-  * [Conclusions](#conclusions)
-  * [Conclusion](#conclusions)
+    
+  [Trying it out](#try)
+  
+  [Conclusions](#conclusions)
     
 .l-main-section
 <a id="what-is-webpack"></a>
 :marked
   ## What is Webpack?
-
-  ## Qu'est-ce que Webpack?
   
   Webpack is a powerful module bundler. 
   A _bundle_ is a JavaScript file that incorporate _assets_ that *belong* together and 
   should be served to the client in a response to a single file request.
   A bundle can include JavaScript, CSS styles, HTML, and almost any other kind of file.
 
-  Webpack est un puissant agrégateur de module.
-  Un _bundle_ (ou paquet) est un fichier JavaScript qui regroupe les ressources *similaires* et qui 
-  doivent être servies au client dans une réponse unique à une demande de fichier.
-  Un bundle peut inclure du JavaScript, CSS, HTML, et presque tout autre type de fichier.
-
   Webpack roams over your application source code, 
   looking for `import` statements, building a dependency graph, and emitting one (or more) _bundles_.
   With plugin "loaders" Webpack can preprocess and minify different non-JavaScript files such as TypeScript, SASS, and LESS files. 
 
-  Webpack inspecte le code source de votre application, 
-  recherche des déclarations d'`import`, construit un graphe de dépendances, et génère un (ou plusieurs) _paquets (bundles)_.
-  Avec l'extension "loaders" Webpack peut prétraiter et minifier différents fichiers non-JavaScript tels que TypeScript, SASS, et les fichiers LESS.
-
   We determine what Webpack does and how it does it with a JavaScript configuration file, `webpack.config.js`.
-
-  Nous déterminons ce que Webpack fait ainsi que sa façon de faire dans un fichier JavaScript de configuration, `webpack.config.js`.
   
 a(id="entries-outputs")
 .l-main-section
 :marked
   ### Entries and outputs
-
-  ### Entrées et sorties
   
   We feed Webpack with one or more *entry* files and let it find and incorporate the dependencies that radiate from those entries. 
   In this example, we start from the application's root file, `src/app.ts`:
   
-  Nous alimentons Webpack avec un ou plusieurs fichiers en *entrée* et il va intégrer les dépendances qui proviennent de ces entrées.
-  Dans cet exemple, nous commençons à partir du fichier racine de l'application, `src/app.ts`&nbsp;:
-
 +makeExample('webpack/ts-snippets/webpack.config.snippets.ts', 'one-entry', 'webpack.config.js (single entry)')(format=".")
   
 :marked
   Webpack inspects that file and traverses its `import` dependencies recursively.
   
-  Webpack inspecte ce fichier et traverse ses `import` pour récupérer les dépendances récursivement.
-
 +makeExample('webpack/ts-snippets/webpack.config.snippets.ts', 'app-example', 'src/app.ts')(format=".")
 
 :marked
   Here it sees that we're importing *@angular/core* so it adds that to its dependency list for (potential) inclusion in the bundle.
   It opens *@angular/core* and follows _its_ network of `import` statements until it has build the complete dependency graph from `app.ts` down.
   
-  Ici, il voit que nous importons *@angular/core* donc il l'ajoute à sa liste de dépendances pour (potentiellement) l'inclure dans le bundle.
-  Il ouvre *@angular/core* et suit _son_ réseau de déclarations d'`import` jusqu'à ce qu'il ait construit le graphe de dépendances complet pour `app.ts`.
-
   Then it **outputs** these files to the `app.js` _bundle file_ designated in configuration:
   
-  Puis il **ajoute** ces fichiers dans le _fichier bundle_ `app.js` désigné dans la configuration:
-
 +makeExample('webpack/ts-snippets/webpack.config.snippets.ts', 'one-output', 'webpack.config.js (single output)')(format=".")
 
 :marked
   This `app.js` output bundle is a single JavaScript file that contains our application source and its dependencies. 
   We'll load it later with a &lt;script&gt; tag in our index.html. 
   
-  Ce bundle de sortie `app.js` est un seul fichier JavaScript qui contient la source de notre application et ses dépendances.
-  Nous allons le charger ultérieurement avec une balise &lt;script&gt; dans notre index.html.
-
   #### Multiple bundles
-  
-  #### Bundle multiples
-  
   We probably do not want one giant bundle of everything.
   We'll likely prefer to separate our volatile application app code from comparatively stable vendor code modules.
   
-  Nous ne voulons sans doute pas un seul et unique paquet.
-  Nous préférons séparer notre code applicatif volatile par rapport au code stable des modules tierces.
-
   We change the configuration so that we have two entry points, `app.ts` and `vendor.ts`:
-
-  Nous modifions la configuration afin que nous ayons deux points d'entrée, `app.ts` et `vendor.ts`&nbsp;:
 
 +makeExample('webpack/ts-snippets/webpack.config.snippets.ts', 'two-entries','webpack.config.js (two entries)')(format=".")
 :marked
   Webpack constructs two separate dependency graphs
   and emits *two* bundle files, one called `app.js` containing only our application code and 
   another called `vendor.js` with all the vendor dependencies.
-
-  Webpack construit deux graphes de dépendances séparées et émet *deux* fichiers bundle, l'un appelé `app.js` ne contenant que notre code d'application et
-  un autre appelé `vendor.js` avec toutes les dépendances tierces.
+ 
 .l-sub-section
   :marked
     The `[name]` in the output name is a Webpack *placeholder* that is replaced with the entry names.
     `app` and `vendor` respectively.
     
-    Le nom de sortie `[name]` est un *espace réservé* de Webpack qui est remplacé par les noms d'entrée.
-    Respectivement `app` et `vendor`.
-
     We need a plugin to make this work; we'll [cover that later](#commons-chunk-plugin) in the chapter.
-
-    Nous avons besoin d'une extension pour faire ce travail; nous allons [le voir plus tard](#commons-chunk-plugin) dans le chapitre.
 
 :marked
   We met `app.ts` earlier. We wrote `vendor.ts` such that it imports the vendor modules we need:
-
-  Nous avons rencontré `app.ts` plus tôt. Nous avons écrit `vendor.ts` de telle sorte qu'il importe les modules tierces dont nous avons besoin&nbsp;:
 +makeExample('webpack/ts/src/vendor.ts', null,'src/vendor.ts')(format=".")
 
 
@@ -158,60 +99,38 @@ a(id="loaders")
 .l-main-section
 :marked
   ### Loaders
-  
-  ### Les Chargeurs
 
   Webpack can bundle any kind of file: JavaScript, TypeScript, CSS, SASS, LESS, images, html, fonts, whatever.
   Webpack itself doesn't know what to do with a non-JavaScript file.
   We teach it to process such files into JavaScript with *loaders*. 
   Here we configure loaders for TypeScript and CSS:
   
-  Webpack peut regrouper tout type de fichier&nbsp;: JavaScript, TypeScript, CSS, SASS, LESS, images, HTML, fonts, ce que vous voulez.
-  Webpack lui-même ne sait pas quoi faire avec un fichier non-JavaScript.
-  Nous lui apprenons à traiter ces fichiers en JavaScript avec des chargeurs.
-  Ici, nous configurons des chargeurs (loaders) pour TypeScript et CSS&nbsp;:
-
 +makeExample('webpack/ts-snippets/webpack.config.snippets.ts', 'loaders', 'webpack.config.js (two entries)')(format=".")
 
 :marked
   As Webpack encounters `import` statements like these ...
-
-  Lorsque Webpack rencontre des déclarations d'`import` comme celles-ci ...
   
 +makeExample('webpack/ts-snippets/webpack.config.snippets.ts', 'imports')(format=".")
 
 :marked
   ... it applies the `test` RegEx patterns. When a pattern matches the filename, Webpack processes the file with the associated loader. 
   
-  ... il applique les expressions régulières définies dans `test`. Lorsqu'un modèle correspond au nom de fichier, Webpack traite le fichier avec le chargeur associé.
-
   The first `import` file matches the `.ts` pattern so Webpack processes it with the `ts` (TypeScript) loader.
   The imported file doesn't match the second pattern so its loader is ignored. 
   
-  Le premier `import` de fichier correspond au modèle `.ts` donc Webpack le traite avec le chargeur `ts` (TypeScript).
-  Le fichier importé ne correspond pas au second modèle donc son chargeur est ignoré.
-
   The second `import` matches the second `.css` pattern for which we have *two* loaders chained by the (!) character. 
   Webpack applies chained loaders *right to left* so it applies 
   the `css` loader first (to flatten CSS `@import` and `url(...)` statements) and
    then the `style` loader (to append the css inside *&lt;style&gt;* elements on the page).
   
-  Le second `import` correspond au second modèle `.css` pour lequel nous avons *deux* chargeurs chaînés par le caractère (!).
-  Webpack applique les chargeurs chaînés *de droite à gauche* de sorte qu'il applique le chargeur `css` en premier (pour aplatir les `@import` CSS et les instructions `url(...)`) 
-  puis le chargeur `style` (pour ajouter le CSS à l'intérieur de la balise *&lt;style&gt;* de la page).
 a(id="plugins")
 .l-main-section
 :marked
   ### Plugins
   
-  ### Extensions
-  
   Webpack has a build pipeline with well-defined phases.
   We tap into that pipeline with plugins such as the `uglify` minification plugin:
   
-  Webpack dispose d'un pipeline de construction avec des phases bien définies.
-  Nous puisons dans ce pipeline avec des extensions (plugins) telles que `uglify` pour la minification&nbsp;:
-
 +makeExample('webpack/ts-snippets/webpack.config.snippets.ts', 'plugins')(format=".")
   
 a(id="configure-webpack")
@@ -219,27 +138,17 @@ a(id="configure-webpack")
 :marked
   ## Configure Webpack
   
-  ## Configurer Webpack
-
   After that brief orientation, we are ready to build our own Webpack configuration for Angular 2 apps. 
   
-  Après cette brève orientation, nous sommes prêts à construire notre propre configuration de Webpack pour les applications Angular 2.
-
   Begin by setting up the development environment.
-
-  Commencez par la mise en place de l'environnement de développement.
   
   Create a **new project folder**
-
-  Créez un **nouveau dossier de projet**
 code-example(format="").
   mkdir angular2-webpack
   cd    angular2-webpack
 
 :marked
   Add these files to the root directory:
-
-  Ajoutez ces fichiers dans le répertoire racine&nbsp;:
   
 +makeTabs(
   `webpack/ts/package.webpack.json,
@@ -259,41 +168,25 @@ code-example(format="").
 .l-sub-section
   :marked
     Many of these files and much of their content should be familiar from other Angular 2 documentation chapters.
-
-    Beaucoup de ces fichiers et une grande partie de leur contenu doivent être similaires avec d'autres chapitres de la documentation d'Angular 2.
     
     Learn about the `package.json` in the [npm packages](../guide/npm-packages.html) chapter.
     We require packages for Webpack use in addition to the ones listed in that chapter.
-
-    En savoir plus sur le `package.json` dans le chapitre [paquets npm](../guide/npm-packages.html).
-    Nous avons besoin de paquets supplémentaires pour Webpack de ceux énumérés dans ce chapitre.
     
     Learn about `tsconfig.json` and `typings.json` in the [Typescript configuration](../guide/typescript-configuration.html) chapter.
-
-    En savoir plus sur `tsconfig.json` et `typings.json` dans le chapitre [configuration de Typescript](../guide/typescript-configuration.html).
 :marked
   Open a terminal/console window and install the *npm* packages with `npm install`.
-
-  Ouvrez une fenêtre du terminal/console et installez les paquets *npm* avec `npm install`.
  
+  
 a(id="common-configuration")
 .l-main-section
 :marked
   ### Common Configuration
   
-  ### Configuration classique
-  
   We will define separate configurations for development, production, and test environments.
   All three have some configuration in common.
   We'll gather that common configuration in a separate file called `webpack.common.js`.
   
-  Nous allons définir des configurations distinctes pour les environnement de développement, de production et de test.
-  Toutes les trois ont une configuration en commun.
-  Nous rassemblons cette configuration commune dans un fichier séparé appelé `webpack.common.js`.
-
   Let's see the entire file and then walk through it a section at a time:
-
-  Nous allons voir le fichier complet puis avancer une section à la fois&nbsp;:
   
 +makeExample('webpack/ts/config/webpack.common.js', null, 'config/webpack.common.js')(format=".")
 
@@ -301,104 +194,64 @@ a(id="common-configuration")
   Webpack is a NodeJS-based tool so its configuration is a JavaScript _commonjs_ module file 
   that begins with `require` statements as such files do. 
   
-  Webpack est un outil basé sur NodeJS donc sa configuration est un module JavaScript _commonjs_ 
-  qui commence par des instructions `require` comme ces fichiers font généralement.
-
   The configuration exports several objects, beginning with the *entries* described earlier:
-
-  La configuration exporte plusieurs objets, en commençant par les *entrées* décrites plus haut&nbsp;:
   
 +makeExample('webpack/ts/config/webpack.common.js', 'entries', 'config/webpack.common.js')(format=".")
 :marked
   We are splitting our application into three bundles:
-
-  Nous partageons notre application en trois bundles&nbsp;:
   
   * polyfills - the standard polyfills we require to run Angular 2 applications in most modern browsers.
-  * polyfills - les polyfills standards dont nous avons besoin pour exécuter Angular 2 dans la plupart des navigateurs modernes.
   * vendor - the vendor files we need: Angular 2, lodash, bootstrap.css...
-  * vendor - les fichiers tiers dont nous avons besoin&nbsp;: Angular 2, lodash, bootstrap.css...
   * app - our application code.
-  * app - le code de notre application.
   
 .callout.is-critical
   header Loading polyfills
   :marked
     Load Zone.js early, immediately after the other ES6 and metadata shims.
-    
-    Chargez Zone.js en premier, immédiatement après les autres scripts ES6 et métadonnées.
   
 :marked
   Our app will `import` dozens if not hundreds of JavaScript and TypeScript files. 
   We _might_ write `import` statements with explicit extensions as in this example:
-
-  Notre application va `importer (import)` des dizaines, voire des centaines de fichiers JavaScript et TypeScript.
-  Nous _pourrions_ écrire des déclarations `import` avec des extensions explicites, comme dans cet exemple&nbsp;:
 +makeExample('webpack/ts-snippets/webpack.config.snippets.ts', 'single-import')(format=".")
 
 :marked
   But most of our `import` statements won't mention the extension at all.
   So we  tell Webpack to _resolve_ module file requests by looking for matching files with
-
-  Mais la plupart de nos déclarations d'`import` ne mentionneront pas l'extension du tout.
-  Donc, nous demandons à Webpack de _résoudre_ les demandes de fichiers de module en recherchant les fichiers correspondants avec
   
   * an explicit extension (signified by the empty extension string, `''`) or 
-  * une extension explicite (signifiée par la chaîne d'extension vide, `''`) ou
   * `.js` extension (for regular JavaScript files and pre-compiled TypeScript files) or 
-  * l'extension `.js` (pour les fichiers classiques JavaScript et les fichiers TypeScript pré-compilés) ou
   * `.ts` extension.
-  * l'extension `.ts`.
   
 +makeExample('webpack/ts/config/webpack.common.js', 'resolve', 'config/webpack.common.js')(format=".")
 .l-sub-section
   :marked
     We could add  `.css` and `.html` later if we want Webpack to resolve extension-less files with _those_ extension too.
-
-    Nous pourrions ajouter `.css` et `.html` plus tard si nous voulons que Webpack résolve les fichiers sans extensions avec au moins _ces_ extensions.
 :marked
   Next we specify the loaders:
-
-  Ensuite, nous spécifions les chargeurs&nbsp;:
   
 +makeExample('webpack/ts/config/webpack.common.js', 'loaders', 'config/webpack.common.js')(format=".")
 
 :marked
   * ts - a loader to transpile our Typescript code to ES5, guided by the `tsconfig.json` file
-  * ts - un chargeur pour transpiler (transformer) notre code TypeScript en ES5, guidé par le fichier `tsconfig.json`
   * angular2-template-loader - loads angular components' template and styles
-  * angular2-template-loader - charge les template et les styles des composants Angular
   * html - for component templates
-  * html - pour les templates des composants
   * images/fonts - Images and fonts are bundled as well.
-  * images/fonts - Les images et les polices sont aussi regroupées
   * css - The pattern matches application-wide styles; the second handles component-scoped styles (the ones specified in a component's `styleUrls` metadata property)
-  * css - Le schéma correspond à tous les styles de l'application; le second gère les styles des composants (ceux spécifiés dans la propriété de metadonnées `styleUrls` des composants)
 .l-sub-section
   :marked
     The first pattern excludes `.css` files within the `/src/app` directories where our component-scoped styles sit.
     It includes only `.css` files located at or above `/src`; these are the application-wide styles.
     The `ExtractTextPlugin` (described below) applies the `style` and `css` loaders to these files.
     
-    Le premier modèle exclut les fichiers `.css` dans les répertoires de `/src/app` où nos styles de composants se trouvent.
-    Il ne comprend que les fichiers `.css` situés dans `/src` ou au dessus; ce sont les styles globaux de l'application.
-    L'extension `ExtractTextPlugin` (décrit ci-dessous) applique les chargeurs `style` et `css` à ces fichiers.
-    
     The second pattern filters for component-scoped styles and loads them as strings via the `raw` loader &mdash;
     which is what Angular expects to do with styles specified in a `styleUrls` metadata property.
 
-    Le second schéma filtre les styles de composants et les charge comme des chaînes de caractères avec le chargeur `raw` &mdash;
-    ce que Angular attend avec les styles spécifiés dans une propriété de metadonnées `styleUrls`. 
 .l-sub-section
   :marked
     Multiple loaders can be also chained using the array notation.
 
-    Les chargeurs multiples peuvent également être chaînés en utilisant la notation de tableau.
-
 :marked
   Finally we add two plugins:
-
-  Enfin, nous ajoutons deux extensions&nbsp;:
   
 +makeExample('webpack/ts/config/webpack.common.js', 'plugins', 'config/webpack.common.js')(format=".")
 
@@ -406,105 +259,61 @@ a(id="commons-chunk-plugin")
 :marked
   #### *CommonsChunkPlugin*
   
-  #### L'extension *CommonsChunkPlugin*
-  
   We want the `app.js` bundle to contain only app code and the `vendor.js` bundle to contain only the vendor code. 
-  
-  Nous voulons que le bundle `app.js` contienne uniquement le code de l'application et le bundle `vendor.js` contienne uniquement le code tiers.
   
   Our application code `imports` vendor code. Webpack is not smart enough to keep the vendor code out of the `app.js` bundle.
   We rely on the `CommonsChunkPlugin` to do that job. 
-  
-  Notre code applicatif `importe` le code tiers. Webpack n'est pas assez intelligent pour garder le code tiers hors du bundle `app.js`.
-  Nous comptons sur le `CommonsChunkPlugin` pour faire ce travail.
 .l-sub-section
   :marked
     It identifies the hierarchy among three _chunks_: `app` -> `vendor` -> `polyfills`. 
     Where Webpack finds that `app` has shared dependencies with `vendor`, it removes them from `app`.
     It would do the same if `vendor` and `polyfills` had shared dependencies (which they don't).
-    
-    Il identifie la hiérarchie entre les trois _chunks_&nbsp;: `app` -> `vendor` -> `polyfills`.
-    Lorsque Webpack constate que `app` possède des dépendances partagées avec `vendor`, il les supprime de `app`.
-    Il fera la même chose si `vendor` et `polyfills` avaient partagé des dépendances (ce qu'ils ne font pas).
 
 a(id="html-webpack-plugin")
 :marked
   #### *HtmlWebpackPlugin*
   
-  #### L'extension *HtmlWebpackPlugin*
-  
   Webpack generates a number of js and css files. 
   We _could_ insert them into our `index.html` _manually_. That would be tedious and error-prone.
   Webpack can inject those scripts and links for us with the `HtmlWebpackPlugin`.
   
-  Webpack génère un certain nombre de fichiers js et css.
-  Nous _pourrions_ les insérer dans notre `index.html` _manuellement_. Ce serait fastidieux et source d'erreurs.
-  Webpack peut injecter ces scripts et des balises links pour nous avec `HtmlWebpackPlugin`.
 a(id="environment-configuration")
 .l-main-section
 :marked
   ### Environment-specific configuration
   
-  ### Configuration d'environnement spécifique
-  
   The `webpack.common.js` configuration file does most of the heavy lifting. 
   We create separate, environment-specific configuration files that build on `webpack.common`
   by merging into it the peculiarities particular to their target environments.
   
-  Le fichier de configuration `webpack.common.js` n'a pas subi de lourds changements.
-  Nous créons séparément des fichiers de configurations spécifiques par environnement, qui seront utilisés dans `webpack.common`
-  en fusionnant les particularités de leurs environnements.
-  
   These files tend to be short and simple.
-  
-  Ces fichiers ont tendance à être courts et simples.
   
 a(id="development-configuration")
 .l-main-section
 :marked
   ### Development Configuration
   
-  ### Configuration de développement
-  
   Here is the development configuration file, `webpack.dev.js`
-
-  Voici le fichier de configuration de développement, `webpack.dev.js`
   
 +makeExample('webpack/ts/config/webpack.dev.js', null, 'config/webpack.dev.js')(format=".")
 
 :marked
   The development build relies on the Webpack development server which we configure near the bottom of the file.
-
-  La version de développement repose sur le serveur de développement de Webpack que nous configurons en fin de fichier.
   
   Although we tell Webpack to put output bundles in the `dist` folder,
   the dev server keeps all bundles in memory; it doesn't write them to disk.
   So we won't find any files in the `dist` folder (at least not any generated from `this development build`).
-
-  Bien que nous indiquons à Webpack de mettre les paquets de sortie dans le dossier `dist`, 
-  le serveur de dév conserve tous les paquets en mémoire; il ne les écrit pas sur le disque.
-  Donc, nous ne trouverons pas tous les fichiers dans le dossier `dist` (du moins pas générés par `ce build de développement`).
-
+  
+  
   The `HtmlWebpackPlugin` (added in `webpack.common.js`) use the *publicPath* and the *filename* settings to generate 
   appropriate &lt;script&gt; and &lt;link&gt; tags into the `index.html`.
   
-  L'extension `HtmlWebpackPlugin` (ajoutée dans `webpack.common.js`) utilise le *chemin public (publicPath)* et le *nom de fichier (filename)* en paramètre pour générer
-  les balises &lt;script&gt; et &lt;link&gt; dans `index.html`.
-  
-  Our CSS are buried inside our JavaScript bundles by default. The `ExtractTextPlugin` extracts them into
+  Our CSS are buried inside our Javascript bundles by default. The `ExtractTextPlugin` extracts them into
   external `.css` files that the `HtmlWebpackPlugin` inscribes as &lt;link&gt; tags into the `index.html`.
-  
-  Notre CSS est enfoui dans nos bundles JavaScript par défaut. L'extension `ExtractTextPlugin` les extrait dans
-  
-  des fichiers externes `.css` que l'extension `HtmlWebpackPlugin` inscrit comme balises &lt;link&gt; dans `index.html`.
   
   Refer to the Webpack documentation for details on these and other configuration options in this file
   
-  Reportez-vous à la documentation de Webpack pour plus de détails sur ces autres options de configuration de ce fichier
-  
   Grab the app code at the end of this guide and try:
-  
-  Prenez le code de l'application à la fin de ce guide et essayez&nbsp;:
   
 code-example(format="").
   npm start
@@ -514,53 +323,32 @@ a(id="production-configuration")
 :marked
   ### Production Configuration
   
-  ### Configuration de production
-  
   Configuration of a *production* build resembles *development* configuration ... with a few key changes.
-  
-  La configuration d'un build de *production* ressemble à la configuration de *développement* ... avec quelques changements clés.
   
 +makeExample('webpack/ts/config/webpack.prod.js', null, 'config/webpack.prod.js')(format=".")
 
 :marked
   We don't use a development server. We're expected to deploy the application and its dependencies to a real production server.
   
-  Nous n'utilisons pas de serveur de développement. Nous sommes censés déployer l'application et ses dépendances sur un vrai serveur de production.
-  
   This time the output bundle files are physically placed in the `dist` folder.
-  
-  Cette fois, les fichiers consolidés de sortie sont physiquement placés dans le dossier `dist`.
   
   Webpack generates file names with cache-busting hash.
   Thanks to the `HtmlWebpackPlugin` we don't have to update the `index.html` file when the hashes changes.
   
-  Webpack génère des noms de fichiers avec un hachage pour contourner le cache (_cache-busting hash_).
-  Grâce à l'extension `HtmlWebpackPlugin` nous n'avons pas besoin de mettre à jour le fichier `index.html` lorsque les hashes changent.
-  
   There are additional plugins:
   
-  Il y a des plugins supplémentaires&nbsp;:
-  
   * **NoErrorsPlugin** - stops the build if there is any error.
-  * **NoErrorsPlugin** - arrête la construction s'il y a une erreur.
   * **DedupePlugin** - detects identical (and nearly identical) files and removes them from the output.
-  * **DedupePlugin** - détecte les fichiers identiques (et presque identiques) et les supprime de la sortie.
   * **UglifyJsPlugin** - minifies the bundles.
-  * **UglifyJsPlugin** - minifie les bundles.
   * **ExtractTextPlugin** - extracts embedded css as external files, adding cache-busting hash to the filename.
-  * **ExtractTextPlugin** - extrait le CSS incorporé dans des fichiers externes, en ajoutant un hash pour contourner le cache (_cache-busting hash_) au nom du fichier.
   * **DefinePlugin** - use to define environment variables that we can reference within our application.
-  * **DefinePlugin** - utilisé pour définir les variables d'environnement que nous référençons dans notre application.
   
   Thanks to the *DefinePlugin* and the `ENV` variable defined at top, we can enable Angular 2 production mode like this:
   
-  Grâce à l'extension *DefinePlugin* et la variable `ENV` définie en haut nous pouvons activer le mode production d'Angular 2 comme ceci :
 +makeExample('webpack/ts/src/main.ts', 'enable-prod')(format=".")
   
 :marked
   Grab the app code at the end of this guide and try:
-  
-  Prenez le code de l'application à la fin de ce guide et essayez&nbsp;:
   
 code-example(format="").
   npm run build
@@ -570,47 +358,29 @@ a(id="test-configuration")
 :marked
   ### Test Configuration
   
-  ### Configuration de test
-  
   We don't need much configuration to run unit tests. 
   We don't need the loaders and plugins that we declared for our development and production builds.
   We probably don't need to load and process `css` files for unit tests and doing so would slow us down;
   we'll use the `null` loader for all CSS.
   
-  Il ne faut pas beaucoup de configuration pour exécuter des tests unitaires.
-  Nous n'avons pas besoin des chargeurs et des extensions que nous avons déclarés pour nos builds de développement et de production.
-  Nous n'avons probablement pas besoin de charger et traiter les fichiers `css` pour les tests unitaires et le faire va nous ralentir; 
-  nous allons utiliser le chargeur `null` pour tous les CSS.
-  
   We could merge our test configuration into the `webpack.common` configuration and override the parts we don't want or need.
   But it might be simpler to start over with a completely fresh configuration.
   
-  Nous pourrions fusionner notre configuration de test dans la configuration `webpack.common` et remplacer les parties dont nous ne voulons pas ou dont nous n'avons pas besoin.
-  Mais ce serait plus simple de recommencer avec une configuration complètement fraîche.
 +makeExample('webpack/ts/config/webpack.test.js', null, 'config/webpack.test.js')(format=".")
 
 :marked
   Here's our karma configuration:
   
-  Voici notre configuration de karma&nbsp;:
-  
 +makeExample('webpack/ts/config/karma.conf.js', null, 'config/karma.conf.js')(format=".")
 
 :marked
   We're telling Karma to use webpack to run the tests. 
-
-  Nous indiquons à Karma d'utiliser Webpack pour exécuter les tests.
   
   We don't precompile our TypeScript; Webpack transpiles our Typescript files on the fly, in memory, and feeds the emitted JS directly to Karma.
   There are no temporary files on disk.
   
-  Nous ne pré-compilons pas notre TypeScript; Webpack transpile (transforme) nos fichiers TypeScript à la volée, en mémoire, et alimente directement Karma avec les JS générés.
-  Il n'y a pas de fichiers temporaires sur le disque.
-
   The `karma-test-shim` tells Karma what files to pre-load and 
   primes the Angular test framework with test versions of the providers that every app expects to be pre-loaded.
-
-  Le `karma-test-shim` indique à Karma quels fichiers sont pré-chargés et amorce le framework de test d'Angular avec les versions de test des fournisseurs (providers) que chaque application attend pour être pré-chargé.
   
 +makeExample('webpack/ts/config/karma-test-shim.js', null, 'config/karma-test-shim.js')(format=".")
 
@@ -620,14 +390,9 @@ a(id="test-configuration")
   Each spec file imports all &mdash; and only &mdash; the application source code that it tests.
   Webpack loads just _those_ specific application files and ignores the other files that we aren't testing.
   
-  Notez que nous ne chargeons _pas_ explicitement le code de notre application.
-  Nous demandons à Webpack de trouver et charger nos fichiers de test (les fichiers se terminant par `.spec.ts`).
-  Chaque fichier spec importe tout &mdash; et seulement &mdash; le code source de l'application qu'il teste.
-  Webpack charge seulement _ces_ fichiers spécifiques pour l'application et ignore les autres fichiers que nous ne testons pas.
 :marked
   Grab the app code at the end of this guide and try:
   
-  Prenez le code de l'application à la fin de ce guide et essayez&nbsp;:
 code-example(format="").
   npm test
 
@@ -635,13 +400,9 @@ code-example(format="").
 :marked
   ## Trying it out
   
-  ## Essayez par vous-même
-
   Here is the source code for a small application that we can bundle with the
   Webpack techniques we learned in this chapter.
   
-  Voici le code source d'une petite application que nous pouvons livrer avec les 
-  techniques de Webpack que nous avons apprises dans ce chapitre.
 +makeTabs(
   `webpack/ts/src/index.html,
   webpack/ts/src/main.ts,
@@ -670,11 +431,7 @@ p.
   <a href="https://raw.githubusercontent.com/angular/angular.io/master/public/resources/images/logos/angular2/angular.png" target="_blank">
   <img src="https://raw.githubusercontent.com/angular/angular.io/master/public/resources/images/logos/angular2/angular.png" height="40px" title="download Angular logo"></a>.
 
-p.
-  Le template <code>app.component.html</code> affiche le logo téléchargeable d'Angular
-  <a href="https://raw.githubusercontent.com/angular/angular.io/master/public/resources/images/logos/angular2/angular.png" target="_blank">
-  <img src="https://raw.githubusercontent.com/angular/angular.io/master/public/resources/images/logos/angular2/angular.png" height="40px" title="Télécharger le logo d'Angular 2"></a>.
-  
+
 +makeTabs(
   `webpack/ts/src/vendor.ts,
   webpack/ts/src/polyfills.ts`,
@@ -685,47 +442,26 @@ p.
 :marked
   ### Highlights:
   
-  ### Points forts&nbsp;:
-  
   * There are no &lt;script&gt; or &lt;link&gt; tags in the `index.html`. 
   The `HtmlWebpackPlugin` inserts them dynamically at runtime.
-
-  * Il n'y a pas de balises &lt;script&gt; ou &lt;link&gt; dans `index.html`.
-
+    
   * The `AppComponent` in `app.component.ts` imports the application-wide css with a simple `import` statement.
-
-  * Le composant `AppComponent` dans `app.component.ts` importe les CSS de toute l'application avec une simple déclaration `import`.
 
   * The `AppComponent` itself has its own html template and css file. WebPack loads them with calls to `require()`. 
   Webpack stashes those component-scoped files in the `app.js` bundle too.
   We don't see those calls in our source code; they're added behind the scenes by the `angular2-template-loader` plug-in. 
   
-  * Le composant `AppComponent` lui-même a son propre modèle de vue HTML et son fichier CSS. Webpack les chargent avec des appels à `require()`.
-  Webpack masque ces fichiers restreints au composant également dans le bundle `app.js`.
-  Nous ne voyons pas ces appels dans notre code source; ils sont ajoutés en arrière plan par l'extension `angular2-template-loader`.
-
   * The `vendor.ts` consists of vendor dependency `import` statements that drive the `vendor.js` bundle.
   The application imports these modules too; they'd be duplicated in the `app.js` bundle
   if the `CommonsChunkPlugin` hadn't detected the overlap and removed them from `app.js`.
 
-  * Le `vendor.ts` comporte les déclarations d'`import` des dépendances tierces qui vont définir le bundle `vendor.js`.
-  L'application importe ces modules aussi; ils seraient dupliqués dans le bundle `app.js` 
-  si l'extension `CommonsChunkPlugin` n'avait pas détecté la superposition et les avait retirés de `app.js`.
 <a id="conclusions"></a>
 :marked
   ## Conclusions
   
-  ## Conclusion
-  
   We've learned just enough Webpack to configurate development, test and production builds 
   for a small Angular application.
   
-  Nous venons d'apprendre juste ce qu'il faut pour configurer Webpack pour des builds de développement, de test et de production.
-
   _We could always do more_. Search the web for expert advice and expand your Webpack knowledge.
   
-  _Nous pourrions toujours faire plus_. Recherchez sur le web pour obtenir des conseils d'experts et approfondir vos connaissances sur Webpack.
-
   [Back to top](#top)
-  
-  [Retour en haut](#top)
