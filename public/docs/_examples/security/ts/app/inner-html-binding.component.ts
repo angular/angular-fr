@@ -8,6 +8,6 @@ import { Component } from '@angular/core';
 })
 // #docregion inner-html-controller
 export class InnerHtmlBindingComponent {
-  // E.g. a user/attacker controlled value from a URL.
+  // I.e. Des données contrôlées par un utilisateur / attaquant.
   htmlSnippet = 'Template <script>alert("0wned")</script> <b>Syntax</b>';
 }
