@@ -372,7 +372,7 @@ a(href="#toc") Retour en haut
   :marked
     **Do** use upper camel case for symbols. Match the name of the symbol to the naming of the file.
 
-   **Vous devez**  utiliser une première lettre en majuscule pour les noms des classes. Donner le même nom aux classes et aux fichiers qui les contiennent.
+   **Vous devez**  utiliser une camel case majuscule pour les noms des classes. Donner le même nom aux classes et aux fichiers qui les contiennent.
 
 .s-rule.do
   :marked
@@ -390,7 +390,7 @@ a(href="#toc") Retour en haut
   :marked
     **Why?** Upper camel case is conventional for identifying objects that can be instantiated using a constructor.
 
-    **Pourquoi ?** La première lettre en majuscule est une convention utilisée pour identifier les objets pouvant être instancier à partir d'un constructeur de classe.
+    **Pourquoi ?** La camel case majuscule est une convention utilisée pour identifier les objets pouvant être instancier à partir d'un constructeur de classe.
 
 .s-why.s-why-last
   :marked
@@ -469,7 +469,7 @@ a(href="#toc") Retour en haut
   :marked
     **Do** use upper camel case for services.
 
-    **Vous devez**  utiliser une première lettre en majuscule pour les noms des services.
+    **Vous devez**  utiliser une camel case majuscule pour les noms des services.
 
 .s-rule.do
   :marked
@@ -580,7 +580,7 @@ a(href="#toc") Retour en haut
   :marked
     **Do** Use lower camel case for naming the selectors of our directives.
 
-    **Vous devez** utiliser une première lettre en minuscule pour les noms des directives. 
+    **Vous devez** utiliser une camel case minuscule pour les noms des directives. 
 
 .s-why
   :marked
@@ -592,7 +592,7 @@ a(href="#toc") Retour en haut
   :marked
     **Why?** The Angular 2 HTML parser is case sensitive and will recognize lower camel case.
 
-    **Pourquoi ?** Le parser d'HTML d'Angular 2 est sensible à la casse et fera donc la différence entre les minuscules et majuscules.
+    **Pourquoi ?** Le parser d'HTML d'Angular 2 est sensible à la casse et reconnaitra donc le camel case miniscule.
 
 a(href="#toc") Back to top
 
@@ -813,19 +813,28 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="02-11"></a>End to End Test File Names
+
+ ### <a id="02-11"></a>Les noms des fichiers de test bout-à-bout
+
   #### <a href="#02-11">Style 02-11</a>
 
 .s-rule.do
   :marked
     **Do** name end-to-end test specification files after the feature they test with a suffix of `.e2e-spec`.
 
+    **Vous devez** nommer les fichiers de test bout-à-bout en fonction de la fonctionnalité qu'ils testent, en les suffixant par `.e2e-spec`. 
+
 .s-why
   :marked
     **Why?** Provides a consistent way to quickly identify end-to-end tests.
 
+    **Pourquoi ?** Cela offre un moyen rapide et cohérent d'identifier les tests bout-à-bout.
+
 .s-why.s-why-last
   :marked
     **Why?** Provides pattern matching for test runners and build automation.
+
+    **Pourquoi ?** Cela offre un schéma de filtrage aux lanceurs de test et outils d'automatisation de build.
 
 :marked
 :marked
@@ -855,24 +864,37 @@ a(href="#toc") Retour en haut
 :marked
   ## Coding Conventions
 
+  ## Conventions de développement 
+
   Have consistent set of coding, naming, and whitespace conventions.
+
+  Un ensemble de conventions liées au code, nommage et caractères blancs.  
 
 .l-main-section
 :marked
   ### <a id="03-01"></a>Classes
+
+### <a id="03-01"></a>Les Classes
+
   #### <a href="#03-01">Style 03-01</a>
 
 .s-rule.do
   :marked
     **Do** use upper camel case when naming classes.
 
+    **Vous devez** utiliser une camel case majuscule pour les noms des classes. 
+
 .s-why
   :marked
     **Why?** Follows conventional thinking for class names.
 
+    **Pourquoi ?** Cela respecte les conventions traditionnelles de nommage des classes. 
+
 .s-why.s-why-last
   :marked
     **Why?** Classes can be instantiated and construct an instance. We often use upper camel case to indicate a constructable asset.
+
+    **Pourquoi ?** Les classes peuvent être utilisées pour créer des instances. Généralement utilisons le noms avec une camel case majuscule pour différencier les ressources pouvant être instanciables.
 
 +makeExample('style-guide/ts/03-01/app/shared/exception.service.avoid.ts', 'example', 'app/shared/exception.service.ts')(avoid=1)
 :marked
@@ -887,29 +909,43 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="03-02"></a>Constants
+
+  ### <a id="03-02"></a>Les Constants
+
   #### <a href="#03-02">Style 03-02</a>
 
 .s-rule.do
   :marked
     **Do** declare variables with `const` if their values should not change during the application lifetime.
 
+    **Vous devez** déclarer les variables avec le mot clé `const` si leurs valeurs ne changent pas durant la vie de l'application. 
+
 .s-why
   :marked
     **Why?** Conveys to readers that the value is invariant.
+
+    **Pourquoi ?** Cela indique au relecteur de code que cette valeur ne changera jamais.
 
 .s-why.s-why-last
   :marked
     TypeScript helps enforce that intent by requiring immediate initialization and by
     preventing subsequent re-assignment.
+
+    TypeScript renforce cette intention en vous imposant d'initialiser immédiatement la constante et vous interdit toutes réaffectations ultérieures.
     
 .s-rule.consider
   :marked
     **Consider** spelling `const` variables in lower camel case.
 
+    **Considérez** l'écriture des variables `const` en camel case miniscule.
+
 .s-why
   :marked
     **Why?** lower camel case variable names (`heroRoutes`) are easier to read and understand
     than the traditional UPPER_SNAKE_CASE names (`HERO_ROUTES`).
+    
+    **Pourquoi ?** les noms des variables en camel case miniscule (`heroRoutes`) sont plus simples à lire et un comprendre
+    que les traditionnels noms en UPPER_SNAKE_CASE  (`HERO_ROUTES`).
 
 .s-why.s-why-last
   :marked
@@ -917,15 +953,25 @@ a(href="#toc") Retour en haut
     an era before the modern IDEs that quickly reveal the `const` declaration.
     TypeScript itself prevents accidental reassignment. 
     
+    **Pourquoi ?** La tradition qui conciste à nommer les constantes en UPPER_SNAKE_CASE 
+    date de l'époque lorsque les IDE ne supportaient pas les déclarations `const`. Les IDE modernes
+    n'ont pas ce problème. De plus, Typescript vous protège des affectations accidentelles.
+    
 .s-rule.do
   :marked
     **Do** tolerate _existing_ `const` variables that are spelled in UPPER_SNAKE_CASE.
-
+    
+    **Vous devez** tolérer les variables `const` déjà existentes utilisant UPPER_SNAKE_CASE.
+    
 .s-why.s-why-last
   :marked
     **Why?** Although we recommend creating _new_ constants in lower camel case,
     the tradition of UPPER_SNAKE_CASE remains popular and pervasive,
     especially in third party modules.
+
+    **Pourquoi ?** Même si nous recommandons la création de _nouvelles_ constants en lower case miniscule,
+    l'utilisation des UPPER_SNAKE_CASE reste cependant très utilisée et omniprésente
+    plus particulièrement dans les bibliothèques tierces.
 
 +makeExample('style-guide/ts/03-02/app/shared/data.service.ts', '', 'app/shared/data.service.ts')
 :marked
@@ -937,19 +983,28 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="03-03"></a>Interfaces
+  
+  ### <a id="03-03"></a>Les Interfaces
+  
   #### <a href="#03-03">Style 03-03</a>
 
 .s-rule.do
   :marked
     **Do** name an interface using upper camel case.
+    
+    **Vous devez** nommer une interface en camel case majuscule.
 
 .s-rule.consider
   :marked
     **Consider** naming an interface without an `I` prefix.
+    
+    **Considérez** le nommage des interface sans le préfixe `I`.
 
 .s-why.s-why-last
   :marked
     **Why?** When we use types, we can often simply use the class as the type.
+    
+    **Pourquoi ?** Lorsque nous voulons typer des variables, nous pouvons simplement utiliser la classe comme type.
 
 +makeExample('style-guide/ts/03-03/app/shared/hero-collector.service.avoid.ts', 'example', 'app/shared/hero-collector.service.ts')(avoid=1)
 :marked
@@ -964,27 +1019,41 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="03-04"></a>Properties and Methods
+
+  ### <a id="03-04"></a>Propriétés et Méthodes
+  
   #### <a href="#03-04">Style 03-04</a>
 
 .s-rule.do
   :marked
     **Do** use lower camel case to name properties and methods.
+    
+    **Vous devez** utiliser des noms en camel case miniscule pour les propriétés et méthodes.
 
 .s-rule.avoid
   :marked
     **Avoid** prefixing private properties and methods with an underscore.
+    
+    **Evitez** de préfixer les propriétés et méthodes privées avec un tiret bas.
 
 .s-why
   :marked
     **Why?** Follows conventional thinking for properties and methods.
+    
+    **Pourquoi ?** Cela recpect les idées reçues concernant les propriétés et méthodes.
 
 .s-why
   :marked
     **Why?** JavaScript lacks a true private property or method.
+    
+    **Pourquoi ?** JavaScript ne possède réellement pas de propriétés ou méthodes privées.
 
 .s-why.s-why-last
   :marked
     **Why?** TypeScript tooling makes it easy to identify private vs public properties and methods.
+    
+    **Pourquoi ?** TypeScript propose les modificateurs d'accès ce qui permet de différencier simplement
+    les propriétés et méthodes privées vs publique.
 
 +makeExample('style-guide/ts/03-04/app/shared/toast.service.avoid.ts', 'example', 'app/shared/toast.service.ts')(avoid=1)
 :marked
