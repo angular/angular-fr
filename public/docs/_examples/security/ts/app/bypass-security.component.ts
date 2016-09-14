@@ -8,31 +8,32 @@ import { DomSanitizationService, SafeResourceUrl, SafeUrl } from '@angular/platf
   templateUrl: 'app/bypass-security.component.html',
 })
 export class BypassSecurityComponent {
-  dangerousUrl: string;
-  trustedUrl: SafeUrl;
-  dangerousVideoUrl: string;
-  videoUrl: SafeResourceUrl;
+  urlDangereuse: string;
+  UrlDeConfiance: SafeUrl;
+  urlDangereuseDeVideo: string;
+  urlDeVideo: SafeResourceUrl;
 
   // #docregion trust-url
   constructor(private sanitizer: DomSanitizationService) {
-    // javascript: URLs are dangerous if attacker controlled.
-    // Angular sanitizes them in data binding, but we can
-    // explicitly tell Angular to trust this value:
-    this.dangerousUrl = 'javascript:alert("Hi there")';
-    this.trustedUrl = sanitizer.bypassSecurityTrustUrl(this.dangerousUrl);
+    // javascript : les URLs sont dangeureuses si elles sont contrôllées
+    // par un attaquant.
+    // Angular les sécurise lorsque les données sont liées mais il est possible
+    // de dire explicitement à Angular de faire confiance à ces données :
+    this.urlDangereuse = 'javascript:alert("Hi there")';
+    this.UrlDeConfiance = sanitizer.bypassSecurityTrustUrl(this.urlDangereuse);
     // #enddocregion trust-url
     this.updateVideoUrl('PUBnlbjZFAI');
   }
 
   // #docregion trust-video-url
   updateVideoUrl(id: string) {
-    // Appending an ID to a YouTube URL is safe.
-    // Always make sure to construct SafeValue objects as
-    // close as possible to the input data, so
-    // that it's easier to check if the value is safe.
-    this.dangerousVideoUrl = 'https://www.youtube.com/embed/' + id;
-    this.videoUrl =
-        this.sanitizer.bypassSecurityTrustResourceUrl(this.dangerousVideoUrl);
+    // Ajouter un ID à une URL YouTuve n'est pas risqué.
+    // Veillez à toujours construire des objets SafeValue aussi fidèles
+    // que possible aux données entrées afin de faciliter
+    // leur vérification.
+    this.urlDangereuseDeVideo = 'https://www.youtube.com/embed/' + id;
+    this.urlDeVideo =
+        this.sanitizer.bypassSecurityTrustResourceUrl(this.urlDangereuseDeVideo);
   }
   // #enddocregion trust-video-url
 }
