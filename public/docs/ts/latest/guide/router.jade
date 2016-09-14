@@ -5,27 +5,45 @@ include ../_util-fns
     The Component Router is in beta release. This is the recommended Angular 2 router and supersedes
     the earlier *deprecated beta* and *v2* routers.
 
+    Le routeur de composants est en beta release. C'est le routeur Angular2 recommandé et remplace 
+    les routeurs *beta déprécié* et *v2* précédents.
 :marked
   The Angular ***Component Router*** enables navigation from one [view](./glossary.html#view) to the next
   as users perform application tasks.
 
+  Le **routeur de composants** d'Angular rend possible la navigation d'une [vue](./glossary.html#view) à la suivante 
+  lorsqu'un utilisateur exécute des tâches dans l'application.
+
   We cover the router's primary features in this chapter, illustrating them through the evolution
   of a small application that we can [run live](/resources/live-examples/router/ts/plnkr.html).
+
+  Nous couvrons les fonctionnalités principales du routeur dans ce chapitre, en les illustrant à travers l'évolution
+  d'une petite application que nous pouvons [exécuter en live](/resources/live-examples/router/ts/plnkr.html).
 .l-sub-section
   img(src='/resources/images/devguide/plunker-separate-window-button.png' alt="pop out the window" align="right" style="margin-right:-20px")
   :marked
     To see the URL changes in the browser address bar,
     pop out the preview window by clicking the blue 'X' button in the upper right corner.
 
+    Pour voir les changements d'URL dans la barre d'adresse du navigateur, 
+    ouvrez la fenêtre de prévisualisation en cliquant sur le bouton 'X' bleu dans le coin en haut à droite.
 .l-main-section
 :marked
   ## Overview
+
+  ## Aperçu
 
   The browser is a familiar model of application navigation.
   We enter a URL in the address bar and the browser navigates to a corresponding page.
   We click links on the page and the browser navigates to a new page.
   We click the browser's back and forward buttons and the browser navigates
   backward and forward through the history of pages we've seen.
+
+  Le navigateur est un modèle familier de navigation d'application.
+  Nous entrons une URL dans la barre d'adresse et le navigateur se rend sur la page correspondante.
+  Nous cliquons sur des liens dans la page et le navigateur se rend sur une nouvelle page.
+  Nous cliquons sur les boutons précédent et suivant et le navigateur se déplace en avant et en arrière
+  dans l'historique des pages que nous avons vues.
 
   The Angular ***Component Router*** ("the router") borrows from this model.
   It can interpret a browser URL as an instruction
@@ -37,65 +55,144 @@ include ../_util-fns
   or in response to some other stimulus from any source. And the router logs activity
   in the browser's history journal so the back and forward buttons work as well.
 
+  Le ***routeur de composants*** d'Angular ("le routeur") s'inspire de ce modèle. 
+  Il peut interpréter une URL de navigation comme une instruction
+  de se rendre sur une vue générée côté client et de transmettre des paramètres optionnels au composant
+  concerné pour l'aider à décider quel contenu spécifique afficher.  
+  Nous pouvons lier le routeur à des liens de la page et il va se rendre à la vue d'application correspondante
+  lorsque l'utilisateur clique sur un lien.
+  Nous pouvons naviguer de manière impérative lorsque l'utilisateur clique sur un bouton ou sélectionne dans une liste
+  ou en réponse à quelque autre stimulus d'une source quelconque. Et le routeur logue son activité dans 
+  le journal d'historique du navigateur, rendant les boutons précédent et suivant également fonctionnels.
+
   We'll learn many router details in this chapter which covers
 
+  Nous allons apprendre un grand nombre de détails sur le routeur dans ce chapitre qui couvre
+
   * Setting the [base href](#base-href)
+  * paramétrer le [base href](#base-href)
+
   * Importing from the [router library](#import)
+  * Importer depuis la [bibliothèque du routeur](#import)
+
   * [configuring the router](#route-config)
+  * [configurer le routeur](#route-config)
+
   * the [link parameters array](#link-parameters-array) that propels router navigation
+  * le [tableau de paramètres de lien](#link-parameters-array) qui propulse la navigation du router
+
   * navigating when the user clicks a data-bound [RouterLink](#router-link)
+  * naviguer lorsque l'utilisateur clique sur un [RouterLink](#router-link) lié
+
   * navigating under [program control](#navigate)
+  * naviguer sous [contrôle du programme](#navigate)
+
   * toggling css classes for the [active router link](#router-link-active)
+  * alterner des classes css pour le [lien de routeur actif](#router-link-active)
+
   * embedding critical information in the URL with [route parameters](#route-parameters)
+  * embarquer des informations critiques dans l'url avec les [paramètres de route](#route-parameters)
+
   * add [child routes](#child-routing-component) under a feature section
+  * ajouter des [routes filles](#child-routing-component) sous une section particulière
+
   * [redirecting](#redirect) from one route to another
+  * [rediriger](#redirect) d'une route vers une autre
+
   * confirming or canceling navigation with [guards](#guards)
+  * confirmer ou annuler la navigation avec des [gardes](#guards)
+
     * [CanActivate](#can-activate-guard) to prevent navigation to a route
+    * [CanActivate](#can-activate-guard) pour empêcher la navigation vers une route
+
     * [CanDeactivate](#can-deactivate-guard) to prevent navigation away from the current route
+    * [CanDeactivate](#can-deactivate-guard) pour empêcher de quitter la route actuelle
+
   * passing optional information in [query parameters](#query-parameters)
+  * passer ds informations optionnelles dans les [paramètres de requête](#query-parameters)
+
   * persisting information across routes with [global query parameters](#global-query-parameters)
+  * rendre des informations persistentes entre plusieurs routes avec des [paramètres de requête globaux](#global-query-parameters)
+
   * jumping to anchor elements using a [fragment](#fragment)
+  * sauter à des éléments d'ancrage en utilisant un [fragment](#fragment)
+
   * choosing the "HTML5" or "hash" [URL style](#browser-url-styles)
+  * choisir le [style d'URL](#browser-url-styles) «&nbsp;HTML5&nbsp;» ou «&nbsp;hash&nbsp;» 
 
   We proceed in phases marked by milestones building from a simple two-pager with placeholder views
   up to a modular, multi-view design with child routes.
 
+  Nous procédons par étapes en commençant par un simple double-page avec des vues fictives
+  jusqu'à un design modulaire, multi-vue avec des routes filles.
+
   But first, an overview of router basics.
+
+  Mais d'bord, un aperçu des bases du routeur.
 
 .l-main-section
 :marked
   ## The Basics
+  ## Les bases
+
   Let's begin with a few core concepts of the Component Router.
   Then we can explore the details through a sequence of examples.
+
+  Commençons avec quelques concepts fondamentaux du routeur de composants. 
+  Nous pourrons ensuite en explorer les détails à travers une suite d'exemples.
 
 :marked
   ### *&lt;base href>*
   Most routing applications should add a `<base>` element to the **`index.html`** as the first child in the  `<head>` tag
   to tell the router how to compose navigation URLs.
 
+  La plupart des applications de routage doivent ajouter un élément `<base>` à l'**`index.html`** comme premier fils
+  dans la balise `<head>` pour indiquer au routeur comment composer les URLs de navigation.
+
   If the `app` folder is the application root, as it is for our sample application,
   set the `href` value *exactly* as shown here.
+
+  Si le répertoire `app` est la racine de l'application, comme c'est le cas pour notre application exemple,
+  définissez la valeur `href` *exactement* comme indiqué ici.
 +makeExample('router/ts/index.1.html','base-href', 'index.html (base href)')(format=".")
 
 :marked
   ### Router imports
+  ### Imports du routeur
+
   The Angular Component Router is an optional service that presents a particular component view for a given URL.
   It is not part of the Angular 2 core. It is in its own library package, `@angular/router`.
   We import what we need from it as we would from any other Angular package.
+
+  Le routeur de composants d'Angular est un service optionnel qui présente une vue de composant particulière pour une URL donnée.
+  Il ne fait pas partie du coeur d'Angular 2. Il se trouve dans son paquet de bibliothèque, `@angular/router`.
+  Nous importons ce dont nous avons besoin à partir de celui-ci, comme nous le ferions de tout autre paquet Angular.
 
 +makeExample('router/ts/app/app.component.1.ts','import-router', 'app/app.component.ts (import)')(format=".")
 .l-sub-section
   :marked
     We cover other options in the [details below](#browser-url-styles).
+
+    Nous traitons les autres options dans le [détail ci-dessous](#browser-url-styles).
+
 :marked
   ### Configuration
   The application will have one *`router`*. When the browser's URL changes, the router looks for a corresponding **`Route`**
   from which it can determine the component to display.
 
+  L'application contiendra un *`routeur`*. Lorsque l'url du navigateur change, le routeur recherche une **`Route`**
+  correspondante depuis laquelle il peut déterminer le composant à afficher.
+
   A router has no routes until we configure it.
   The preferred way is to bootstrap our application with an array of routes using the **`provideRouter`** function.
 
+  Un routeur ne contient aucune route avant qu'il ne soit configuré.
+  La façon conseillée est d'amorcer notre application avec un tableau de routes en utilisant la fonction **`provideRouter`**. 
+
   In the following example, we configure our application with four route definitions.
+
+  Dans l'exemple suivant, nous configurons notre application avec quatre définitions de routes.
+
 +makeExample('router/ts/app/app.routes.1.ts','route-config','app/app.routes.ts')(format='.')
 
 .l-sub-section
@@ -103,54 +200,113 @@ include ../_util-fns
     The `RouterConfig` is an array of *routes* that describe how to navigate.
     Each *Route* maps a URL `path` to a component.
 
+    `RouterConfig` est un tableau de *routes* décrivant comment naviguer.
+    Chaque *Route* mappe un `chemin` d'URL à un composant.
+
     There are no **leading slashes** in our **path**. The router parses and builds the URL for us,
     allowing us to use relative and absolute paths when navigating between application views.
+
+    Notre **chemin** n'inclut pas de **barre oblique terminale**. Le routeur analyse et construit l'URL pour nous,
+    nous permettant d'utiliser des chemins relatifs et absolus pour naviguer entre les vues de l'application.
 
     The `:id` in the third route is a token for a route parameter. In a URL such as `/hero/42`, "42"
     is the value of the `id` parameter. The corresponding `HeroDetailComponent`
     will use that value to find and present the hero whose `id` is 42.
     We'll learn more about route parameters later in this chapter.
 
+    La partie `:id` dans la troisième route est un token pour un paramètre de route. Dans une URL comme `/hero/42`,
+    «&nbsp;42&nbsp;» est la valeur du paramètre `id`. Le `HeroDetailComponent` correspondant utilisera cette valeur pour trouver
+    et afficher le hero dont le `id` est 42.
+    Nous en apprendrons plus sur les paramètres de route plus loin dans le chapitre.
+
     The `**` in the fourth route denotes a **wildcard** path for our route. The router will match this route
     if the URL requested doesn't match any paths for routes defined in our configuration. This is useful for
     displaying a 404 page or redirecting to another route.
 
+    La partie `**` dans la quatrième route indique un chemin **joker** pour notre route. Le routeur utilisera 
+    cette route si l'URL demandée ne correspond à aucun des chemins pour les routes définies dans notre configuration.
+    Ceci est utile pour afficher une page 404 ou rediriger vers une autre route. 
+
     We pass the configuration array to the `provideRouter()` function which returns
     (among other things) a configured *Router* [service provider](dependency-injection.html#!#injector-providers).
+
+    Nous passons le tableau de configuration à la fonction `provideRouter()` qui retourne (entre autres choses)
+    un [fournisseur de service](dependency-injection.html#!#injector-providers) du *Routeur* configuré.
 
     Finally, we export this provider in the `appRouterProviders` array
     so we can simplify registration of router dependencies later in `main.ts`.
     We don't have any other providers to register right now. But we will.
+
+    Pour terminer, nous exportons ce fournisseur dans le tableau `appRouterProviders`
+    nous permettant de simplifier l'enregistrement de dépendances du routeur plus tard dans `main.ts`.
+    Nous n'avons pour l'instant pas d'autres fournisseurs à enregistrer. Mais nous en aurons plus tard.
+
 :marked
   Next we open `main.ts` where we must register our router providers in the `bootstrap` method.
+
+  Nous ouvrons ensuite `main.ts` où nous devons déclarer les fournisseurs du routeur dans la méthode `bootstrap`.
+
 +makeExample('router/ts/app/main.ts','','app/main.ts')(format='.')
 :marked
   ### Router Outlet
+
+  ### Point de Routeur (*router outlet*)
+
   Given this configuration, when the browser URL for this application becomes `/heroes`,
   the router matches that URL to the `Route` path `/heroes` and displays the `HeroListComponent`
   in a **`RouterOutlet`** that we've placed in the host view's HTML.
+
+  Selon cette configuration, lorsque l'URL du navigateur pour cette application devient `/heroes`,
+  le routeur fait correspondre cette URL au chemin de `Route` `/heroes`  et affiche le `HeroListComponent`
+  dans un **`RouterOutlet`** que nous avons placé dans le HTML de la vue hôte.
+
 code-example(format="", language="html").
   &lt;!-- Routed views go here -->
+
+  &lt;!-- Les vues routées sont placées ici -->
+
   &lt;router-outlet>&lt;/router-outlet>
 :marked
   ### Router Links
+
+  ### Liens de routeur
+
   Now we have routes configured and a place to render them, but
   how do we navigate? The URL could arrive directly from the browser address bar.
   But most of the time we navigate as a result of some user action such as the click of
   an anchor tag.
 
+  Nous avons maintenant des routes configurées et un endroit où les placer, mais
+  comment faisons-nous pour naviguer&nbsp;? L'URL peut arriver directement depuis la barre d'adresse du navigateur.
+  Mais la plupart du temps nous naviguons suite à une action de l'utilisateur, comme un clic sur une balise d'ancrage.
+
   We add a **`RouterLink`** directive to the anchor tag. Since
   we know our link doesn't contain any dynamic information, we can use a one-time binding to our route *path*.
+
+  Nous ajoutons une directive **`RouterLink`** à la balise d'ancrage. Puisque 
+  nous savons que notre lien ne contient aucune information dynamique, nous pouvons utiliser une liaison unique
+  pour notre *chemin* de route.
 
   If our `RouterLink` needed to be more dynamic we could bind to a template expression that
   returns an array of route link parameters (the **link parameters array**). The router ultimately resolves that array
   into a URL and a component view.
 
+  Si notre `RouterLink` avait besoin d'être plus dynamique nous pourrions le lier à une expression de modèle retournant
+  un tableau de paramètres de lien de route (le **tableau de paramètres de lien**). Le routeur résout en fin de compte 
+  ce tableau en URL puis en vue de composant.
+
   We also add a **`RouterLinkActive`** directive to each anchor tag to add or remove CSS classes to the
   element when the associated *RouterLink* becomes active. The directive can be added directly on the element
   or on its parent element.
 
+  Nous ajoutons aussi une directive **`RouterLinkActive`** à chaque balise d'ancrage pour ajouter ou supprimer des classes CSS
+  à l'élément lorsque le *RouterLink* associé devient actif. La directive peut être ajoutée directement à l'élément 
+  ou à son élément parent.
+
   We see such bindings in the following `AppComponent` template:
+
+  Nous voyons de tels liens dans le modèle `AppComponent` ci-dessous&nbsp;:
+
 +makeExample('router/ts/app/app.component.1.ts', 'template')(format=".")
 .l-sub-section
  :marked
@@ -158,91 +314,138 @@ code-example(format="", language="html").
    We bind each `RouterLink` to a string containing the path of a route.
    '/crisis-center' and '/heroes' are the paths of the `Routes` we configured above.
 
+   Nous ajoutons deux balises d'ancrage avec des directives `RouterLink` et `RouterLinkActive`.
+   Nous lions chaque `RouterLink` à une chaîne contenant le chemin de la route.
+   '/crisis-center' et '/heroes' sont les chemins des `Routes` que nous avons configurés plus haut.
+
    We'll learn to write link expressions &mdash; and why they are arrays &mdash;
    [later](#link-parameters-array) in the chapter.
+
+   Nous apprendrons à écrire des liens sous forme d'expression &mdash; et pourquoi ce sont des tableaux &mdash; 
+   [plus loin](#link-parameters-array) dans ce chapitre.
 
    We define `active` as the CSS class we want toggled to each `RouterLink` when they become
    the current route using the `RouterLinkActive ` directive. We could add multiple classes to
    the `RouterLink` if we so desired.
+
+   Nous définissons `active` comme la classe CSS que nous voulons faire alterner sur chaque `RouterLink` lorsqu'ils
+   deviennent la route courante en utilisant la directive `RouterLinkActive`. Nous pourrions ajouter plusieurs classes
+   au `RouterLink` si nous le voulions.
+
 :marked
   ### Router State
+
+  ### État du Routeur
+
   After the end of each successful navigation lifecycle, the router builds a tree of `ActivatedRoute`s,
   which make up the current state of the router. We can access the current `RouterState` from anywhere in our
   application using the `Router` service and the `routerState` property.
+
+  Après la fin de chaque cycle de vie de navigation réussi, le routeur construit un arbre de `ActivatedRoute`s,
+  qui composent l'état actuel du routeur. Nous pouvons accéder au `RouterState` actuel depuis un endroit
+  quelconque de l'application en utilisant le service `Router` et sa propriété `routerState`. 
 
   The router state provides us with methods to traverse up and down the route tree from any activated route
   to get information we may need from parent, child and sibling routes. It also contains the URL *fragment*
   and *query parameters* which are **global** to all routes. We'll use the `RouterState` to access
   [Query Parameters](#query-parameters).
 
+  L'état du routeur nous fournit des méthodes pour parcourir de haut en bas l'arbre de routes depuis toute route activée 
+  pour obtenir des informations sur des routes parentes, filles ou soeurs. Il contient aussi le *fragment*
+  et les *paramètres de requête* de l'URL qui sont **communs** à toutes les routes. Nous utiliserons le `RouterState`
+  pour accéder aux [Paramètres de Requête](#query-parameters).
+
+
 :marked
   ### Let's summarize
+
+  ### Pour résumer
 
   The application is provided with a configured router.
   The component has a `RouterOutlet` where it can display views produced by the router.
   It has `RouterLink`s that users can click to navigate via the router.
 
+  Un routeur configuré est fourni à l'application.
+  Le composant a un `RouterOutlet` où il peut afficher les vues produites par le routeur.
+  Il a des `RouterLink`s que les utilisateurs peuvent cliquer pour naviguer via le routeur.
+
   Here are the key *Component Router* terms and their meanings:
+
+  Voici les termes clés du *Routeur de Composant* et leurs significations&nbsp;:  
+
 table
   tr
-    th Router Part
-    th Meaning
+    th Partie du Routeur
+    th Signification
   tr
     td <code>Router</code>
     td.
-      Displays the application component for the active URL.
-      Manages navigation from one component to the next.
+      Affiche le composant de l'application pour l'URL active.
+      Gère la navigation d'un composant au suivant.
   tr
     td <code>RouterConfig</code>
     td.
-      Contains an array of Routes, each mapping a URL path to a component.
+      Contient un tableau de Routes, chacune représentant un chemin d'URL vers un composant.
   tr
     td <code>Route</code>
     td.
-      Defines how the router should navigate to a component based on a URL pattern.
-      Most routes consist of a path and a component type.
+      Définit comment le routeur doit naviguer vers un composant selon un motif d'URL.
+      La plupart des routes consistent en un chemin et un type de composant.
   tr
     td <code>RouterOutlet</code>
     td.
-      The directive (<code>&lt;router-outlet></code>) that marks where the router should display a view.
+      La directive (<code>&lt;router-outlet></code>) qui indique l'endroit où le routeur doit afficher une vue.
   tr
     td <code>RouterLink</code>
     td.
-      The directive for binding a clickable HTML element to
-      a route. Clicking an anchor tag with a <code>routerLink</code> directive
-      that is bound to a <i>string</i> or a <i>Link Parameters Array</i> triggers a navigation.
+      La directive pour lier un élément HTML cliquable à une route.
+      Cliquer sur une balise d'ancrage contenant une directive  <code>routerLink</code>
+      liée à une <i>chaîne</i> ou un <i>Tableau de Paramètres de Lien</i> déclenche une navigation.
   tr
     td <code>RouterLinkActive</code>
-    td.
-      The directive for adding/removing classes from an HTML element when an associated
-      routerLink contained on or inside the element becomes active/inactive.
+    td.      
+      La directive pour ajouter/supprimer des classes d'un élément HTML lorsqu'un routerLink associé
+      contenu dans ou fils de cet élément devient actif/inactif.
   tr
     td <code>RouterState</code>
     td.
-      The current state of the router including a tree of the currently activated
-      routes in our application along with the URL query params, fragment
-      and convenience methods for traversing the route tree.
+      L'état actuel du routeur dont un arbre des routes actuellement activées
+      dans l'application accompagné des paramètres de requête, du fragment et de méthodes utiles 
+      pour traverser l'arbre des routes.
   tr
-    td <code><i>Link Parameters Array</i></code>
+    td <code><i>Tableau des Paramètres de Lien</i></code>
     td.
-      An array that the router interprets into a routing instruction.
-      We can bind a <code>RouterLink</code> to that array or pass the array as an argument to
-      the <code>Router.navigate</code> method.
+      Un tableau que le routeur interprète dans une instruction de routage.
+      Nous pouvons lier un <code>RouterLink</code> à ce tableau ou passer ce tableau comme argument
+      à la méthode <code>Router.navigate</code>.
   tr
-    td <code><i>Routing Component</i></code>
+    td <code><i>Composant de Routage</i></code>
     td.
-      An Angular component with a <code>RouterOutlet</code> that displays views based on router navigations.
+      Un composant Angular avec un <code>RouterOutlet</code> qui affiche des vues selon 
+      la nivigation du routeur.
+
 :marked
   We've barely touched the surface of the router and its capabilities.
+
+  Nous avons à peine effleuré la surface du routeur et de ses possibilités.
 
   The following detail sections describe a sample routing application
   as it evolves over a sequence of milestones.
   We strongly recommend taking the time to read and understand this story.
 
+  Les parties détaillées suivantes décrivent un exemple d'application de routage
+  en évoluant à travers une série d'étapes.
+  Nous recommandons fortement de prendre le temps de lire et de comprendre cette histoire.
+
 .l-main-section
 :marked
   ## The Sample Application
+
+  ## L'Application Exemple
+
   We have an application in mind as we move from milestone to milestone.
+
+  Nous avons une application à l'esprit que nous contruisons étape par étape.
 
 .l-sub-section
   :marked
@@ -250,38 +453,77 @@ table
     We discuss code and design decisions pertinent to routing and application design.
     We gloss over everything in between.
 
+    Bien que nous fassions des progrès pas-à-pas vers l'application exemple finale, ce chapitre n'est pas un tutoriel.
+    Nous discutons de décisions de code et de design pertinentes au routage et au design d'application.
+
     The full source is available in the [live example](/resources/live-examples/router/ts/plnkr.html).
+
+    Le code source complet est disponible dans l'[exemple live](/resources/live-examples/router/ts/plnkr.html).
+
 :marked
   Our client is the Hero Employment Agency.
   Heroes need work and The Agency finds Crises for them to solve.
 
+  Notre client est l'Agence de Recrutement de Héros.
+  Les Héros cherchent du travail et l'Agence leur trouve des Crises à résoudre. 
+
   The application has two main feature areas:
+
+  L'application a deux zones de fonctionnalités principales.
+
   1. A *Crisis Center* where we maintain the list of crises for assignment to heroes.
+
+  1. Un *Centre de Crise* où nous maintenons la liste des crises à assigner à des héros.
+
   1. A *Heroes* area where we maintain the list of heroes employed by The Agency.
+
+  1. Une zone *Héros* où nous maintenons une liste de héros employés par l'Agence. 
 
   Run the [live example](/resources/live-examples/router/ts/plnkr.html).
   It opens in the *Crisis Center*.  We'll come back to that.
 
+  Exécutez l'[exemple live](/resources/live-examples/router/ts/plnkr.html).
+  Il ouvre sur le *Centre de Crise*. Nous reviendrons là-dessus.
+
   Click the *Heroes* link. We're presented with a list of Heroes.
+
+  Cliquez le lien *Héros*. Nous nous voyons présenté une liste de Héros.
+
 figure.image-display
   img(src='/resources/images/devguide/router/hero-list.png' alt="Hero List" width="250")
 :marked
   We select one and the application takes us to a hero editing screen.
+
+  Nous en sélectionnons un et l'application nous emmène à un éran d'édition d'un héros.
+  
 figure.image-display
   img(src='/resources/images/devguide/router/hero-detail.png' alt="Crisis Center Detail" width="250")
 :marked
   Our changes take effect immediately. We click the "Back" button and the
   app returns us to the Heroes list.
 
+  Nos changements sont pris en compte immédiatement. Nous cliquons le bouton «&nbsp;Retour&nbsp;» et l'application
+  nous renvoie à la liste des Héros. 
+
   We could have clicked the browser's back button instead.
   That would have returned us to the Heroes List as well.
   Angular app navigation updates the browser history as normal web navigation does.
 
+  Nous aurions aussi pu cliquer sur le bouton de retour du navigateur. 
+  Cela nous aurait aussi renvoyé à la Liste des Héros.
+  La navigation dans l'application Angular met à jour l'historique du navigateur comme pour une navigation web classique.
+  
   Now click the *Crisis Center* link. We go to the *Crisis Center* and its list of ongoing crises.
+
+  Cliquez maintenant le lien *Centre de Crise*. Cela nous emmène au *Centre de Crise* et sa liste de crises en attente.
+
 figure.image-display
   img(src='/resources/images/devguide/router/crisis-center-list.png' alt="Crisis Center List" )
 :marked
   We select one and the application takes us to a crisis editing screen.
+
+  Nous en sélectionnons une et l'application nous emmène à un écran d'édition de crise.
+
 figure.image-display
   img(src='/resources/images/devguide/router/crisis-center-detail.png' alt="Crisis Center Detail")
 :marked
@@ -289,41 +531,84 @@ figure.image-display
    In *Crisis Detail* our changes are temporary until we either save or discard them by pressing the "Save" or "Cancel" buttons.
    Both buttons navigate back to the *Crisis Center* and its list of crises.
 
+   Il y a une petite différence avec la page de *Détail d'un Héros*. Le *Détail d'un Héros* enregistre les changements
+   lors de la saisie. Dans le *Détail d'une Crise*, les changements sont temporaires jusqu'à ce qu'ils soient enregistrés ou annulés 
+   avec les boutons «&nbsp;Enregistrer&nbsp;» ou «&nbsp;Annuler&nbsp;».
+   Les deux boutons ont pour effet de retourner au *Centre de Crise* et à sa liste de crises.
+
    Suppose we click a crisis, make a change, but ***do not click either button***.
    Maybe we click the browser back button instead. Maybe we click the "Heroes" link.
 
+   Nous pourrions cliquer sur une crise, faire un changement, mais ***ne cliquer sur aucun de ces deux boutons***.
+   Par exemple cliquer sur le bouton retour du navigateur. Ou cliquer sur le lien «&nbsp;Héros&nbsp;».
+
    Do either. Up pops a dialog box.
+
+   Essayez. Il apparaît une boîte de dialogue.
+
 figure.image-display
   img(src='/resources/images/devguide/router/confirm-dialog.png' alt="Confirm Dialog" width="300")
 :marked
   We can say "OK" and lose our changes or click "Cancel" and continue editing.
 
+  Nous pouvons répondre «&nbsp;OK&nbsp;» et perdre les modifications ou cliquer sur «&nbsp;Annuler&nbsp;» et continuer l'édition.
+
   The router supports a `CanDeactivate` guard that gives us a chance to clean-up
   or ask the user's permission before navigating away from the current view.
 
+  Le routeur met à disposition un garde `CanDeactivate` qui nous donne une chance de faire du nettoyage 
+  ou de demander la permission à l'utilisateur avant de naviguer  vers une autre vue.
+
   Here we see an entire user session that touches all of these features.
+
+  Nous voyons ici une session utilisateur qui reprend toutes ces possibilités.
+
 <a id="full-app-demo"></a>
 figure.image-display
   img(src='/resources/images/devguide/router/router-anim.gif' alt="App in action" )
 :marked
   Here's a diagram of all application routing options:
+
+  Voici un diagramme de toutes les options de routage de l'application&nbsp;:
+
 figure.image-display
   img(src='/resources/images/devguide/router/complete-nav.png' alt="Navigation diagram" )
 :marked
   This app illustrates the router features we'll cover in this chapter
 
+  Cette application illustre les fonctionnalités du routeur que nous allons traiter dans ce chapitre
+
   * navigating to a component (*Heroes* link to "Heroes List")
+
+  * naviguer vers un composant (lien *Héros* vers *Liste des Héros*)
+
   * including a route parameter (passing the Hero `id` while routing to the "Hero Detail")
+
+  * inclure un paramètre de route (passer le `id` du Héros lors du routage vers le «&nbsp;Détail d'un Héros&nbsp;»)
+
   * child routes (the *Crisis Center* has its own routes)
+
+  * routes filles (le *Centre de Crise* a ses propres routes)
+
   * the `CanActivate` guard (checking route access)
+
+  * le garde `CanActivate` (vérifie l'accès à une route)
+
   * the `CanDeactivate` guard (ask permission to discard unsaved changes)
+
+  * le garde `CanDeactivate` (demande la permission d'annuler des changements non sauvegardés)
 
 <a id="getting-started"></a>
 .l-main-section
 :marked
   ## Milestone #1: Getting Started with the Router
 
+  ## Étape 1 : Premiers pas avec le Routeur
+
   Let's begin with a simple version of the app that navigates between two empty views.
+
+  Commençons avec une version simple de l'application qui navigue entre deux vues vides.
+
 figure.image-display
   img(src='/resources/images/devguide/router/router-1-anim.gif' alt="App in action" )
 
@@ -331,22 +616,43 @@ figure.image-display
 :marked
   <a id="base-href"></a>
   ### Set the *&lt;base href>*
+
+  ### Définir le *&lt;base href>*
+
   The Component Router uses the browser's
   [history.pushState](https://developer.mozilla.org/en-US/docs/Web/API/History_API#Adding_and_modifying_history_entries)
   for navigation. Thanks to `pushState`, we can make our in-app URL paths look the way we want them to
   look, e.g. `localhost:3000/crisis-center`. Our in-app URLs can be indistinguishable from server URLs.
 
+  Le Routeur de Composants utilise la propriété 
+  [history.pushState](https://developer.mozilla.org/en-US/docs/Web/API/History_API#Adding_and_modifying_history_entries)
+  du navigateur pour naviguer. Grâce à `pushState`, nous pouvons donner aux chemins d'URLs de notre application
+  l'apparence que l'on veut, par exemple `localhost:3000/crisis-center`. Nos URLs de l'application peuvent être 
+  indiscernables d'URLs de serveurs.
+
   Modern HTML 5 browsers were the first to support `pushState` which is why many people refer to these URLs as
   "HTML 5 style" URLs.
+
+  Les navigateurs HTML 5 modernes ont été les premiers à prendre en compte `pushState` et c'est la raison pour laquelle 
+  tant de personnes appellent ces URLs des URLs «&nbsp;de style HTML 5&nbsp;». 
 
   We must **add a [&lt;base href> element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base) tag**
   to the `index.html` to make `pushState` routing work.
   The browser also needs the base `href` value to prefix *relative* URLs when downloading and linking to
   css files, scripts, and images.
 
+  Nous devons **ajouter une balise [d'élément &lt;base href>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base)**
+  au fichier `index.html` pour que `pushState` fonctionne.
+  Le navigateur a aussi besoin de la valeur `href` de base pour préfixer les URLs *relatives* lorsqu'il télécharge et pointe vers 
+  des fichiers css, scripts et images.
+
   Add the base element just after the  `<head>` tag.
   If the `app` folder is the application root, as it is for our application,
   set the `href` value in **`index.html`** *exactly* as shown here.
+
+  Ajoutez l'élément base juste après la balise `<head>`.
+  Si le répertoire `app` est la racine de l'application, comme c'est le cas pour notre application, 
+  configurez la valeur de `href` dans **`index.html`** *exactement* comme montré ici.
 
 +makeExample('router/ts/index.1.html','base-href', 'index.html (base href)')(format=".")
 .l-sub-section
@@ -355,108 +661,211 @@ figure.image-display
     Learn why "HTML 5" style is preferred, how to adjust its behavior, and how to switch to the
     older hash (#) style if necessary in the [Browser URL Styles](#browser-url-styles) appendix below.
 
+    La navigation de style HTML 5 est le comportement par défaut du Routeur de Composants.
+    Apprenez pourquoi le style «&nbsp;HTML 5&nbsp;» est conseillé, comment ajuster son comportement et comment
+    passer à l'ancien style hash (#) si nécessaire dans l'annexe 
+    [Styles d'URL du Navigateur](#browser-url-styles) ci-dessous.
 :marked
 .l-sub-section
   :marked
     #### Live example note
+
+    #### Note sur l'application live
+
     We have to get tricky when we run the live example because the host service sets
     the application base address dynamically. That's why we replace the `<base href...>` with a
     script that writes a `<base>` tag on the fly to match.
+
+    Nous devons faire attention lorsque nous exécutons l'exemple live car le service hôte configure
+    l'adresse de base de l'application dynamiquement. C'est pourquoi nous remplaçons le `<base href...>`
+    par un script qui écrit la balise `<base>` à la volée pour que ça fonctionne.
+
   code-example(format="")
     &lt;script>document.write('&lt;base href="' + document.location + '" />');&lt;/script>
   :marked
     We should only need this trick for the live example, not production code.
 
+    Vous aurez besoin de cet astuce uniquement pour l'exemple live, pas pour du code en production. 
 :marked
   ### Configure the routes for the Router
+
+  ### Configurer les routes pour le Routeur
+
   We teach our router how to navigate by configuring it with routes.
   We recommend creating a separate `app.routes.ts` file dedicated to this purpose.
+
+  Nous expliquons à notre routeur comment naviguer en le configurant avec des routes.
+  Nous recommandons de créer un fichier `app.routes.ts` séparé dédié à cet usage.
+
 .l-sub-section
   :marked
     Defining configuration in a separate file paves the way for a future
     in which we load routing configuration immediately but *delay
     loading the components themselves* until the user needs them.
 
+    Définir la configuration dans un fichier séparé nous prépare à un futur où
+    nous lisons la configuration de routage immédiatement mais *attendons pour lire 
+    les composants eux-mêmes* que l'utilisateur en ait besoin.
+
     Such *asynchronous routing* can make our application launch more quickly.
     We'll cover asynchronous routing in a future chapter update.
+
+    Un tel *routage asynchrone* peut faire démarrer notre application plus rapidement.
+    Nous verrons le routage asynchrone dans un chapitre ultérieur.
 :marked
   Here is our first configuration.
+
+  Voici notre première configuration.
 
 +makeExample('router/ts/app/app.routes.2.ts','', 'app/app.routes.ts')(format=".")
 
 h4#import Import from the Component Router library
+
+h4#import Importer depuis la bibliothèque du Routeur de Composants
 :marked
   We begin by importing some symbols from the router library.
+
+  Nous commençons par importer quelques symboles depuis la bibliothèque du routeur. 
 
   The Component Router is in its own `@angular/router` package.
   It's not part of the Angular 2 core.
   The router is an optional service because not all applications need routing and,
   depending on your requirements, you may need a different routing library.
 
+  Le Routeur de Composants est dans son propre paquet `@angular/router`.
+  Il ne fait pas partie du coeur d'Angular 2.
+  Le routeur est un service optionnel car toutes les applications ne nécessitent pas de routage et,
+  selon vos besoins, vous pouvez avoir à utiliser une bibliothèque de routage différente.  
+
 a#route-config
 h4#define-routes Define routes
+
+h4#define-routes Definir des routes
+
 :marked
   A router must be configured with a list of route definitions.
 
+  Un routeur doit être configuré avec une liste de définitions de routes.
+
   Our first configuration defines an array of two routes with simple paths leading to the
   `CrisisListComponent` and `HeroListComponent` components.
+
+  Notre première configuration définit un tableau de deux routes avec des chemins simples menant aux
+  composants `CrisisListComponent` et `HeroListComponent`.
 
   Each definition translates to a [Route](../api/router/index/Route-interface.html) object which has a
   `path`, the URL path segment for this route, and a
   `component`, the component associated with this route.
 
+  Chaque définition est traduite en un objet [Route](../api/router/index/Route-interface.html) qui a 
+  un `path`, le segment du chemin d'URL pour cette route et un `component`, le composant associé avec cette route.
+
   The router draws upon its registry of such route definitions when the browser URL changes
   or when our code tells the router to navigate along a route path.
 
+  Le routeur utilise son registre de telles définitions de routes lorsque l'URL du navigateur change
+  ou lorsque notre code demande au routeur de naviguer vers un chemin de route.
+
   In plain English, we might say of the first route:
+
+  En français, nous dirions de la première route&nbsp;:
+
   * *When the browser's location URL changes to match the path segment `/crisis-center`, create or retrieve an instance of
   the `CrisisListComponent` and display its view.*
+
+  * *Lorsque l'URL de location du navigateur change pour correspondre au segment `/crisis-center`, crée ou récupère une
+  instance de `CrisisListComponent` et affiche sa vue.*
 
   * *When the application requests navigation to the path `/crisis-center`, create or retrieve an instance of
   the `CrisisListComponent`, display its view, and update the browser's address location and history with the URL
   for that path.*
 
+  * *Lorsque l'application demande de naviguer vers le chemin `/crisis-center`, crée ou récupère une instance de
+  `CrisisListComponent`, affiche sa vue et met à jour l'adresse de location et l'historique du navigateur avec l'URL 
+  pour ce chemin.*
+
 h4#provideRouter Call <i>provideRouter</i>
+
+h4#provideRouter Appeler <i>provideRouter</i>
+
 :marked
   We pass the route configuration to the `provideRouter` function which returns an array containing the configured
   `Router` service provider ... and some other, unseen providers that the routing library requires.
 
+  Nous passons la configuration de route à la fonction `provideRouter` qui retourne un tableau contenant le fournisseur
+  de service du `Routeur` configuré.
+
 :marked
   We add the `provideRouter` array to an `appRouterProviders` array and export it.
+
+  Nous ajoutons le tableau `provideRouter` à un tableau `appRouterProviders` et l'exportons.
 
   We could add *additional* service providers to `appRouterProviders` &mdash;
   providers that are specific to our routing configuration.
   We don't have any yet. We will have some later in this chapter.
 
+  Nous pourrions ajouter des fournisseurs de services *supplémentaires* à `appRouterProviders` &mdash;
+  des fournisseurs spécifiques à notre configuration de routage.
+  Nous n'en avons pas pour l'instant. Nous en aurons quelques-uns plus loin dans ce chapitre.
+
 .l-sub-section
   :marked
     Learn about *providers* in the [Dependency Injection](dependency-injection.html#!#injector-providers) chapter.
 
+    Apprenez-en plus à propos des *fournisseurs* dans le chapitre sur l'[Injection de Dépendance](dependency-injection.html#!#injector-providers).
+
+
 h4#register-providers Register routing in bootstrap
+
+h4#register-providers Déclarer le routage à l'amorçage
+
 :marked
   Our app launches from the `main.ts` file in the `/app` folder.
   It's short and not much different from the default `main.ts`.
 
+  Notre application démarre depuis le fichier `main.ts` dans le répertoire `/app`.
+  Son contenu est court et peu différent du fichier `main.ts` par défaut.
+
   The important difference: we import the `appRouterProviders` array
   and pass it as the second parameter of the `bootstrap` function.
+
+  La différence importante&nbsp;: nous importons le tableau `appRouterProviders`
+  et le passons en second paramètre de la fonction `bootstrap`.
+
 +makeExample('router/ts/app/main.1.ts','all', 'main.ts')(format=".")
 :marked
   Providing the router providers at bootstrap makes the Router available everywhere in our application.
+
+  Fournir les fournisseurs du routeur au démarrage rend le Routeur disponible partout dans l'application.
+
 .alert.is-important
   :marked
     We must register router providers in `bootstrap`.
     We cannot wait to do it in `AppComponent`.
 
+    Nous devons déclarer les fournisseurs du routeur dans `bootstrap`.
+    Nous ne pouvons pas attendre de le faire dans `AppComponent`.
+
 h3#shell The <i>AppComponent</i> shell
+
+h3#shell Le shell <i>AppComponent</i>
+
 :marked
   The root `AppComponent` is the application shell. It has a title at the top, a navigation bar with two links,
   and a *Router Outlet* at the bottom where the router swaps views on and off the page. Here's what we mean:
+
+  Le `AppComponent` racine est le shell de l'application. Il est composé d'un titre en haut, d'une barre de navigation avec deux liens
+  et d'un *Point de Routeur* en bas où le routeur place et enlève des vues. Voici une illustration&nbsp;:
+
 figure.image-display
   img(src='/resources/images/devguide/router/shell-and-outlet.png' alt="Shell" width="300" )
 
 a#shell-template
 :marked
   The corresponding component template looks like this:
+
+  Le modèle du coposant correspondant ressemble à ceci&nbsp;:
+
 +makeExample('router/ts/app/app.component.1.ts','template')(format=".")
 
 h3#router-outlet <i>RouterOutlet</i>
@@ -464,68 +873,136 @@ h3#router-outlet <i>RouterOutlet</i>
   `RouterOutlet` is a component from the router library.
   The router displays views within the bounds of the `<router-outlet>` tags.
 
+  `RouterOutlet` est un composant de la bibliothèque du routeur.
+  Le routeur affiche des vues dans les limites des balises `<router-outlet>`.
+
 .l-sub-section
   :marked
     A template may hold exactly one ***unnamed*** `<router-outlet>`.
     The router supports multiple *named* outlets, a feature we'll cover in future.
 
+    Un modèle peut contenir exactement un `<router-outlet>` ***anonyme***.
+    Le routeur peut gérer plusieurs points *nommés*, une fonctionnalité que nous verrons plus tard.
+
 h3#router-link <i>RouterLink</i> binding
+
+h3#router-link Liaison <i>RouterLink</i>
+
 :marked
   Above the outlet, within the anchor tags, we see [Property Bindings](template-syntax.html#property-binding) to
   the `RouterLink` directive that look like `routerLink="..."`. We imported `RouterLink` from the router library.
 
+  Au dessus du point de routage, dans les balises d'ancrage, nous voyons des 
+  [Liaisons de Propriétés](template-syntax.html#property-binding) sur la directive `RouterLink` qui ressemblent à
+  `routerLink="..."`. Nous avons importé `RouterLink` de la bibliothèque du routeur.
+
   The links in this example each have a string path, the path of a route that
   we configured earlier. We don't have route parameters yet.
+
+  Les liens dans cet exemple ont chacun un chemin sous forme de chaîne, le chemin d'une route 
+  que nous avons configurés plus tôt. Nous n'avons pas encore de paramètres de route.
 
   We can also add more contextual information to our `RouterLink` by providing query string parameters
   or a URL fragment for jumping to different areas on our page. Query string parameters
   are provided through the `[queryParams]` binding which takes an object (e.g. `{ name: 'value' }`), while the URL fragment
   takes a single value bound to the `[fragment]` input binding.
+
+  Nous pouvons aussi ajouter plus d'information contextuelle à notre `RouterLink` en indiquant des paramètres 
+  de la chaîne de requête ou un fragment d'URL pour sauter vers différentes zones de notre page. Les paramètres de la chaîne de requête sont 
+  fournis via la liaison `[queryParams]` qui prend un objet (par exemple `{ name: 'value' }`), alors que le fragment d'URL
+  prend une seule valeur liée à l'entrée `[fragment]`.
 .l-sub-section
   :marked
     Learn about the how we can also use the **link parameters array** in the [appendix below](#link-parameters-array).
 
+    Aprrenez comment nous pouvons aussi utiliser les **tableaux de paramètres de lien** dans [l'annexe ci-dessous](#link-parameters-array).
+
 a#router-link-active
 h3#router-link <i>RouterLinkActive</i> binding
+
+h3#router-link Liaison <i>RouterLinkActive</i>
+
 :marked
   On each anchor tag, we also see [Property Bindings](template-syntax.html#property-binding) to
   the `RouterLinkActive` directive that look like `routerLinkActive="..."`.
 
+  Dans chaque balise d'ancrage, nous voyons aussi des [Liaisons de Propriétés](template-syntax.html#property-binding)
+  sur la directive `RouterLinkActive` qui ressemblent à `routerLinkActive="..."`.
+
   The template expression to the right of the equals (=) contains our space-delimited string of CSS classes.
   We can also bind to the `RouterLinkActive` directive using an array of classes
   such as `[routerLinkActive]="['...']"`.
+
+  L'expression de modèle à la droite du signe égal (=) contient notre chaîne de classes CSS séparées par des espaces.
+  Nous pouvons aussi lier sur la directive `RouterLinkActive` en utilisant un tableau de classes de cette manière&nbsp;:
+  `[routerLinkActive]="['...']"`.
 
   The `RouterLinkActive` directive toggles css classes for active `RouterLink`s based on the current `RouterState`.
   This cascades down through each level in our route tree, so parent and child router links can be active at the same time.
   To override this behavior, we can bind to the `[routerLinkActiveOptions]` input binding with the `{ exact: true }` expression.
   By using `{ exact: true }`, a given `RouterLink` will only be active if its URL is an exact match to the current URL.
 
+  La directive `RouterLinkActive` alterne les classes css pour les `RouterLink`s actifs selon le `RouterState` actuel.
+  Ceci se fait en cascade à travers chaque niveau de notre arbre de route, des liens de routeur parent et enfant pouvant être actifs 
+  au même moment. Pour remplacer ce comportement, nous pouvons lier à l'entrée `[routerLinkActiveOptions]` l'expression `{ exact: true }`.
+  En utilisant `{ exact: true }`, un `RouterLink` donné sera actif seulement si son URL correspond exactement à l'URL actuelle.
+
 h3#router-directives <i>ROUTER_DIRECTIVES</i>
 :marked
   `RouterLink`, `RouterLinkActive` and `RouterOutlet` are directives in the `ROUTER_DIRECTIVES` collection.
   Remember to add them to the `directives` array of the `@Component` metadata.
+
+  `RouterLink`, `RouterLinkActive` et `RouterOutlet` sont des directives dans la collection `ROUTER_DIRECTIVES`.
+  Pensez à les rajouter au tableau de `directives` des méta-données du `@Component`.
+
 +makeExample('router/ts/app/app.component.1.ts','directives')(format=".")
 :marked
   The current state of `app.component.ts` looks like this:
+
+  L'état actuel de `app.component.ts` ressemble à ceci&nbsp;:
+
 +makeExample('router/ts/app/app.component.1.ts','', 'app/app.component.ts')(format=".")
 
 :marked
   ### "Getting Started" wrap-up
 
+  ### Résumé des «&nbsp;Premiers pas&nbsp;»
+
   We've got a very basic, navigating app, one that can switch between two views
   when the user clicks a link.
 
+  Nous avons obtenu une application de navigation, très simple, qui peut alterner entre deux vues
+  lorsque l'utilisateur clique sur un lien.
+
   We've learned how to
+
+  Nous avons appris comment
+
   * load the router library
+  * charger la bibliothèque du routeur
+
   * add a nav bar to the shell template with anchor tags, `routerLink`  and `routerLinkActive` directives
+  * ajouter une barre de navigation au modèle du shell avec des balises d'ancrage et des directives `routerLink` et `routerLinkActive`
+
   * added a `router-outlet` to the shell template where views will be displayed
+  * ajouter un `router-outlet` au modèle du shell où les vues seront affichées
+
   * configure the router with `provideRouter`
+  * configurer le routeur avec `provideRouter`
+
   * set the router to compose "HTML 5" browser URLs.
+  * configurer le routeur pour créer des URLs de navigateur de style «&nbsp;HTML 5&nbsp;»
 
   The rest of the starter app is mundane, with little interest from a router perspective.
   Here are the details for readers inclined to build the sample through to this milestone.
 
+  Le reste de l'application de démarrage est banal, avec peu d'intérêt d'un point de vue du routeur.
+  Voici les détails pour les lecteurs enclins à construire l'exemple jusqu'à cette étape.
+
   Our starter app's structure looks like this:
+
+  La structure de notre application de démarrage ressemble à ceci&nbsp;:
+
 .filetree
   .file router-sample
   .children
@@ -545,6 +1022,9 @@ h3#router-directives <i>ROUTER_DIRECTIVES</i>
     .file typings.json
 :marked
   Here are the files discussed in this milestone
+
+  Voici les fichiers examinés durant cette étape
+
 +makeTabs(
   `router/ts/app/app.component.1.ts,
   router/ts/app/app.routes.2.ts,
@@ -561,47 +1041,91 @@ h3#router-directives <i>ROUTER_DIRECTIVES</i>
   index.html`)
 
 h2#heroes-feature Milestone #2: The Heroes Feature
+
+h2#heroes-feature Étape 2 : La Fonctionnalité Héros
+
 .l-main-section
 :marked
   We've seen how to navigate using the `RouterLink` directive.
 
+  Nous avons vu comment naviguer en utilisant la directive `RouterLink`. 
+
   Now we'll learn some new tricks such as how to
+
+  Nous allons maintenant apprendre quelques nouvelles astuces, parmi lesquelles comment
+
   * organize our app into *feature areas*
+  * organiser notre application en *zones de fonctionnalités*
+
   * navigate imperatively from one component to another
+  * naviguer impérativement d'un composant à un autre
+
   * pass information in route parameters
+  * passer des informations dans les paramètres de route
 
   To demonstrate, we'll build out the *Heroes* feature.
 
+  Pour démontrer cela, nous allons construire la fonctionnalité *Héros*.
+
   ### The Heroes "feature area"
+
+  ### La «&nbsp;zone de fonctionnalité&nbsp;» Héros
 
   A typical application has multiple *feature areas*, each an island of functionality
   with its own workflow(s), dedicated to a particular business purpose.
+
+  Une application typique a plusieurs *zones de fonctionnalités*, chacune étant un îlot 
+  de fonctionnalité avec son propre flux de travail, dédié à une fin métier particulière.
 
   We could continue to add files to the `app/` folder.
   That's unrealistic and ultimately not maintainable.
   We think it's better to put each feature area in its own folder.
 
+  Nous pourrions continuer à ajouter des fichiers au répertoire `app/`.
+  C'est irréaliste et en fin de compte non maintenable.
+  Nous pensons qu'il est préférable de placer chaque zone de fonctionnalité dans son propre répertoire.
+
   Our first step is to **create a separate `app/heroes/` folder**
   and add *Hero Management* feature files there.
+
+  Notre première étape est de **créer un répertoire séparé `app/heroes/`**
+  et ajouter les fichiers de la fonctionnalité *Gestion des Héros* dans celui-ci.
 
   We won't be creative about it. Our example is pretty much a
   copy of the code and capabilities in the "[Tutorial: Tour of Heroes](../tutorial/index.html)".
 
+  Nous ne serons pas créatifs à ce sujet. Notre exemple est pratiquement une copie 
+  du code et des possibilités du «&nbsp;[Tutoriel&nbsp;: Guide des Héros](../tutorial/index.html)&nbsp;».
+
   Here's how the user will experience this version of the app
+
+  Voici comment l'utilisateur expérimentera cette version de l'application
+
 figure.image-display
   img(src='/resources/images/devguide/router/router-2-anim.gif' alt="App in action" )
 :marked
   ### Add Heroes functionality
 
+  ### Ajouter la fonctionnalité Héros
+
   We delete the placeholder `hero-list.component.ts` that's in
   the `app/` folder.
+
+  Nous supprimons la vue fictive `hero-list.component.ts` qui se trouve dans le répertoire `app/`.
 
   We create a new `hero-list.component.ts` in the `app/heroes/`
   folder and copy over the contents of the final `heroes.component.ts` from the tutorial.
   We copy the `hero-detail.component.ts` and the `hero.service.ts` files
   into the `heroes/` folder.
 
+  Nous créons un nouveau `hero-list.component.ts` dans le répertoire `app/heroes/`
+  et copions le contenu du fichier `heroes.component.ts` final depuis le tutoriel.
+  Nous copions les fichiers `hero-detail.component.ts` et `hero.service.ts`
+  dans le répertoire `heroes/`.
+
   When we're done organizing, we have three *Hero Management* files:
+
+  Maintenant que nous sommes organisés, nous avons trois fichiers *Gestion de Héros*&nbsp;:
 
 .filetree
   .file app/heroes
@@ -614,120 +1138,244 @@ figure.image-display
   We provide the `HeroService` in the application root `AppComponent`
   so that it is available everywhere in the app.
 
+  Nous fournissons le `HeroService` dans la racine de l'application `AppComponent`
+  pour qu'il soit disponible partout dans l'application.
+
   Now it's time for some surgery to bring these files and the rest of the app
   into alignment with our application router.
 
+  C'est le moment de quelque chirurgie pour aligner ces fichiers et le reste de l'application
+  avec notre routeur de l'application.
+
   ### *Hero* feature routing requirements
+
+  ### Exigences pour le routage de la fonctionnalité *Héros*
 
   The new Heroes feature has two interacting components, the list and the detail.
   The list view is self-sufficient; we navigate to it, it gets a list of heroes and displays them.
   It doesn't need any outside information.
 
+  La nouvelle fonctionnalité Héros a deux composant interactifs, la liste et le détail.
+  La vue liste est auto-suffisante&nbsp;: nous naviguons vers elle, elle récupère une liste de héros
+  et les affiche.
+  Elle n'a besoin d'aucune information extérieure.
+
   The detail view is different. It displays a particular hero. It can't know which hero on its own.
   That information must come from outside.
+
+  La vue détail est différente. Elle affiche un héros particulier. Elle ne peut pas savoir d'elle-même
+  quel héros. L'information doit venir de l'extérieur.
 
   In our example, when the user selects a hero from the list, we navigate to the detail view to show that hero.
   We'll tell the detail view which hero to display by including the selected hero's id in the route URL.
 
+  Dans notre exemple, lorsque l'utilisateur sélectionne un héros dans la liste, nous naviguons vers 
+  la vue détail pour afficher ce héros. Nous allons dire à la vue détail quel héros afficher
+  en incluant l'id du héros sélectionné dans l'URL de route.
+
   ### *Hero* feature route configuration
+
+  ### Configuration de la route de la fonctionnalité *Héros*
 
   We recommend giving each feature area its own route configuration file.
 
+  Nous recommandons de donner à chaque zone de fonctionnalité son propre fichier de configuration de route.
+
   Create a new `hero.routes.ts` in the `heroes` folder like this:
+
+  Créez un nouveau `hero.routes.ts` dans le répertoire `heroes` comme ceci&nbsp;:
+
 +makeExample('router/ts/app/heroes/heroes.routes.ts','', 'app/heroes/heroes.routes.ts')(format=".")
 :marked
   We use the same techniques we learned for `app.routes.ts`.
 
+  Nous utilisons la même technique apprise pour `app.routes.ts`.
+
   We import the two components from their new locations in the `app/heroes/` folder, define the two hero routes.
   and add them to an exported `HeroesRoutes` array.
 
+  Nous importons les deux composants de leur nouvelle location dans le répertoire `app/heroes/`, définissons 
+  les deux routes et les ajoutons à un tableau `HeroesRoutes` que nous exportons.
+
   ### Route definition with a parameter
+
+  ### Définition de route avec un paramètre
+
   The route to `HeroDetailComponent` has a twist.
+
+  La route vers `HeroDetailComponent` a quelque chose de particulier.
+
 +makeExample('router/ts/app/heroes/heroes.routes.ts','hero-detail-route')(format=".")
 :marked
   Notice the `:id` token in the path. That creates a slot in the path for a **Route Parameter**.
   In this case, we're expecting the router to insert the `id` of a hero into that slot.
 
+  Notez le token `:id` dans le chemin. Celui-ci crée un emplacement dans le chemin pour un **Paramètre de Route**.
+  Dans ce cas, nous prévoyons que le routeur insère le `id` du héros dans cet emplacement.
+
   If we tell the router to navigate to the detail component and display "Magneta", we expect hero `id` (15) to appear in the
   browser URL like this:
+
+  Si nous indiquons au routeur de naviguer vers le composant détail pour afficher «&nbsp;Magneta&nbsp;», nous prévoyons 
+  que l'`id` (15) du héros apparaisse dans l'URL du navigateur comme ceci&nbsp;:
+
 code-example(format="." language="bash").
   localhost:3000/hero/15
 :marked
   If a user enters that URL into the browser address bar, the router should recognize the
   pattern and go to the same "Magneta" detail view.
+
+  Si un utilisateur saisit cette URL dans la barre d'adresse du navigateur, le routeur doit en reconnaître 
+  le motif et aller à la même vue détail de «&nbsp;Magneta&nbsp;».
+
 .l-sub-section
   :marked
     #### Route parameter or query parameter?
+
+    ### Paramètre de route ou paramètre de requête&nbsp;?
+
     Embedding the route parameter token, `:id`, in the route definition path is a good choice for our scenario
     because the `id` is *required* by the `HeroDetailComponent` and because
     the value `15` in the path clearly distinguishes the route to "Magneta" from
     a route for some other hero.
 
+    Insérer le token de paramètre de route, `id`, dans le chemin de définition de route est un bon choix
+    pour notre scénario car le `id` est *obligatoire* pour le `HeroDetailComponent` et car la valeur `15`
+    dans le chemin distingue clairement la route vers «&nbsp;Magneta&nbsp;» d'une route vers un autre héros.
+
     A [query parameter](#query-parameter) might be a better choice if we were passing an *optional* value to `HeroDetailComponent`.
 
+    Un [paramètre de requête](#query-parameter) pourrait être un meilleur choix si nous passions une valeur
+    *optionnelle* à `HeroDetailComponent`.
+
 h3#merge-hero-routes Merge hero routes into application routes
+
+h3#merge-hero-routes Fusionner les routes Héros dans les routes de l'application
+
 :marked
   Our application doesn't know about our hero routes yet.
   We'll need to merge them into the application routes we defined in `app.routes.ts`.
 
+  Notre application ne connaît encore rien de nos routes de héros.
+  Nous avons besoin de les fusionner dans les routes de l'application que nous avons définies dans `app.routes.ts`.
+
   Update `app.routes.ts` as follows:
+
+  Mettez à jour `app.routes.ts` comme suit&nbsp;:
+
 +makeExample('router/ts/app/app.routes.3.ts', '', 'app/app.routes.ts (v.2)')(format=".")
 :marked
   We replace the `HeroListComponent` import with an `HeroesRoutes` import.
 
+  Nous remplaçons l'import de `HeroListComponent` avec un import de `HeroesRoutes`.
+
   We *flatten* the `HeroesRoutes` into the `routes` array with the ES6 *spread operator* (`...`).
+
+  Nous *aplatissons* le `HeroesRoutes` dans le tableau `routes` avec l'*opérateur spread* ES6 (`...`).
 
   As a result, the `app.routes.ts` no longer has specific knowledge of the hero feature, its components, or its route details.
   It won't change as we evolve the hero feature with more components and different routes.
   That's a key benefit of creating a separate route configuration for each feature area.
 
+  Résultat, le `app.routes.ts` n'a aucune connaissance spécifique de la fonctionnalité de héros, ses composants, 
+  ou les détails de ses routes.
+
 h3#navigate Navigate to hero detail imperatively
+
+h3#navigate Naviguer vers le détail d'un héros de manière impérative
+
 :marked
   *We won't navigate to the detail component by clicking a link*
   so we won't be adding a new `RouterLink` anchor tag to the shell.
 
+  *Nous n'allons pas naviguer vers le composant détail en cliquant un lien*
+  et n'allons donc pas ajouter une nouvelle balise d'ancrage avec `RouterLink` dans le shell.
+
   Instead, when the user *clicks* a hero in the list, we'll *command* the router
   to navigate to the hero detail view for the selected hero.
 
+  Plutôt, lorsque l'utilisateur *clique* sur un héros dans la liste, nous allons *commander* au routeur
+  de naviguer vers la vue détail pour le héros sélectionné. 
+
   We'll adjust the `HeroListComponent` to implement these tasks, beginning with its constructor
   which acquires the router service and the `HeroService` by dependency injection:
+
+  Nous allons ajuster le `HeroListComponent`pour implémenter ces opérations, en commençant par son constructeur
+  qui récupère le service de routeur et le `HeroService` par injection de dépendance.
+
 +makeExample('router/ts/app/heroes/hero-list.component.1.ts','ctor', 'app/heroes/hero-list.component.ts (Constructor)')(format=".")
 :marked
   We make a few changes to the template:
+
+  Nous faisons quelques changements au modèle&nbsp;:
+
 +makeExample('router/ts/app/heroes/hero-list.component.1.ts','template')(format=".")
 :marked
   The template defines an `*ngFor` repeater such as [we've seen before](displaying-data.html#ngFor).
   There's a `(click)` [EventBinding](template-syntax.html#event-binding) to the component's `onSelect` method
   which we implement as follows:
+
+  Le modèle définit un répétiteur `*ngFor` comme [nous l'avons vu précédemment](displaying-data.html#ngFor).
+  Il y a un [EventBinding](template-syntax.html#event-binding) `(click)` vers la méthode `onSelect` du composant
+  que nous implémentons comme suit&nbsp;:
+
 +makeExample('router/ts/app/heroes/hero-list.component.1.ts','select')(format=".")
 :marked
   It calls the router's **`navigate`** method with a **Link Parameters Array**. We can use this same syntax
   with a `RouterLink` if we want to use it in HTML rather than code.
 
+  Elle appelle la méthode **`navigate`** du routeur avec un **Tableau de paramètres de lien**. Nous pouvons 
+  utiliser cette même syntaxe avec un `RouterLink` si nous voulons l'utiliser dans le HTML plutôt que dans le code.
+
 h3#route-parameters Setting the route parameters in the list view
+
+h3#route-parameters Définir les paramètres de route dans la vue liste
 :marked
   We're navigating to the `HeroDetailComponent` where we expect to see the details of the selected hero.
   We'll need *two* pieces of information: the destination and the hero's `id`.
 
+  Nous naviguons vers le `HeroDetailComponent` où nous voulons voir les détails du héros sélectionné.
+  Nous allons avoir besoin de *deux* informations&nbsp;: la destination et le `id` du héros.
+
   Accordingly, the *link parameters array* has *two* items:  the **path** of the destination route and a **route parameter** that specifies the
   `id` of the selected hero.
+
+  En conséquence, le *tableau de paramètres de lien* a *deux* éléments&nbsp;: ls **chemin** de la route 
+  de destination et un **paramètre de route** `id` du héros sélectionné.
+
 +makeExample('router/ts/app/heroes/hero-list.component.1.ts','link-parameters-array')(format=".")
 :marked
   The router composes the appropriate two-part destination URL from this array:
+
+  Le routeur crée l'URL de destination en deux parties appropriée à partir de ce tableau&nbsp;:
+
 code-example(format="." language="bash").
   localhost:3000/hero/15
 h3#get-route-parameter Getting the route parameter in the details view
+
+h3#get-route-parameter Récupérer le paramètre de route dans la vue détails
+
 :marked
   How does the target `HeroDetailComponent` learn about that `id`?
   Certainly not by analyzing the URL!  That's the router's job.
 
+  Comment la cible `HeroDetailComponent` connaît-elle cet `id`&nbsp;?
+  Certainement pas en analysant cette URL&nbsp;! C'est le travail du routeur.
+
   The router extracts the route parameter (`id:15`) from the URL and supplies it to
   the `HeroDetailComponent` via the **ActivatedRoute** service.
+
+  Le routeur extrait le paramètre de route (`id:15`) de l'URL et le fournit au `HeroDetailComponent`
+  via le service **ActivatedRoute**.
 
 a#hero-detail-ctor
 :marked
   As usual, we write a constructor that asks Angular to inject services
   that the component requires and reference them as private variables.
+
+  Comme d'habitude, nous écrivons un constructeur qui demande à Angular d'injecter les services
+  dont le composant a besoin et les référençons comme variables privées.
+
 +makeExample('router/ts/app/heroes/hero-detail.component.ts','ctor', 'app/heroes/hero-detail.component.ts (Constructor)')(format=".")
 :marked
   Later, in the `ngOnInit` method,
@@ -735,15 +1383,28 @@ a#hero-detail-ctor
   Since our parameters are provided as an `Observable`, we _subscribe_ to them for the `id` parameter by name and
   tell the `HeroService` to fetch the hero with that `id`. We'll keep a reference to this `Subscription` so we can
   tidy things up later.
+
+  Plus tard, dans la méthode `ngOnInit`, nous utilisons le service `ActivatedRoute` pour récupérer
+  les paramètres pour notre route.
+  Les paramètres étant fournis sous forme d'`Observable`, nous nous _abonnons_ à eux pour le paramètre `id`
+  par nom et disons au `HeroService` de récupérer le héros avec cet `id`. 
+  Nous allons garder une référence à ce `Subscription` pour pouvoir tout ranger plus tard.
+
 +makeExample('router/ts/app/heroes/hero-detail.component.ts','ngOnInit')(format=".")
 .l-sub-section
   :marked
     Angular calls the `ngOnInit` method shortly after creating an instance of the `HeroDetailComponent`.
 
+    Angular appelle la méthode `ngOnInit` peu de temps après avoir créé une instance du `HeroDetailComponent`.
+
     We put the data access logic in the `ngOnInit` method rather than inside the constructor
     to improve the component's testability.
     We explore this point in greater detail in the [OnInit appendix](#onInit) below.
 
+
+    Nous plaçons la logique d'accès aux données dans la méthode `ngOnInit` plutôt que dans le constructeur
+    pour améliorer les tests du composant.
+    Nous explorerons ce point plus en détail dans l'[annexe OnInit](#onInit) ci-dessous.
 :marked
   Eventually, we'll navigate somewhere else.
   The router will remove this component from the DOM and destroy it.
@@ -751,7 +1412,16 @@ a#hero-detail-ctor
   Specifically, we **must unsubscribe** before Angular destroys the component.
   *Failure to do so could create a memory leak.*
 
+  Par la suite, nous allons naviguer vers un autre composant. 
+  Le routeur va supprimer ce composant du DOM et le détruire.
+  Nous devons nettoyer derrière nous avant que ça arrive.
+  En particulier, nous **devons nous désabonner** avant qu'Angular détruise le composant.
+  *Ne pas faire cela pourrait créer une fuite de mémoire.*
+
   We unsubscribe from our `Observable` in the `ngOnDestroy` method.
+
+  Nous nous désabonnons de notre `Observable` dans la méthode `ngOnDestroy`.
+
 +makeExample('router/ts/app/heroes/hero-detail.component.ts','ngOnDestroy')(format=".")
 
 .l-sub-section
@@ -759,28 +1429,55 @@ a#hero-detail-ctor
     Learn about the `ngOnInit` and `ngOnDestroy` methods in the
     [Lifecycle Hooks](lifecycle-hooks.html) chapter.
 
+    Apprenez-en plus sur les méthodes `ngOnInit` et `ngOnDestroy` dans le chapitre
+    [Hooks de Cycle de Vie](lifecycle-hooks.html).
+
 h4#reuse Observable <i>params</i> and component re-use
+
+h4#reuse Observable <i>params</i> et réutilisation du composant
 :marked
   In this example, we subscribe to the route params `Observable`.
   That implies that the route params can change during the lifetime of this component.
 
+  Dans cet exemple, nous nous abonnons à l'`Observable` des paramètres de route.
+  Ceci sous-entend que les paramètres de route peuvent changer durant la vie de ce composant.
+
   They might. By default, the router reuses a component instance when it re-navigates to the same component type
   without visiting a different component first. The parameters can change between each re-use.
+
+  Ils peuvent. Par défaut, le routeur réutilise une instance de composant lorsqu'il navigue de nouveau
+  vers un même type de composant sans visiter un composant différent avant. Les composants peuvent changer
+  entre chaque réutilisation.
 
   Suppose a parent component navigation bar had "forward" and "back" buttons
   that scrolled through the list of heroes.
   Each click navigated imperatively to the `HeroDetailComponent` with the next or previous `id`.
+
+  Supposez qu'une barre de navigation d'un composant parent ait des boutons «&nbsp;précédent&nbsp;» et «&nbsp;suivant&nbsp;»
+  pour naviguer dans la liste des héros.
+  Chaque clic naviguerait de manière impérative vers le `HeroDetailComponent` avec le `id` suivant ou précédent.
 
   We don't want the router to remove the current `HeroDetailComponent` instance from the
   DOM only to re-create it for the next `id`.
   That could be visibly jarring.
   Better to simply re-use the same component instance and update the parameter.
 
+  Nous ne voulons pas que le routeur supprime l'instance du `HeroDetailComponent` actuel du DOM
+  pour le recréer juste après avec l'`id` suivant.
+  Ceci pourrait être visiblement disgracieux.
+  Il est préférable de simplement réutiliser la même instance de composant et mettre à jour son paramètre.
+
   But `ngOnInit` is only called once per instantiation.
   We need a way to detect when the route parameters change from _within the same instance_.
   The observable `params` property handles that beautifully.
 
+  Mais `ngOnInit` est appelé une seule fois par instanciation.
+  Nous devons détecter lorsque les paramètres de route changent _depuis la même instance_.
+  La proprité observable `params` gère ceci admirablement.
+
+
 h4#snapshot <i>Snapshot</i>: the no-observable alternative
+h4#snapshot <i>Instantané</i>&nbsp;: l'alternative sans observable
 :marked
   This application won't reuse the `HeroDetailComponent`.
   We always return to the hero list to select another hero to view.
@@ -788,12 +1485,26 @@ h4#snapshot <i>Snapshot</i>: the no-observable alternative
   without visiting the list component in between.
   That means we get a new `HeroDetailComponent` instance every time.
 
+  Cette application ne va pas réutiliser le `HeroDetailComponent`.
+  Nous retournons toujours à la liste des héros pour sélectionner un autre héros à afficher.
+  Il n'y a pas moyen de naviguer d'un détail de héros à un autre détail de héros sans visiter
+  le composant liste entre deux.
+  Ceci implique que nous utilisons une nouvelle instance de `HeroDetailComponent` à chaque fois.
+
   Suppose we know for certain that `HeroDetailComponent` will *never, never, ever*
   be re-used. We'll always re-create the component each time we navigate to it.
+
+  Supposez que nous sommes certains que le `HeroDetailComponent` ne sera *jamais, vraiment jamais* 
+  réutilisé. Nous allons toujours recréer le composant chaque fois que nous allons naviguer vers celui-ci.
 
   The router offers a *Snapshot* alternative that gives us the initial value of the route parameters.
   We don't need to subscribe. We don't have to unsubscribe in `ngOnDestroy`.
   It's much simpler to write and read:
+
+  Le routeur offre une alternative *Instantanée* qui nous fournit la valeur initiale des paramètres de route.
+  Nous n'avons pas à nous abonner. Nous n'avons pas à nous désabonner dans `ngOnDestroy`.
+  Il est plus simple d'écrire et de lire&nbsp;:
+
 +makeExample('router/ts/app/heroes/hero-detail.component.2.ts','snapshot')(format=".")
 .l-sub-section
   :marked
@@ -802,26 +1513,54 @@ h4#snapshot <i>Snapshot</i>: the no-observable alternative
     to this component multiple times in a row.
     We are leaving the observable `params` strategy in place just in case.
 
+    **Notez bien&nbsp;:** Nous obtenons uniquement la valeur _initiale_ des paramètres avec cette technique.
+    Restez avec une approche par `params` observable s'il y a une moindre chance que nous puissions naviguer
+    vers ce composant plusieurs fois de suite.
+    Nous laissons en place la stratégie par `params` observable au cas où.
+
 h3#nav-to-list Navigating back to the list component
+h3#nav-to-list Retourner vers le composant liste
+
 :marked
   The `HeroDetailComponent` has a "Back" button wired to its `gotoHeroes` method that navigates imperatively
   back to the `HeroListComponent`.
 
+  Le `HeroDetailComponent` a un bouton «&nbsp;Précédent&nbsp;» relié à sa méthode `gotoHeroes` qui navigue 
+  de manière impérative vers le `HeroListComponent`.
+
   The router `navigate` method takes the same one-item *link parameters array*
   that we can bind to a `[routerLink]` directive.
   It holds the **path to the `HeroListComponent`**:
+
+  La méthode `navigate` du routeur prend le même *tableau de paramètres de lien* d'un élément
+  que nous pouvons relier à une directive `[routerLink]`.
+  Il contient le **chemin vers le `HeroListComponent`**&nbsp;:
+
 +makeExample('router/ts/app/heroes/hero-detail.component.1.ts','gotoHeroes')(format=".")
 :marked
   ### Heroes App Wrap-up
+  ### Résumé de l'Application Héros
 
   We've reached the second milestone in our router education.
 
+  Nous avons atteint la seconde étape dans notre apprentissage du routeur.
+
   We've learned how to
+
+  Nous avons appris comment
+
   * organize our app into *feature areas*
+  * organiser notre application en *zones de fonctionnalités*
+
   * navigate imperatively from one component to another
+  * naviguer de manière impérative d'un composant vers un autre
+
   * pass information along in route parameters and subscribe to them in our component
+  * passer des informations dans des paramètres de route et s'y abonner depuis notre composant 
 
   After these changes, the folder structure looks like this:
+
+  Après ces changements, la structure du dossier ressemble à ceci&nbsp;:
 .filetree
   .file router-sample
   .children
@@ -847,7 +1586,13 @@ h3#nav-to-list Navigating back to the list component
 :marked
   <a id="heroes-app-code"></a>
   ### The Heroes App code
+
+  ### Le code de l'Application Héros
+
   Here are the relevant files for this version of the sample application.
+
+  Voici les fichiers appropriés pour cette version de l'application exemple.
+  
 +makeTabs(
   `router/ts/app/app.component.1.ts,
    router/ts/app/app.routes.3.ts,
@@ -868,101 +1613,206 @@ h3#nav-to-list Navigating back to the list component
 .l-main-section
 :marked
   ## Milestone #3: The Crisis Center
+
+  ## Étape 3&nbsp;: Le Centre de Crise
+  
   The *Crisis Center* is a fake view at the moment. Time to make it useful.
+
+  Le *Centre de Crise* est une vue virtuelle pour le moment. Il est temps de la rendre utile.
 
   The new *Crisis Center* begins as a virtual copy of the *Heroes* feature.
   We create a new `app/crisis-center` folder, copy the Hero files,
   and change every mention of "hero" to "crisis".
+
+  Le nouveau *Centre de Crise* commence comme une copie virtuelle de la fonctionnalité *Héros*.
+  Nous créons un nouveau dossier `app/crisis-center`, y copiant les fichiers Héros, et changeons 
+  toute mention de «&nbsp;héros&nbsp;» en «&nbsp;crise&nbsp;».
 
   A `Crisis` has an `id` and `name`, just like a `Hero`
   The new `CrisisListComponent` displays lists of crises.
   When the user selects a crisis, the app navigates to the `CrisisDetailComponent`
   for display and editing of the crisis name.
 
+  Une `Crise` a un `id` et un `nom`, tout comme un `héros`.
+  Le nouveau `CrisisListComponent` affiche des listes de crises.
+  Lorsqu'un utilisateur sélectionne une crise, l'application navigue vers le composant `CrisisDetailComponent`
+  pour l'affichage et l'édition du nom de la crise.
+
   Voilà, instant feature module!
+
+  Voilà, un module de fonctionnalité instantané&nbsp;!
 
   There's no point to this exercise unless we can learn something.
   We do have new ideas and techniques in mind:
 
+  Il n'y a aucune raison à cet exercice à moins d'y apprendre quelque chose de nouveau.
+  Nous avons quelques idées et techniques en tête&nbsp;:
+
   * We'd like our route URLs to branch in to child route trees that reflect the component trees in our feature areas.
+
+  * Nous voudrions que nos URLs de route se ramifient en arbres de route fils qui reflètent l'arbre de composants 
+  de nos zones de fonctionnalités.
 
   * The application should navigate to the *Crisis Center* by default.
 
+  * L'application devrait naviguer vers le *Centre de Crise* par défaut.
+
   * The router should prevent navigation away from the detail view while there are pending changes.
+
+  * Le routeur devrait empêcher de naviguer en dehors de la vue détail tant que des changements sont en cours.
 
   * The user should be able to cancel unwanted changes.
 
+  * L'utilisateur devrait pouvoir annuler des changements non souhaités.
+
   * The router should block access to certain features until the user logs-in.
+
+  * Le routeur devrait bloquer l'accès à certaines fonctionnalités à moins que l'utilisateur soit connecté.
 
   * Our `CrisisService` is only needed within the *Crisis Center* feature area.
   We should limit access to it to that feature area.
+
+  * Notre `CrisisService` est uniquement nécessaire dans la zone de fonctionnalité *Centre de Crise*.
+  Nous voudrions y limiter l'accès à cette zone de fonctionnalité. 
 
   * Changes to a sub-module such as *Crisis Center* shouldn't provoke changes to the `AppComponent` or
   any other feature's component.
   We need to [*separate our concerns*](https://blog.8thlight.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html).
 
+  * Des changements à un sous-module comme le *Centre de Crise* ne devrait pas provoquer de changements au `AppComponent` ou
+  à d'autres composants de fonctionnalité.
+  Nous avons à [*séparer nos problèmes*](https://blog.8thlight.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html).
+
+
   We'll address all of these issues in the *Crisis Center*
   starting with the introduction of **child routes**
+
+  Nous allons répondre à toutes ces questions dans le *Centre de Crise*
+  en commençant par introduire les **routes filles**. 
 
 .l-sub-section
   :marked
     We'll leave *Heroes* in its less-than-perfect state to
     serve as a contrast with what we believe to be a superior *Crisis Center* design.
 
+    Nous allons laisser la zone de fonctionnalité *Héros* dans son état moins que parfait pour servir 
+    de comparaison avec ce que nous pensons être un *Crise de Centre* au design supérieur.
+
 :marked
   ### A Crisis Center with child routes
 
+  ### Un Centre de Crise avec des routes filles
+
   We'll organize the *Crisis Center* to conform to the following recommended pattern for Angular applications.
+
+  Nous allons organiser le *Centre de Crise* pour qu'il soit conforme au modèle recommandé suivant pour 
+  les applications Angular.
+
   * each feature area in its own folder
+
+  * chaque zone de fonctionnalité dans son propre dossier
+
   * each area with its own area root component
+
+  * chaque zone avec son propre composant de zone racine
+
   * each area root component with its own router-outlet and child routes
+
+  * chaque composant de zone racine avec son propre point de routage et ses propres routes filles
+
   * area routes rarely (if ever) cross
 
+  * les routes des zones se croisent rarement (voire jamais)
+
   If we had many feature areas, their component trees might look like this:
+
+  Si nous avions plusieurs zones de fonctionnalités, leurs arbres de composants ressembleraient à ceci&nbsp;:
 
 figure.image-display
   img(src='/resources/images/devguide/router/component-tree.png' alt="Component Tree" )
 
 h3#child-routing-component Child Routing Component
+
+h3#child-routing-component Composant de Route Fils
+
 :marked
   Add the following `crisis-center.component.ts` to the `crisis-center` folder:
+
+  Ajoutez le `crisis-center.component.ts` suivant dans le dossier  `crisis-center`&nbsp;:
+
 +makeExample('router/ts/app/crisis-center/crisis-center.component.1.ts', 'minus-imports', 'crisis-center/crisis-center.component.ts (minus imports)')(format='.')
 :marked
   The `CrisisCenterComponent` is much like the `AppComponent` shell.
 
+  Le `CrisisCenterComponent` est similaire au shell `AppComponent`.
+
   * It is the root of the *Crisis Center* area
   just as `AppComponent` is the root of the entire application.
+
+  * C'est la racine de la zone *Centre de Crise* tout comme `AppComponent`
+  est la racine de l'application complète.
 
   * It is a shell for the crisis management feature area
   just as the `AppComponent` is a shell to manage the high-level workflow.
 
+  * C'est un shell pour la zone de fonctionnalité de gestion de crise 
+  tout comme le `AppComponent` est un shell pour gérer le flux de travail de haut niveau.
+
   * It is dead simple &mdash; simpler even than the `AppComponent` template.
   It has no content, no links, just a `<router-outlet>` for the *Crisis Center* child views.
+
+  * Il est vraiment simple &mdash; plus simple encore que le modèle de `AppComponent`.
+  Il n'a pas de contenu, pas de liens, uniquement un `<router-outlet>` pour les vues filles
+  du *Centre de Crise*.
 
   Unlike `AppComponent` (and most other components), it **lacks a selector**.
   It doesn't need one. We don't *embed* this component in a parent template.
   We *navigate* to it from the outside, via the router.
+
+  À l'inverse de `AppComponent` (et de la plupart des autres composants), il **lui manque un sélecteur**.
+  Il n'en a pas besoin. Nous n'incluons pas ce composant dans un modèle parent.
+  Nous *naviguons* vers lui depuis l'extérieur, via le routeur.
+
 .l-sub-section
   :marked
     We *can* give it a selector. There's no harm in it.
     Our point is that we don't *need* one because we only *navigate* to it.
 
+    Nous *pouvons* lui donner un sélecteur. Cela ne pose aucun problème en soi.
+    Le point important est que nous n'en avons pas *besoin* car nous ne faisons que *naviguer* vers lui.
+
 :marked
   ### Service isolation
+
+  ### Isolation de service
 
   The`CrisisService` is neither needed nor wanted outside the *Crisis Center* domain.
   Instead of registering it with the root `AppComponent` providers &mdash;
   which makes it visible everywhere &mdash;
   we register the `CrisisService` in the component's providers array.
+
+  Le `CrisisService` n'est jamais utile ni désiré en dehors du domaine du *Centre de Crise*.
+  Plutôt que de l'enregistrer avec les fournisseurs de la racine `AppComponent` &mdash;
+  ce qui le rend visible de partout &mdash;
+  nous enregistrons le `CrisisService` dane le tableau des fournisseurs du composant.
+
 +makeExample('router/ts/app/crisis-center/crisis-center.component.1.ts', 'providers')(format='.')
 :marked
   This limits the scope of the `CrisisService` to the *Crisis Center* component and its sub-component tree.
   No component outside of the *Crisis Center* can access it.
 
+  Ceci limite la portée du `CrisisService` au composant du *Centre de Crise* et l'arbre de ses sous-composants.
+  Aucun composant en dehors du *Centre de Crise* ne peut y accéder.
+
   There's a practical benefit to restricting its scope in this way.
+
+  Il y a un bénéfice pratique à restreindre ainsi sa portée.
 
   First we can evolve the service independently of the rest of the application
   without fear of breaking what should be unrelated modules.
+
+  Tout d'abord nous pouvons faire évoluer le service indépendamment du reste de l'application
+  sans craindre de casser des modules qui devraient être sans relation.
 
   Second, we can delay loading this service into memory until we need it.
   We can remove it from the application launch bundle,
@@ -970,16 +1820,35 @@ h3#child-routing-component Child Routing Component
   We can load it optionally, asynchronously with the other *Crisis Center* components
   if and when the user begins that workflow.
 
+  Ensuite, nous pouvons retarder le chargment de ce service en mémoire au moment où nous en avons besoin.
+  Nous pouvons le retirer du paquetage de lancement de l'application,
+  réduisant ainsi la taille de la charge initiale et améliorant la performance.
+  Nous pouvons le charger optionnellement, de manière asynchrone avec les autres composants 
+  du *Centre de Crise* si et au moment où l'utilisateur commence à l'utiliser.
+
 .l-sub-section
   :marked
     We'll describe asynchronous module loading in a future update.
+
+    Nous allons décrire le chargement asynchrone de module dans une mise à jour future.
+
 :marked
   ### Child Route Configuration
+
+  ### Configuration de Route Fille
+
   The `CrisisCenterComponent` is a *Routing Component* like the `AppComponent`.
   It has its own `RouterOutlet` and its own child routes.
 
+  Le `CrisisCenterComponent` est un *Composant de Routage* tout comme `AppComponent`.
+  Il a son propre `RouterOutlet` et ses propres routes filles.
+
   We create a `crisis-center.routes.ts` file as we did the `heroes.routes.ts` file.
   But this time we define **child routes** *within* the parent `crisis-center` route.
+
+  Nous créons un fichier `crisis-center.routes.ts` tout comme nous avons fait pour le fichier `heroes.routes.ts`.
+  Mais cette fois nous définissons des **routes filles** **à l'intérieur** de la route parent `crises-center`.
+
 +makeExample('router/ts/app/crisis-center/crisis-center.routes.1.ts', 'routes', 'app/crisis-center/crisis-center.routes.ts (Routes)' )(format='.')
 :marked
   Notice that the parent `crisis-center` route has a `children` property
@@ -987,52 +1856,103 @@ h3#child-routing-component Child Routing Component
   These two routes navigate to the two *Crisis Center* child components,
   `CrisisListComponent` and `CrisisDetailComponent`.
 
+  Notez que la route parent `crisis-center` a une propriété `children`
+  avec un tableau de deux routes.
+  Ces deux routes naviguent vers les deux composants enfants du *Centre de Crise*,
+  `CrisisListComponent` et `CrisisDetailComponent`.
+
   There are some *important differences* in the treatment of these routes.
+
+  Il existe des *différences importantes* dans le traitement de ces routes.
 
   First, the router displays the components of these child routes in the `RouterOutlet`
   of the `CrisisCenterComponent`, not in the `RouterOutlet` of the `AppComponent` shell.
 
+  Tout d'abord, le routeur affiche les composants de ces routes filles dans le `RouterOutlet`
+  du `CrisisCenterComponent`, et non dans le `RouterOutlet` du shell `AppComponent`.
+
   Second, the child paths *extend* the path of their parent route.
+
+  Ensuite, les chemins enfants *étendent* le chemin de leur route parent.
 
   Normally paths that begin with `/` refer to the root of the application.
   Here they are appended to the path to the `CrisisCenterComponent`.
 
+  Normalement les chemins commençant par `/` réfèrent à la racine de l'application.
+  Ici ils sont ajoutés au chemin du `CrisisCenterComponent`.
+
   To write an URL that navigates to the `CrisisListComponent`, we'd append its child route path,  `/`,
   to `/crisis-center`.
 
+  Pour écrire une URL qui navigue vers le `CrisisListComponent`, nous ajouterions le chemin de route enfant,  `/`,
+  à  `/crisis-center`.
+
   To write an URL that navigates to the `CrisisDetailComponent`, we'd append the child route path,  `/`,
   followed by the crisis id, yielding something like:
+
+  Pour écrire une URL qui navigue vers `CrisisDetailComponent`, nous ajouterions le chemin de route enfant,  `/`,
+  suivi de l'id de crise, obtenant quelque chose comme&nbsp;:
 
 code-example(format="").
   localhost:3000/crisis-center/2
 
 :marked
   Here's the complete `crisis-center.routes.ts` with its imports.
+
+  Voici le fichier `crisis-center.routes.ts` complet avec ses imports.
+
 +makeExample('router/ts/app/crisis-center/crisis-center.routes.1.ts', '', 'app/crisis-center/crisis-center.routes.ts' )(format='.')
 
 h3#merge-crisis-routes Merge crisis routes into the application routes
+
+h3#merge-crisis-routes Fusionner les routes de crise dans les routes de l'application
+
 :marked
   As with hero routes, we must update the router configuration at the top of the application
   by merging the crisis routes into the app routes:
+
+  Comme pour les routes de héros, nous devons mettre à jour la configuration du routeur en tête de l'application
+  en fusionnant les routes de crise dans les routes de l'application&nbsp;:
+
 +makeExample('router/ts/app/app.routes.4.ts', '', 'app/app.routes.ts' )(format='.')
 :marked
   We used the spread operator again (...) to insert the crisis routes array.
 
+  Nous utilisons de nouveau l'opérateur spread (...) pour insérer le tableau des routes de crise.
+
 a#redirect
 h3#redirect Redirecting routes
+
+h3#redirect Rediriger des routes
+
 :marked
   When the application launches, the initial URL in the browser bar is something like:
+
+  Lorsque l'application est lancée, l'URL initiale dans le navigateur ressemble à&nbsp;:
+
 code-example(format="").
   localhost:3000
 :marked
   That doesn't match any of our configured routes which means that our application won't display any component when it's launched.
   The user must click one of the navigation links to trigger a navigation and display something.
 
+  Ceci ne correspond à aucune des routes configurées ce qui veut dire que notre application ne va afficher 
+  aucun composant au démarrage.
+  L'utilisateur doit cliquer sur un des liens de navigation pour déclencher une navigation et afficher quelque chose.
+
   We prefer that the application display the list of crises as it would if the user clicked the "Crisis Center" link or pasted `localhost:3000/crisis-center/` into the address bar.
   This is our intended default route.
 
+  Nous préférons que l'application affiche la liste des crises comme il le ferait si l'utilisateur cliquait sur le lien
+  «&nbsp;Centre de Crise&nbsp;» ou collait `localhost:3000/crisis-center/` dans la barre de naviigation.
+  C'est la route par défaut désirée. 
+
   The preferred solution is to add a `redirect` route that transparently translates from the initial relative URL (`''`)
   to the desired default path (`/crisis-center`):
+
+  La solution conseillée est d'ajouter une `redirection` de route qui traduit de manière transparente l'URL relative initiale (`''`)
+  en chemin par défaut désiré (`/crisis-center`)&nbsp;:
+
 +makeExample('router/ts/app/crisis-center/crisis-center.routes.2.ts', 'redirect', 'app/crisis-center/crisis-center.routes.ts (redirect route)' )(format='.')
 
 :marked
@@ -1040,69 +1960,152 @@ code-example(format="").
   In this app, the router should select the route to the `CrisisListComponent` when the *entire URL* matches `''`,
   so we set the `pathMatch` value to `'full'`.
 
+  Une redirection de route nécessite une propriété `pathMatch` pour indiquer au routeur comment faire correspondre
+  une URL au chemin d'une route.
+  Dans cette application, le routeur devrait sélectionner la route au `CrisisListComponent` lorsque l'**URL entière**
+  correspond à `''`, nous mettons ainsi la valeur de `pathMatch` à `'full'`.
+
 .l-sub-section
   :marked
     Technically, `pathMatch = 'full'` results in a route hit when the *remaining*, unmatched segments of the URL match `''`.
     In our example, the redirect is at the top level of the route configuration tree so the *remaining* URL and the *entire* URL
     are the same thing.
 
+    Techniquement, `pathMatch = 'full'` résulte en une correspondance de route lorsque les segments sans correspondance 
+    *restants* de l'URL correspondent à `''`.
+    Dans notre exemple, la redirection est au tout début de l'arbre de configuration de routes, de ce fait l'URL *restante* et l'URL *entière*
+    sont la même chose.
+
     The other possible `pathMatch` value is `'prefix'` which tells the router
     to match the redirect route when the *remaining* URL ***begins*** with the redirect route's _prefix_ path.
+
+    L'autre valeur possible de `pathMatch` est `'prefix'`, ce qui indique au routeur 
+    de faire correspondre la redirection de route lorsque le *reste* de l'URL ***commence*** avec le chemin _préfixe_
+    de la redirection de route.
 
     That's not what we want to do here. If the `pathMatch` value were `'prefix'`,
     _every_ URL would match `''`.
     We could never navigate to `/crisis-center/1` because the redirect route would match first and
     send us to the `CrisisListComponent`.
 
+    Ce n'est pas ce que nous voulons faire ici. Si la valeur de `pathMatch` était `'prefix'`,
+    _toute_ URL correspondrait à `''`.
+    Nous ne pourrions jamais naviguer vers  `/crisis-center/1` car la redirection de route correspondrait en premier
+    et nous enverrait vers `CrisisListComponent`.
+
     We should redirect to the `CrisisListComponent` _only_ when the _entire (remaining)_ url is  `''`.
+
+    Nous devrions rediriger vers `CrisisListComponent` _seulement_ lorsque le _reste de l'url en entier_ est `''`.
 
     Learn more in Victor Savkin's blog
     [post on redirects](http://victorsavkin.com/post/146722301646/angular-router-empty-paths-componentless-routes).
 
+    Apprenez-en plus dans l'article de blog de Victor Savkin
+    [à propos des redirections de route](http://victorsavkin.com/post/146722301646/angular-router-empty-paths-componentless-routes).
+
+
     We'll discuss redirects in more detail in a future update to this chapter.
+
+    Nous parlerons de redirections plus en détail dans une mise à jour future de ce chapitre.
 
 :marked
   The updated route definitions look like this:
+
+  Les définitions de route mises à jour ressemblent à&nbsp;:
 +makeExample('router/ts/app/crisis-center/crisis-center.routes.2.ts', 'routes', 'app/crisis-center/crisis-center.routes.ts (Routes v.2)' )(format='.')
 
 .l-main-section
 h2#guards Route Guards
+
+h2#guards Gardes de Routes
+
 :marked
   At the moment, *any* user can navigate *anywhere* in the application *anytime*.
 
+  À ce point, *tout* utilisateur peut naviguer *partout* dans l'application *tout le temps*.
+
   That's not always the right thing to do.
+
+  Ce n'est pas toujours la bonne chose à faire.
+
   * Perhaps the user is not authorized to navigate to the target component.
+
+  * Peut-être l'utilisateur n'est-il pas autorisé à naviguer vers le composant cible.
+
   * Maybe the user must login (*authenticate*) first.
+
+  * Peut-être l'utilisateur doit-être se loguer (*s'authentifier*) en premier.
+
   * Maybe we should fetch some data before we display the target component.
+
+  * Peut-être devons-nous récupérer des données avant d'afficher le composant cible.
+
   * We might want to save pending changes before leaving a component.
+
+  * Nous pourrions vouloir enregistrer des changements avant de quitter un composant.
+
   * We might ask the user if it's OK to discard pending changes rather than save them.
+
+  * Nous pourrions demander à l'utilisteur s'il est d'accord pour perdre des changements en cours plutôt que de les enregistrer. 
 
   We can add ***guards*** to our route configuration to handle these scenarios.
 
+  Nous pouvons ajouter des ***gardes*** à notre configuration de route pour prendre en charge ces scénarios.
+
   A guard's return value controls the router's behavior:
+
+  La valeur de retour d'un garde contrôle le comportement du routeur&nbsp;:
+
   * if it returns `true`, the navigation process continues
+
+  * s'il retourne `true`, le processus de navigation continue
+
   * if it returns `false`, the navigation process stops and the user stays put
+
+  * s'il retourne `false`, le processus de navigation s'arrête et l'utilisateur reste en place
+
 .l-sub-section
   :marked
     The guard can also tell the router to navigate elsewhere, effectively canceling the current navigation.
+
+    Le garde peut aussi demander au routeur de naviguer ailleurs, annulant de fait la navigation en cours.
+
 :marked
   The guard *might* return its boolean answer synchronously.
   But in many cases, the guard can't produce an answer synchronously.
   The guard could ask the user a question, save changes to the server, or fetch fresh data.
   These are all asynchronous operations.
 
+  Le garde *pourrait* retourner sa réponse booléenne de manière synchrone.
+  Mais dans la plupart des cas, le garde ne peut pas produire de réponse synchrone.
+  Le garde pourrait poser une question à l'utilisateur, enregistrer des changements sur un serveur ou récupérer
+  de nouvelles données.
+  Toutes ces opérations sont asynchrones.
+
   Accordingly, a routing guard can return an `Observable<boolean>` and the
   router will wait for the observable to resolve to `true` or `false`.
 
+  En conséquence, un garde de route peut retourner un `Observable<boolean>` et le routeur
+  va attendre que l'observable soit résolu en `true` ou `false`.
+
   The router supports two kinds of guards:
+
+  Le routeur prend en charge deux sortes de gardes&nbsp;:
 
   1. [CanActivate](../api/router/index/CanActivate-interface.html) to mediate navigation *to* a route.
 
+  1. [CanActivate](../api/router/index/CanActivate-interface.html) pour négocier une navigation *vers* une route.
+
   2. [CanDeactivate](../api/router/index/CanDeactivate-interface.html) to mediate navigation *away* from the current route.
+
+  2. [CanDeactivate](../api/router/index/CanDeactivate-interface.html) pour négocier la navigation *depuis* la route actuelle.
 
 .l-sub-section
   :marked
     We'll examine other router guards in a future update to this chapter.
+
+    Nous examinerons d'autres gardes de route dans une mise à jour future de ce chapitre.
+
 :marked
   We can have multiple guards at every level of a routing hierarchy.
   The router checks the `CanDeactivate` guards first, from deepest child route to the top.
@@ -1110,7 +2113,15 @@ h2#guards Route Guards
   If _any_ guard returns false, pending guards that have not completed will be canceled,
   and the entire navigation is canceled.
 
+  Nous pouvons avoir plusieurs gardes à chaque niveau d'une hiérarchie de routage.
+  Le routeur vérifie les gardes `CanDeactivate` d'abord, depuis les routes filles les plus profondes vers le haut.
+  Il vérifie ensuite les gardes `CanActivate` depuis le haut vers les routes filles les plus profondes.
+  Si _un quelconque_ garde retourne `false`, les gardes en instance non terminés sont annulés,
+  et la navigation complète est annulée.
+
   Let's look at some examples.
+
+  Voyons quelques exemples.
 
 .l-main-section
 // :marked
@@ -1120,24 +2131,44 @@ h2#guards Route Guards
   TODO: Pausing activation
 
 h3#can-activate-guard <i>CanActivate</i>: requiring authentication
+
+h3#can-activate-guard <i>CanActivate</i>&nbsp;: exiger une authentification
+
 :marked
   Applications often restrict access to a feature area based on who the user is.
   We could permit access only to authenticated users or to users with a specific role.
   We might block or limit access until the user's account is activated.
 
+  Les applications restreignent souvent l'accès à une zone de fonctionnalité selon l'utilisateur.
+  Nous pourrions limiter l'accès aux utilisateurs authentifiés ou aux utilisateurs avec un rôle particulier.
+  Nous pourrions bloquer ou limiter l'accès avant que le compte de l'utilisateur ne soit activé.
+
   The `CanActivate` guard is the tool to manage these navigation business rules.
 
+  Le garde `CanActivate` est l'outil pour gérer ces règles de navigation métier.
+
   #### Add a crisis admin feature
+
+  #### Ajouter une fonctionnalité d'administration de crise
 
   We intend to extend the Crisis Center with some new *administrative* features.
   Those features aren't defined yet. So we add the following placeholder component.
 
+  Nous avons l'intention d'étendre le Centre de Crise avec quelques nouvelles fonctionnalités *administratives*.
+  Ces fonctionnalités ne sont pas encore définies. Nous plaçons pour cela le composant virtuel suivant.
+
 +makeExample('router/ts/app/crisis-center/crisis-admin.component.1.ts', '', 'crisis-admin.component.ts')(format=".")
 :marked
   Next, we add a child route to the `crisis-center.routes` with the path, `/admin`.
+
+  Nous ajoutons ensuite une route fille au fichier `crisis-center.routes` avec le chemin `/admin`.
+
 +makeExample('router/ts/app/crisis-center/crisis-center.routes.3.ts', 'admin-route-no-guard', 'crisis-center.routes.ts (admin route)')(format=".")
 :marked
   And we add a link to the `AppComponent` shell that users can click to get to this feature.
+
+  Et nous ajoutons un lien au shell `AppComponent` que les utilisateurs peuvent cliquer pour aller à cette fonctionnalité.
+
 +makeExample('router/ts/app/app.component.4.ts', 'template', 'app/app.component.ts (template)')(format=".")
 
 .l-sub-section
@@ -1147,32 +2178,72 @@ h3#can-activate-guard <i>CanActivate</i>: requiring authentication
     `[routerLinkActiveOptions]="{ exact: true }"` which will only mark the `/crisis-center` link as active when
     we navigate the to `/crisis-center` URL and not when we navigate to one its child routes.
 
+    Notre `RouterLink` admin étant une route fille de notre `Centre de Crise`, nous voulons que notre lien `Centre de Crise`
+    soit actif seulement lorsque nous visitons cette route. Nous avons ajouté un lien supplémentaire à notre routerLink
+    `/crisis-center`, `[routerLinkActiveOptions]="{ exact: true }"` qui marquera comme actif le lien `/crisis-center`
+    lorsque nous naviguerons vers l'URL `/crisis-center` et non lorsque nous naviguerons vers une de ses routes filles. 
+
 :marked
   #### Guard the admin feature
+
+  #### Garder la fonctionnalité d'administration
+
   Currently every route within our *Crisis Center* is open to everyone.
   The new *admin* feature should be accessible only to authenticated users.
 
+  Actuellement, toute route de notre *Centre de Crise* est ouverte à tous.
+  La nouvelle fonctionnalité *admin* doit être accessible aux utilisateurs authentifiés uniquement.
+
   We could hide the link until the user logs in. But that's tricky and difficult to maintain.
 
+  Nous pourrions cacher le lien tant que l'utilisateur n'est pas connecté. Mais c'est délicat et difficile à maintenir.
+
   Instead we'll write a `CanActivate` guard to redirect anonymous users to the login page when they try to reach the admin component.
+
+  Nous allons plutôt écrire un garde `CanActivate` pour rediriger les utilisateurs anonymes vers la page de login 
+  lorsqu'ils essaient d'atteindre le composant d'administration.
 
   This is a general purpose guard &mdash; we can imagine other features that require authenticated users &mdash;
   so we create an `auth-guard.service.ts` in the application root folder.
 
+  C'est un garde générique &mdash; nous pouvons imaginer d'autres fonctionnalités qui seraient limitées aux utilisateurs
+  authentifiés &mdash; nous créons donc un fichier `auth-guard.service.ts` dans le dossier racine de l'application.
+
   At the moment we're interested in seeing how guards work so our first version does nothing useful.
   It simply logs to console and `returns` true immediately, allowing navigation to proceed:
+
+  En ce moment nous voulons voir comment fonctionnent les gardes, notre première version ne fait donc rien d'utile.
+  Il logue simplement sur la console et `retourne` true immédiatement, permettant à la navigation de poursuivre&nbsp;: 
+
 +makeExample('router/ts/app/auth-guard.service.1.ts', '', 'app/auth-guard.service.ts')(format=".")
 :marked
   Next we open `crisis-center.routes.ts `, import the `AuthGuard` class, and
   update the admin route with a `CanActivate` guard property that references it:
+
+  Puis nous ouvrons `crisis-center.routes.ts `, importons la classe `AuthGuard` et mettons à jour
+  la route admin avec une propriété `CanActivate` qui le référence&nbsp;:
+
 +makeExample('router/ts/app/crisis-center/crisis-center.routes.ts', 'admin-route', 'crisis-center.routes.ts (guarded admin route)')(format=".")
   Our admin feature is now protected by the guard, albeit protected poorly.
+
+  Notre fonctionnalité d'administration est maintenant protégée par un garde, bien que mal protégée.
+
 :marked
   #### Teach *AuthGuard* to authenticate
+
+  #### Apprendre à *AuthGuard* à authentifier
+
   Let's make our `AuthGuard` at least pretend to authenticate.
+
+  Laissons `AuthGuard` au moins prétendre authentifier l'utilisateur.
 
   The `AuthGuard` should call an application service that can login a user and retain information about the current user.
   Here's a demo `AuthService`:
+
+  Le `AuthGuard` devrait appeler un service de l'application qui peut loguer un utilisateur et conserver les informations
+  de l'utilisateur actuel.
+  Voici un `AuthService` de démo&nbsp;:
+
 +makeExample('router/ts/app/auth.service.ts', '', 'app/auth.service.ts')(format=".")
 :marked
   Although it doesn't actually log in, it has what we need for this discussion.
@@ -1180,27 +2251,57 @@ h3#can-activate-guard <i>CanActivate</i>: requiring authentication
   Its `login` method simulates an API call to an external service by returning an observable that resolves successfully after a short pause.
   The `redirectUrl` property will store our attempted URL so we can navigate to it after authenticating.
 
+  Bien qu'il ne logue pas vraiment, il fait ce dont nous avons besoin pour cette discussion.
+  Il a un drapeau `isLoggedIn` pour nous dire si l'utilisateur est authentifié.
+  Sa méthode `login` simule un appel API à un service externe en retournant un observable qui est résolu correctement après une courte pause.
+  La propriété `redirectUrl` va stocker notre URL voulue pour que nous puissions naviguer vers elle après authentification.
+
   Let's revise our `AuthGuard` to call it.
+
+  Revoyons notre `AuthGuard` avant de l'appeler.
+
 +makeExample('router/ts/app/auth-guard.service.2.ts', '', 'app/auth-guard.service.ts (v.2)')(format=".")
 :marked
   Notice that we *inject* the `AuthService` and the `Router` in the constructor.
   We haven't provided the `AuthService` yet but it's good to know that we can inject helpful services into our routing guards.
 
+  Notez que nous *injectons* le `AuthService` et le `Router` dans le constructeur.
+  Nous n'avons pas encore fourni le `AuthService` mais il est bon de savoir que nous pouvons injecter des services utiles dans nos gardes de route.
+
   This guard returns a synchronous boolean result.
   If the user is logged in, it returns true and the navigation continues.
 
+  Ce garde retourne un résultat booléen synchrone.
+  Si l'utilisateur est logué, il retourne true et la navigation continue.
+
   The `ActivatedRouteSnapshot` contains the _future_ route that will be activated and the `RouterStateSnapshot`
   contains the _future_ `RouterState` of our application, should we pass through our guard check.
+
+  Le `ActivatedRouteSnapshot` contient la _future_ route qui sera activée et le `RouterStateSnapshot`
+  contient le _futur_ `RouterState` de notre application, si nous passons les vérifications du garde.
 
   If the user is not logged in, we store the attempted URL the user came from using the `RouterStateSnapshot.url` and
   tell the router to navigate to a login page &mdash; a page we haven't created yet.
   This secondary navigation automatically cancels the current navigation; we return `false` just to be clear about that.
 
+  Si l'utilisateur n'est pas logué, nous stockons l'URL tentée par l'utilisateur en utilisant  `RouterStateSnapshot.url`
+  et en indiquant au routeur de naviguer vers une page de login &mdash; une page que nous n'avons pas encore créée.
+  La navigation secondaire annule automatiquement la navigation courante&nbsp;; nous retournons `false` pour que ce soit bien clair. 
+
   #### Add the *LoginComponent*
+
+  #### Ajouter le *LoginComponent*
+
   We need a `LoginComponent` for the user to log in to the app. After logging in, we'll redirect
   to our stored URL if available, or use the default URL.
   There is nothing new about this component or the way we wire it into the router configuration.
   Here is the pertinent code, offered without comment:
+
+  Nous avons besoin d'un `LoginComponent` pour que l'utilisateur puisse se loguer à l'application. Après le login, 
+  nous allons le rediriger vers l'URL stockée si elle est disponible, ou utiliser l'URL par défaut.
+  Il n'y a rien de nouveau à propos de ce composant ou de la façon dont nous le branchons dans la configuration du routeur.
+  Voici le code pertinent, sans commentaires&nbsp;:
+
 +makeTabs(
    `router/ts/app/login.component.ts,
    router/ts/app/login.routes.ts,
@@ -1213,42 +2314,83 @@ h3#can-activate-guard <i>CanActivate</i>: requiring authentication
   `)
 
 h3#can-deactivate-guard <i>CanDeactivate</i>: handling unsaved changes
+
+
+h3#can-deactivate-guard <i>CanDeactivate</i>&nbsp;: traiter les changements non enregistrés
 :marked
   Back in the "Heroes" workflow, the app accepts every change to a hero immediately without hesitation or validation.
+
+  De retour dans le flux de travail des «&nbsp;Héros&nbsp;», l'application accepte tout changement à un héros
+  immédiatement sans hésitation ni validation.
 
   In the real world, we might have to accumulate the users changes.
   We might have to validate across fields. We might have to validate on the server.
   We might have to hold changes in a pending state until the user confirms them *as a group* or
   cancels and reverts all changes.
 
+  Dans le monde réel, nous pourrions avoir à accumuler les changements de l'utilisateur.
+  Nous pourrions avoir à valider les champs. Nous pourrions avoir à valider sur le serveur.
+  Nous pourrions avoir à maintenir les changements dans un état d'attente avant que l'utilisateur
+  les confirme *de manière groupée* ou annule et revienne sur tous les changements. 
+
   What do we do about unapproved, unsaved changes when the user navigates away?
   We can't just leave and risk losing the user's changes; that would be a terrible experience.
+
+  Que faisons-nous des changements non approuvés ou non enregistrés lorsque l'utilisateur navigue en dehors de la page&nbsp;?
+  Nous ne pouvons pas simplement partir et risquer de perdre les modifications de l'utilisateur&nbsp;; cela pourrait être 
+  une expérience terrible.
 
   We'd like to pause and let the user decide what to do.
   If the user cancels, we'll stay put and allow more changes.
   If the user approves, the app can save.
 
+  Nous voudrions faire une pause et laisser l'utilisateur décider quoi faire.
+  Si l'utilisateur annule, nous ne bougeons pas et permettons de nouveaux changements.
+  Si l'utilisateur approuve, l'application peut enregistrer.
+
   We still might delay navigation until the save succeeds.
   If we let the user move to the next screen immediately and
   the save failed (perhaps the data are ruled invalid), we would have lost the context of the error.
+
+  Nous voudrions toujours retarder la navigation en attendant que la sauvegarde se fasse.
+  Si nous laissons l'utilisateur aller à l'écran suivant et que l'enregistrement échoue (peut-être les données
+  sont-elle invalides), nous aurons perdu le contexte de l'erreur.
 
   We can't block while waiting for the server &mdash; that's not possible in a browser.
   We need to stop the navigation while we wait, asynchronously, for the server
   to return with its answer.
 
+  Nous ne pouvons pas bloquer en attendant la réponse du serveur &mdash; ce n'est pas possible dans un navigateur.
+  Nous devons stopper la navigation en attendant, de manière asynchrone, que le serveur nous renvoie sa réponse.
+
   We need the `CanDeactivate` guard.
+
+  Nous avons besoin du garde `CanDeactivate`.
 
   ### Cancel and Save
 
+  ### Annuler et Enregistrer
+
   Our sample application doesn't talk to a server.
   Fortunately, we have another way to demonstrate an asynchronous router hook.
+
+  Notre application exemple ne parle pas à un serveur.
+  Heureusement, nous avons un autre moyen pour décrire un hook de routeur asynchrone.
 
   Users update crisis information in the `CrisisDetailComponent`.
   Unlike the `HeroDetailComponent`, the user changes do not update the
   crisis entity immediately. We update the entity when the user presses the *Save* button.
   We discard the changes if the user presses he *Cancel* button.
 
+  Les utilisateurs modifient les informations des crises dans le `CrisisDetailComponent`.
+  Contrairement à `HeroDetailComponent`, les changements de l'utilisateur ne modifient pas immédiatement
+  l'entité crise. Nous mettons à jour l'entité lorsque l'utilisateur presse le bouton *Enregistrer*.
+  Nous annulons les changements si l'utilisateur presse le bouton *Annuler*.
+
   Both buttons navigate back to the crisis list after save or cancel.
+
+  Les deux boutons retournent vers la liste des crises après sauvegarde ou annulation.
+
 +makeExample('router/ts/app/crisis-center/crisis-detail.component.1.ts', 'cancel-save', 'crisis-detail.component.ts (excerpt)')(format=".")
 :marked
   What if the user tries to navigate away without saving or canceling?
@@ -1256,32 +2398,65 @@ h3#can-deactivate-guard <i>CanDeactivate</i>: handling unsaved changes
   Both actions trigger a navigation.
   Should the app save or cancel automatically?
 
+  Que se passe-t-il si l'utilisateur essaie de naviguer sans enregistrer ou annuler&nbsp;?
+  L'utilisateur pourrait presser le bouton retour du navigateur ou cliquer sur le lien Héros.
+  Les deux actions déclenchent une navigation.
+  L'application doit-elle enregistrer ou annuler automatiquement&nbsp;?
+  
   We'll do neither. Instead we'll ask the user to make that choice explicitly
   in a confirmation dialog box that *waits asynchronously for the user's
   answer*.
+
+  Nous ne ferons aucun des deux. Nous allons plutôt demander à l'utilisateur de faire ce choix
+  explicitement dans une boîte de dialogue de confirmation qui *attend de manière asynchrone
+  la réponse de l'utilisateur*. 
+
 .l-sub-section
   :marked
     We could wait for the user's answer with synchronous, blocking code.
     Our app will be more responsive ... and can do other work ...
     by waiting for the user's answer asynchronously. Waiting for the user asynchronously
     is like waiting for the server asynchronously.
+
+    Nous pourrions attendre la réponse de l'utilisateur avec du code synchrone, bloquant.
+    Notre application sera plus réactive ... et peut faire autre chose ...
+    en attendant la réponse de l'utilisateur en asynchrone. Attendre l'utilisateur en asynchrone
+    est comme attendre le serveur en asynchrone. 
+
 :marked
   The `DialogService` (injected in the `AppComponent` for app-wide use) does the asking.
+
+  Le `DialogService` (injecté dans le `AppComponent` pour une utilisation dans toute l'application) s'occupe 
+  de la demande.
 
   It returns a [promise](http://exploringjs.com/es6/ch_promises.html) that
   *resolves* when the user eventually decides what to do: either
   to discard changes and navigate away (`true`) or to preserve the pending changes and stay in the crisis editor (`false`).
 
+  Il retourne une [promesse](http://exploringjs.com/es6/ch_promises.html) qui est
+  *résolue*  lorsque l'utilisateur décide finalement quoi faire&nbsp;: soit annuler les changements et naviguer 
+  ailleurs (`true`) soit préserver les changements en cours et rester dans l'éditeur de crise (`false`).
+ 
   We will take the result of that promise and convert it to an `Observable` for our guard to use.
+
+  Nous allons prendre le résultat de cette promesse et le convertir en `Observable` pour que notre garde puisse l'utiliser.
 
 <a id="CanDeactivate"></a>
 :marked
   We create a `Guard` that will check for the presence of a `canDeactivate` function in our component, in this
   case being `CrisisDetailComponent`. We don't need to know the details of how our `CrisisDetailComponent` confirms deactivation.
   This makes our guard reusable, which is an easy win for us.
+
+  Nous créons un `Garde` qui va vérifier la présence d'une fonction `canDeactivate` dans notre composant, 
+  dans notre cas `CrisisDetailComponent`. Nous n'avons pas à connaître les détails de comment `CrisisDetailComponent` confirme 
+  le désactivation.
+  Cela rend notre garde réutilisable, ce qui est une victoire facile pour nous.
+
 +makeExample('router/ts/app/can-deactivate-guard.service.ts', '', 'can-deactivate-guard.service.ts')
 :marked
   Looking at our `CrisisDetailComponent`, we have implemented our confirmation workflow for unsaved changes.
+
+  Regardons `CrisisDetailComponent`, où nous avons implémenté notre flux de travail de confirmation pour des changements non enregistrés.
 
 +makeExample('router/ts/app/crisis-center/crisis-detail.component.1.ts', 'cancel-save-only', 'crisis-detail.component.ts (excerpt)')
 :marked
@@ -1290,25 +2465,51 @@ h3#can-deactivate-guard <i>CanDeactivate</i>: handling unsaved changes
   But it can also return a promise or an `Observable` and the router will wait for that
   to resolve to truthy (navigate) or falsey (stay put).
 
+  Notez que la méthode `canDeactivate` *peut* retourner en synchrone&nbsp;;
+  elle retourne `true` immédiatement s'il n'y a pas de crise ou s'il n'y a pas de changement en cours.
+  Mais elle peut aussi retourner une promesse ou un `Observable` et le routeur attendra que ce soit résolu en vrai (naviguer) 
+  ou faux (ne pas bouger).
+
 :marked
   We add the `Guard` to our crisis detail route in `crisis-center.routes.ts` using the `canDeactivate` array.
+
+  Nous ajoutons le `Garde` à notre route de détail de crise dans `crisis-center.routes.ts` avec le tableau `canDeactivate`.
+
 +makeExample('router/ts/app/crisis-center/crisis-center.routes.4.ts', '', 'crisis-center.routes.ts')
 
 :marked
   We also need to add the `Guard` to our main `appRouterProviders` so the `Router` can inject it during the navigation process.
+
+  Nous devons aussi ajouter le `Garde` à notre `appRouterProviders` principal pour que le `Router` puisse l'injecter durant le
+  processus de navigation.
+
 +makeExample('router/ts/app/app.routes.ts', '', 'app.routes.ts')
 
 :marked
   Now we have given our user a safeguard against unsaved changes.
 
+  Nous avons maintenant donné à notre utilisateur une protection contre les modifications non enregistrées.
+
   **Two critical points**
+
+  **Deux points essentiels**
+
   1. The router interface is optional. We don't inherit from a base class. We simply implement the interface method or not.
+
+  1. L'interface routeur est optionnelle. Nous n'héritons pas d'une classe de base. 
+  Nous implémentons uniquement la méthode de l'interface. 
 
   1. We rely on the router to call the guard. We don't worry about all the ways that the user
   could navigate away. That's the router's job.
   We simply write this class and let the router take it from there.
 
+  1. Nous comptons sur le routeur pour qu'il appelle le garde. Nous ne nous occupons pas de toutes les possibilités
+  dans lesquelles l'utilisateur peut naviguer ailleurs. C'est le travail du routeur.
+  Nous écrivons uniquement cette classe et laissons le routeur l'utiliser.
+  
   The relevant *Crisis Center* code for this milestone is
+
+  Le code du *Centre de Crise*  approprié pour cette étape est
 
 +makeTabs(
    `router/ts/app/app.component.ts,
@@ -1338,172 +2539,351 @@ h3#can-deactivate-guard <i>CanDeactivate</i>: handling unsaved changes
 :marked
   ## Milestone #4: Query Parameters
 
+  ## Étape 4&nbsp;: Paramètres de Requête
+
   We use [*route parameters*](#route-parameters) to specify a *required* parameterized value *within* the route URL
   as we do when navigating to the `HeroDetailComponent` in order to view-and-edit the hero with *id:15*.
+
+  Nous utilisons des [*paramètres de route*](#route-parameters) pour indiquer une valeur paramétrée *obligatoire*
+  *dans* l'URL de route comme nous le faisons quand nous naviguons vers le `HeroDetailComponent` pour voir et éditer
+  le héros ayant un *id:15*.
+
 code-example(format="." language="bash").
   localhost:3000/hero/15
 :marked
   Sometimes we wish to add *optional* information to a route request.
   For example, the `HeroListComponent` doesn't need help to display a list of heroes.
   But it might be nice if the previously-viewed hero were pre-selected when returning from the `HeroDetailComponent`.
+
+  Parfois nous souhaitons ajouter des informations *optionnelles* à une requête de route.
+  Par exemple, le `HeroListComponent` n'a pas besoin d'aide pour afficher une liste de héros.
+  Mais il serait bien si le héros précédemment vu était pré-sélectionné en revenant du `HeroDetailComponent`.
+
 figure.image-display
   img(src='/resources/images/devguide/router/selected-hero.png' alt="Selected hero")
 :marked
   That becomes possible if we can include hero Magneta's `id` in the URL when we
   return from the `HeroDetailComponent`, a scenario we'll pursue in a moment.
 
+  Ceci devient possible si nous incluons l'`id` du héros Magneta dans l'URL lorsque nous retournons
+  du `HeroDetailComponent`, un scénario que nous allons mettre en oeuvre dans un instant.
+
   Optional information takes other forms. Search criteria are often loosely structured, e.g., `name='wind*'`.
   Multiple values are common &mdash; `after='12/31/2015' & before='1/1/2017'` &mdash; in no particular order &mdash;
    `before='1/1/2017' & after='12/31/2015'` &mdash; in a variety of formats &mdash; `during='currentYear'` .
 
+   Des informations optionnelles prennent d'autres formes. Des critères de recherche sont fréquemment peu
+   structurés, comme `name='wind*'`.
+   Des valeurs multiples sont courantes &mdash; `after='12/31/2015' & before='1/1/2017'` &mdash; sans ordre
+   particulier  &mdash; `before='1/1/2017' & after='12/31/2015'` &mdash; dans des formats variés
+   &mdash; `during='currentYear'` .
+
   These kinds of parameters don't fit easily in a URL *path*. Even if we could define a suitable URL token scheme,
   doing so greatly complicates the pattern matching required to translate an incoming URL to a named route.
+
+  Ces types de paramètres ne sont pas faciles à placer dans un *chemin* d'URL. Même si nous arrivons à définir 
+  un schéma d'URL approprié, le faire complique grandement la recherche de correspondances nécessaire
+  pour traduite une URL en route nommée. 
 
   The **URL query string** is the ideal vehicle for conveying arbitrarily complex information during navigation.
   The query string isn't involved in pattern matching and affords enormous flexiblity of expression.
   Almost anything serializable can appear in a query string.
 
+  La **chaîne de requête de l'URL** est le véhicule idéal pour transmettre des informations complexes arbitraires
+  durant la navigation.
+  Les chaîne de requête n'est pas impliquée dans la recherche de correspondances et offre une énorme flexibilité
+  d'expression.
+  Pratiquement tout ce qui est sérialisable peut apparaître dans la chaîne de requête.
+
   The Component Router supports navigation with query strings as well as route parameters.
   We define _optional_ query string parameters in an *object* after we define our required route parameters.
+
+  Le Routeur de Composants supporte la navigation avec des chaînes de requête en même temps que des paramètres de route.
+  Nous définissons des paramètres de chaînes de requête *optionnels* dans un *objet* après avoir défini
+  nos paramètres de route requis.
 
   <a id="route-or-query-parameter"></a>
   ### Route Parameters or Query Parameters?
 
+  ### Paramètres de Route ou Paramètres de Requête&nbsp;?
+
   There is no hard-and-fast rule. In general,
 
+  Il n'y a pas de règle absolue. En général,
+
   *prefer a route parameter when*
+
+  *préférez un paramètre de route lorsque*
+
   * the value is required.
+
+  * la valeur est requise.
+
   * the value is necessary to distinguish one route path from another.
 
+  * la valeur est nécessaire pour distinguer un chemin de route d'un autre.
+
   *prefer a query parameter when*
+
+  *préférez un paramètre de requête lorsque*
+
   * the value is optional.
+
+  * la valeur est optionnelle.
+
   * the value is complex and/or multi-variate.
+
+  * la valeur est complexe et/ou multivariée.
 
   <a id="route-parameters-object"></a>
   ### Route parameter
+
+  ### Paramètre de route
+
   When navigating to the `HeroDetailComponent` we specified the `id` of the hero-to-edit in the
   *route parameter* and made it the second item of the [*link parameters array*](#link-parameters-array).
 
+  Pour naviguer vers `HeroDetailComponent` nous avions spécifié le `id` du héros à éditer dans le
+  *paramètre de route* en le plaçant comme second élément du [*tableau de paramètres de lien*](#link-parameters-array).
+  
 +makeExample('router/ts/app/heroes/hero-list.component.1.ts','link-parameters-array')(format=".")
 :marked
   The router embedded the `id` value in the navigation URL because we had defined it
   as a route parameter with an  `:id` placeholder token in the route `path`:
+
+  Le routeur plaçait la valeur de l'`id` dans l'URL de navigation car nous l'avions défini 
+  comme un paramètre de route avec un token `:id` placé dans le `path` de la route&nbsp;:
+
 +makeExample('router/ts/app/heroes/heroes.routes.ts','hero-detail-route')(format=".")
 :marked
   When the user clicks the back button, the `HeroDetailComponent` constructs another *link parameters array*
   which it uses to navigate back to the `HeroListComponent`.
+
+  Lorsque l'utilisateur clique sur le bouton retour,  le `HeroDetailComponent` construit un autre 
+  *tableau de paramètres de lien* qu'il utilise pour retourner vers le `HeroListComponent`.
+
 +makeExample('router/ts/app/heroes/hero-detail.component.1.ts','gotoHeroes')(format=".")
 :marked
   This array lacks a route parameter because we had no reason to send information to the `HeroListComponent`.
 
+  Ce tableau ne contient pas de paramètre de route car nous n'avions pas de raison d'envoyer des informations
+  au `HeroListComponent`.
+
   Now we have a reason. We'd like to send the id of the current hero with the navigation request so that the
   `HeroListComponent` can highlight that hero in its list.
+
+  Nous avons maintenant une raison. Nous voudrions envoyer le id du héros cactuel dans la requête de navigation
+  pour que le `HeroListComponent` puisse mettre en valeur ce héros dans la liste.
 
   We do that with an object that contains our optional `id` parameter.
   We also defined a junk parameter (`foo`) that the `HeroListComponent` should ignore.
   Here's the revised navigation statement:
+
+  Nous faisons cela avec un objet qui contient notre paramètre `id` optionnel.
+  Nous avons aussi défini un paramètre inutile (`foo`) que notre `HeroListComponent` devrait ignorer.
+  Voici l'instruction de navigation mise à jour&nbsp;:
+
 +makeExample('router/ts/app/heroes/hero-detail.component.ts','gotoHeroes-navigate')(format=".")
 :marked
   The application still works. Clicking "back" returns to the hero list view.
 
+  L'application fonctionne toujours. Cliquer sur le bouton «&nbsp;retour&nbsp;» retourne à la vue de liste de héros. 
+
   Look at the browser address bar.
+
+  Regardons la barre d'adresse du navigateur.
+  
 .l-sub-section
   img(src='/resources/images/devguide/plunker-separate-window-button.png' alt="pop out the window" align="right" style="margin-right:-20px")
   :marked
     When running in plunker, pop out the preview window by clicking the blue 'X' button in the upper right corner.
+
+    Dans plunker, ouvrez la fenêtre de prévisualisation en cliquant le bouton bleu 'X' dans le coin haut droite.
+
 :marked
  It should look something like this, depending on where you run it:
+
+ Il devrait ressembler à ceci, selon d'où vous l'exécutez&nbsp;:
+
 code-example(format="." language="bash").
   localhost:3000/heroes;id=15;foo=foo
 :marked
   The `id` value appears in the query string (`;id=15;foo=foo`), not in the URL path.
   The path for the "Heroes" route doesn't have an `:id` token.
+
+  La valeur `id` apparaît dans la chaîne de requête (`;id=15;foo=foo`), pas dans le chemin d'URL.
+  Le chemin pour la route «&nbsp;Héros&nbsp;» n'a pas de token `:id`.
+
 :marked
   The query string parameters are not separated by "?" and "&".
   They are **separated by semicolons (;)**
   This is *matrix URL* notation &mdash; something we may not have seen before.
+
+  Les paramètres de la chaîne de requête ne sont pas séparés par «&nbsp;?&nbsp;» et «&nbsp;&&nbsp;».
+  Ils sont **séparés par des point-virgule (;)**
+  C'est une notation d'*URL matricielle* &mdash; quelque chose que nous n'avons probablement pas vu auparavant.
 .l-sub-section
   :marked
     *Matrix URL* notation is an idea first floated
     in a [1996 proposal](http://www.w3.org/DesignIssues/MatrixURIs.html) by the founder of the web, Tim Berners-Lee.
 
+    La notation d'*URL matricielle* est une idée qui a vu le jour dans 
+    une [proposition de 1996](http://www.w3.org/DesignIssues/MatrixURIs.html) du créateur du web, Tim Berners-Lee.
+
     Although matrix notation never made it into the HTML standard, it is legal and
     it became popular among browser routing systems as a way to isolate parameters
     belonging to parent and child routes. The Angular Component Router is such a system.
+
+    Bien que la notation matricielle n'ait jamais été incluse dans le standard HTML, elle est légale
+    et est devenue populaire dans les systèmes de routage pour navigateur comme un moyen d'isoler
+    les paramètres appartenant aux routes parent et enfant. Le Routeur de Composants d'Angular fait partie
+    de ces systèmes.
 
     The syntax may seem strange to us but users are unlikely to notice or care
     as long as the URL can be emailed and pasted into a browser address bar
     as this one can.
 
+    La syntaxe peut nous paraître étrange mais les utilisateurs ont peu de chance de s'en soucier
+    tant que l'URL peut être emailée et copiée dans une barre d'adresse de navigateur comme il est possible
+    pour celle-ci.
+
 :marked
   ### Query parameters in the *ActivatedRoute* service
 
+  ### Paramètres de requête dans le service *ActivatedRoute*
+
   The list of heroes is unchanged. No hero row is highlighted.
+
+  La liste de héros est inchangée. Aucune ligne de héros n'est mise en valeur.
 
 .l-sub-section
   :marked
     The [live example](/resources/live-examples/router/ts/plnkr.html) *does* highlight the selected
     row because it demonstrates the final state of the application which includes the steps we're *about* to cover.
     At the moment we're describing the state of affairs *prior* to those steps.
+
+    L'[exemple live](/resources/live-examples/router/ts/plnkr.html) *met en valeur* la ligne sélectionnée
+    car elle représente l'état final de l'application qui inclut l'étape que nous somme en train de couvrir.
+    En ce moment nous sommes en train de décrire l'application *avant* ces étapes. 
+
 :marked
   The `HeroListComponent` isn't expecting any parameters at all and wouldn't know what to do with them.
   Let's change that.
+
+  Le `HeroListComponent` n'attend aucun paramètre et ne saurait pas quoi en faire. Changeons cela.
 
   When navigating from the `HeroListComponent` to the `HeroDetailComponent`
   we subscribed the route params `Observable` and made it available to the `HeroDetailComponent`
   in the `ActivatedRoute` service. We injected that service in the constructor of the `HeroDetailComponent`.
 
+  En naviguant depuis `HeroListComponent` vers `HeroDetailComponent` nous nous sommes abonnés à l'`Observable` params
+  de la route et rendu disponible pour `HeroDetailComponent` dans le service `ActivatedRoute`.
+  Nous avons injecté ce service dans le constructeur de `HeroDetailComponent`.
+
   This time we'll be navigating in the opposite direction, from the `HeroDetailComponent` to the `HeroListComponent`.
 
+  Cette fois nous allons naviguer dans la direction opposée, depuis `HeroDetailComponent` vers `HeroListComponent`.
+
   First we extend the router import statement to include the `ActivatedRoute` service symbol;
+
+  Nous étendons d'abord l'instruction d'import du routeur pour inclure le symbole du service `ActivatedRoute`&nbsp;;
+
 +makeExample('router/ts/app/heroes/hero-list.component.ts','import-router', 'hero-list.component.ts (import)')(format=".")
 :marked
   Then we use the `ActivatedRoute` to access the `params` _Observable_ so we can subscribe
   and extract the `id` parameter as the `selectedId`:
+
+  Nous utilisons ensuite `ActivatedRoute` pour accéder l'_Observable_ `params` pour pouvoir s'y abonner et en extraire 
+  le paramètre `id` en tant que `selectedId`&nbsp;:
+
 +makeExample('router/ts/app/heroes/hero-list.component.ts','ctor', 'hero-list.component.ts (constructor)')(format=".")
 .l-sub-section
   :marked
     All route/query parameters are strings.
     The (+) in front of the `params['id']` expression is a JavaScript trick to convert the string to an integer.
+
+    Tous les paramètres de route/requête sont des chaînes de caractères.
+    Le (+) devant l'expression `params['id']` est une astuce Javascript pour convertir une chaîne en entier.
+
 :marked
   We add an `isSelected` method that returns true when a hero's id matches the selected id.
+
+  Nous avons ajouté une méthode `isSelected` qui retourne true si le id du héros correspond au id sélectionné.
+
 +makeExample('router/ts/app/heroes/hero-list.component.ts','isSelected', 'hero-list.component.ts (constructor)')(format=".")
 :marked
   Finally, we update our template with a [Class Binding](template-syntax.html#class-binding) to that `isSelected` method.
   The binding adds the `selected` CSS class when the method returns `true` and removes it when `false`.
   Look for it within the repeated `<li>` tag as shown here:
+
+  Pour finir, nous mettons à jour notre modèle avec une [Liaison de Classe](template-syntax.html#class-binding) à 
+  cette méthode `isSelected`. La liaison ajoute la classe CSS `selected` lorsque la méthode retourne `true` et l'enlève
+  pour `false`.
+  Vous pouvez le voir à l'intérieur de la base `<li>` répétée ci-dessous&nbsp;:
+
 +makeExample('router/ts/app/heroes/hero-list.component.ts','template', 'hero-list.component.ts (template)')(format=".")
 :marked
   When the user navigates from the heroes list to the "Magneta" hero and back, "Magneta" appears selected:
+
+  Lorsque l'utilisateur navigue depuis la liste de héros vers le héros «&nbsp;Magneta&nbsp;» puis revient,
+  «&nbsp;Magneta&nbsp;» apparaît en surbrillance&nbsp;:
+
 figure.image-display
   img(src='/resources/images/devguide/router/selected-hero.png' alt="Selected List" )
 :marked
   The `foo` query string parameter is harmless and continues to be ignored.
 
+  Le paramètre de la chaîne de requête est sans danger et continue à être ignoré.
+
 <a id="global-query-parameters"></a>
 <a id="fragment"></a>
 :marked
   ### Global Query parameters and Fragments
+
+  ### Paramètres de Requête Globaux et Fragments
+
 :marked
   In our [query parameters](#query-parameters) example, we only dealt with parameters specific to
   our route, but what if we wanted optional parameters available to all routes? This is where our
   query parameters come into play and serve a special purpose in our application.
 
+  Dans notre exemple de [paramètres de requête](#query-parameters), nous avons uniquement vu des paramètres
+  spécifiques à notre route, mais qu'en est-il si nous avions voulu des paramètres optionnels disponibles
+  pour toutes les routes&nbsp;? C'est ici que nos paramètres de requête entrent en jeu et jouent un rôle
+  particulier dans notre application.
+
   Traditional query string parameters (?name=value) **persist** across route navigations. This means we can pass these query params
   around without having to specify them in each navigation method whether it be declaratively or imperatively.
+
+  Les paramètres de la chaîne de requête traditionnels (?nom=valeur) **sont persistants** durant la navigation.
+  Ceci implique que nous pouvons passer ces paramètres de requête sans avoir à les spécifier dans chaque appel de méthode 
+  de navigation qu'il soit déclaratif ou impératif.  
 
   [Fragments](https://en.wikipedia.org/wiki/Fragment_identifier) refer to certain elements on the page
   identified with an `id` attribute.
 
+  Les [Fragments](https://en.wikipedia.org/wiki/Fragment_identifier) font référence à certains éléments dans la page
+  identifiés avec un attribut `id`.
+
   We'll update our `AuthGuard` to provide a `session_id` query that will remain after navigating to another route.
+
+  Nous allons mettre à jour notre `AuthGuard` pour fournir une requête `session_id` qui restera après la navigation
+  vers une autre route.
 
   We'll also provide an arbitrary `anchor` fragment, which we would use to jump to a certain point on our page.
 
+  Nous allons aussi fournir un fragment `anchor` arbitraire, que nous pourrions utiliser pour aller à un point donné de la page.
+
   We'll add the extra navigation object to our `router.navigate` method that navigates us to our `/login` route.
+
+  Nous allons ajouter l'objet de navigation supplémentaire à notre méthode `router.navigate` qui nous conduit à la route `/login`.
 +makeExample('router/ts/app/auth-guard.service.ts','', 'auth-guard.service.ts (v.3)')
 :marked
   Since we'll be navigating to our *Crisis Admin* route after logging in, we'll update it to handle our global
   query parameters and fragment.
+
+  Puisque nous allons naviguer vers notre route *Administration de Crises* après authentification, nous allons 
+  le mettre à jour pour qu'il prenne en compte les paramètres de requête et le fragment. 
 
 +makeExample('router/ts/app/crisis-center/crisis-admin.component.ts','', 'crisis-admin.component.ts (v.2)')
 :marked
@@ -1512,10 +2892,17 @@ figure.image-display
   For our updated *Crisis Admin* component we'll feed the `Observable` directly into our template using the `AsyncPipe`, which
   will handle _unsubscribing_ from the `Observable` for us when the component is destroyed.
 
+  Les *Paramètres de Requête* et les *Fragments* sont disponibles via la propriété `routerState` dans notre service `Router`.
+  Tout comme nos *paramètres de route*, les paramètres de requêtes globaux et les fragments sont fournis sous forme d'`Observable`. 
+  Pour notre composant *Administration de Crise* mis à jour, nous allons utiliser l'`Observable` directement dans notre modèle
+  en utilisant AsyncPipe, qui prendra en charge pour nous le _désabonnement_ de l'`Observable` lorsque le composant sera détruit.
+
 .l-sub-section
   img(src='/resources/images/devguide/plunker-separate-window-button.png' alt="pop out the window" align="right" style="margin-right:-20px")
   :marked
     When running in plunker, pop out the preview window by clicking the blue 'X' button in the upper right corner.
+
+    Dans plunker, ouvrez la fenêtre de prévisualisation en cliquant le bouton bleu 'X' dans le coin haut droite.
 
 :marked
   Following the steps in this process, we can click on the *Crisis Admin* button, that takes us to the *Login*
@@ -1524,93 +2911,206 @@ figure.image-display
   these persistent bits of information for things that need to be provided with every page interaction like
   authentication tokens or session ids.
 
+  En suivant les étapes de ce processus, nous pouvons cliquer sur le bouton *Admin Crises*, qui nous amène 
+  à la page de *Login* avec les `paramètres de requête` et `fragment` fournis. Après avoir sur le bouton de login, 
+  nous remarquons que nous avons été redirigés vers la page `Admin Crises` avec nos `paramètres de requête` et `fragment` 
+  toujours intacts. Nous pouvons utiliser ces informations persistantes pour des choses qui doivent être fournies 
+  dans toute page, comme des tokens d'authentification ou des ids de session.
+
 <a id="final-app"></a>
 .l-main-section
 :marked
   ## Wrap Up
+
+  ## Pour résumer
+
   We've covered a lot of ground in this chapter and the application is too big to reprint here.
   Please visit the [live example](/resources/live-examples/router/ts/plnkr.html) and
   where you can download the final source code.
 
+  Nous avons couvert beaucoup de terrain dans ce chapitre et l'application est trop volumineuse pour être reprise ici.
+  Vous pouvez visiter [l'exemple live](/resources/live-examples/router/ts/plnkr.html) et y télécharger le code source final.
+
 .l-main-section
 :marked
   ## Appendices
+
+  ## Annexes
+
   The balance of this chapter is a set of appendices that
   elaborate some of the points we covered quickly above.
 
+  Ce chapitre est un jeu d'annexes qui développent certains points
+  que nous avons couverts rapidement ci-dessus.
+
   The appendix material isn't essential. Continued reading is for the curious.
 
+  La matière de ces annexes n'est pas essentielle. La lecture de ceux-ci est pour les curieux.
 
 .l-main-section
 <a id="link-parameters-array"></a>
 :marked
   ## Appendix: Link Parameters Array
+
+  ## Annexe&nbsp;: Tableau de Paramètres de Lien
+
   We've mentioned the *Link Parameters Array* several times. We've used it several times.
 
+  Nous avons mentionné le *Tableau de Paramètres de Lien* plusieurs fois. Nous l'avons utilisé
+  plusieurs fois.
+
   A link parameters array holds the ingredients for router navigation:
+
+  Un tableau de paramètres de lien détient les ingrédients pour la navigation du routeur&nbsp;:
+
   * the *path* of the route to the destination component
+
+  * le *chemin* de la route pour le composant destination
+
   * required route parameters and optional query parameters that go into the route URL
 
+  * les paramètres de route requis et les paramètres de requête optionnels qui vont dans l'URL de la route
+
   We can bind the `RouterLink` directive to such an array like this:
+
+  Nous pouvons relier la directive `RouterLink` à un tel tableau de cette manière&nbsp;:
+
 +makeExample('router/ts/app/app.component.3.ts', 'h-anchor')(format=".")
 :marked
   We've written a two element array when specifying a route parameter like this
+
+  Nous avons écrit un tableau à deux éléments pour indiquer un paramètre de route de cette manière&nbsp;:
+
 +makeExample('router/ts/app/heroes/hero-list.component.1.ts', 'nav-to-detail')(format=".")
 :marked
   We can provide optional query parameters in an object like this:
+
+  Nous pouvons fournir des paramètres de requête optionnes dans un objet de cette manière&nbsp;:
+
 +makeExample('router/ts/app/app.component.3.ts', 'cc-query-params')(format=".")
 :marked
   These three examples cover our needs for an app with one level routing.
   The moment we add a child router, such as the *Crisis Center*, we create new link array possibilities.
 
+  Ces trois exemples couvrent nos besoins pour une application avec un seul niveau de route.
+  Lorsque nous ajoutons des niveaux de routage, comme pour le *Centre de Crise*, nous créons de nouvelles
+  possibilités pour le tableau de lien.
+
   Recall that we specified a default child route for *Crisis Center* so this simple `RouterLink` is fine.
+
+  Rappelez-vous que nous avons spécifié une route fille par défaut pour le *Centre de Crise*, ce simple
+  `RouterLink` est donc suffisant.
+
 +makeExample('router/ts/app/app.component.3.ts', 'cc-anchor-w-default')(format=".")
 :marked
   Let's parse it out.
+
+  Analysons-le de plus près.
+
   * The first item in the array identifies the parent route ('/crisis-center').
+
+  * Le premier élément du tableau identifie la route parent ('/crisis-center').
+
   * There are no parameters for this parent route so we're done with it.
+
+  * Il n'y a pas de paramètre pour cette route parent, nous avons donc fini avec elle.
+
   * There is no default for the child route so we need to pick one.
+
+  * Il n'y a pas de défaut pour la route fille, nous devons en choisir un.
+
   * We decide to go to the `CrisisListComponent` whose route path is '/' but we don't need to explicitly add it
+
+  * Nous décidons de naviguer vers `CrisisListComponent` dont la route est '/' mais nous n'avons
+  pas besoin de le rajouter explicitement.
+
   * Voila! `['/crisis-center']`.
+
+  * Voilà&nbsp;! `['/crisis-center']`.
 
   Let's take it a step further.
   This time we'll build a link parameters array that navigates from the root of the application
   down to the "Dragon Crisis".
 
+  Allons un peu plus loin.
+  Cette fois nous allons construire un tableau de paramètres de lien qui navigue depuis la racine de l'application
+  vers la «&nbsp;Crise Dragons&nbsp;»
+
   * The first item in the array identifies the parent route ('/crisis-center').
+
+  * Le premier élément du tableau identifie la route parent ('/crisis-center').
+
   * There are no parameters for this parent route so we're done with it.
+
+  * Il n'y a pas de paramètre pour cette route parent, nous avons donc fini avec elle.
+
   * The second item identifies the child route for details about a particular crisis ('/:id').
+
+  * Le second élément identifie la fille route pour les détails d'une crise particulière ('/:id').
+
   * The details child route requires an `id` route parameter
+
+  * La route fille des détails nécessite un paramètre de route `id`.
+
   * We add `id` of the *Dragon Crisis* as the second item in the array (`1`)
 
+  * Nous ajoutons le `id` de la *Crise Dragon* comme second élément dans le tableau (`1`).
+
   It looks like this!
+
+  Ça ressemble à cela&nbsp;!
+
 +makeExample('router/ts/app/app.component.3.ts', 'Dragon-anchor')(format=".")
 :marked
   If we wanted to, we could redefine our `AppComponent` template with *Crisis Center* routes exclusively:
+
+  Si nous voulions, nous pourrions redéfinir notre modèle du `AppComponent` avec des routes de *Centre de Crise* exclusivement&nbsp;: 
 +makeExample('router/ts/app/app.component.3.ts', 'template')(format=".")
 :marked
   In sum, we can write applications with one, two or more levels of routing.
   The link parameters array affords the flexibility to represent any routing depth and
   any legal sequence of route paths, (required) router parameters and (optional) route parameter objects.
 
+  En somme, nous pouvons écrire des applications avec un, deux ou davantage de niveaux de routage.
+  Le tableau de paramètres de lien offre la flexibilité de représenter toute profondeur de route 
+  et toute suite légale de chemins de route, paramètres de route (requis) et objets de paramètres de requête (optionnels).
+
 <a id="onInit"></a>
 .l-main-section
 :marked
   ## Appendix: Why use an *ngOnInit* method
 
+  ## Annexe&nbsp;: Pourquoi utiliser une méthode *ngOnInit*
+
   We implemented an `ngOnInit` method in many of our Component classes.
   We did so, for example, in the [HeroDetailComponent](#hero-detail-ctor).
   We might have put the `ngOnInit` logic inside the constructor instead. We didn't for a reason. The reason is *testability*.
+
+  Nous avons implémenté une méthode `ngOnInit` dans un grand nombre de nos classes de Composants.
+  Nous l'avons fait, par exemple, dans le [HeroDetailComponent](#hero-detail-ctor).
+  Nous aurions pu placer la logique de `ngOnInit` dans le constructeur. Nous ne l'avons pas fait pour une raison précise. 
+  La raison est la *testabilité*.
 
   A constructor that has major side-effects can be difficult to test because it starts doing things as soon as
   we create a test instance. In this case, it might have made a request to a remote server, something it shouldn't
   do under test. It may even be impossible to reach the server in the test environment.
 
+  Un constructeur qui a des effets de bords importants peut être difficle à tester car il commence à faire des choses
+  dès que nous créons une instance de test. Dans ce cas, il pourrait avoir fait une requête à un serveur distant,
+  ce qu'il ne devrait pas faire en test. Il serait même peut-être impossible de joindre le serveur depuis l'environnement de test. 
+
   The better practice is to limit what the constructor can do. Mostly it should stash parameters in
   local variables and perform simple instance configuration.
 
+  Une meilleur pratique est de limiter ce que le constructeur peut faire. Il devrait au maximum cacher les paramètres
+  dans des variables locales et exécuter des configurations simple de l'instance.
+
   Yet we want an instance of this class to get the hero data from the `HeroService` soon after it is created.
   How do we ensure that happens if not in the constructor?
+
+  Mais nous voulons quand même qu'une instance de cette classe récupère les données du héros depuis le `HeroService`
+  dès qu'il a été créé.
+  Comment nous assurons-nous que cela est fait si ce n'est dans le constructeur&nbsp;?
 
   Angular detects when a component has certain lifecycle methods like
   [ngOnInit](../api/core/index/OnInit-class.html) and
@@ -1618,11 +3118,21 @@ figure.image-display
   them
   at the appropriate moment.
 
+  Angular détecte lorsqu'un composant a implémenté certaines méthodes de cycle de vie comme
+  [ngOnInit](../api/core/index/OnInit-class.html) et
+  [ngOnDestroy](../api/core/index/OnDestroy-class.html) et les appelle au moment opportun.
+  
   Angular will call `ngOnInit` when we navigate to the `HeroDetailComponent`, we'll get the `id` from the `ActivatedRoute`
   params and ask the server for the hero with that `id`.
 
+  Angular va appeler `ngOnInit` lorsque nous naviguons vers le `HeroDetailComponent`, nous allons récupérer le `id`
+  depuis params de `ActivatedRoute` et demander au serveur le héros avec cet `id`. 
+
   We too can call that `ngOnInit` method in our tests if we wish ... after taking control of the injected
   `HeroService` and (perhaps) mocking it.
+
+  Nous pouvons aussi appeler cette méthode `ngOnInit` dans nos tests si nous voulons ... après avoir pris le 
+  contrôle du `HeroService` injecté et (peut-être) l'avoir imité.
 
 <a name="browser-url-styles"></a>
 <a id="location-strategy"></a>
@@ -1630,10 +3140,17 @@ figure.image-display
 :marked
   ## Appendix: *LocationStrategy* and browser URL styles
 
+  ## Annexe&nbsp;: *LocationStrategy* et styles d'URL du navigateur
+
   When the router navigates to a new component view, it updates the browser's location and history
   with a URL for that view.
   This is a strictly local URL. The browser shouldn't send this URL to the server
   and should not reload the page.
+
+  Lorsque le routeur navigue vers une nouvelle vue de composant, il met à jour la location et l'historique du navigateur
+  avec une URL pour cette vue.
+  C'est une URL strictement locale. Le navigateur ne doit pas envoyer cette URL au serveur et ne
+  doit pas recharger la page.
 
   Modern HTML 5 browsers support
   [history.pushState](https://developer.mozilla.org/en-US/docs/Web/API/History_API#Adding_and_modifying_history_entries),
@@ -1641,7 +3158,16 @@ figure.image-display
   The router can compose a "natural" URL that is indistinguishable from
   one that would otherwise require a page load.
 
+  Les navigateurs HTML 5 modernes supportent 
+  [history.pushState](https://developer.mozilla.org/en-US/docs/Web/API/History_API#Adding_and_modifying_history_entries),
+  une technique qui modifie la location et l'historique d'un navigateur sans pour autant déclencher une requête 
+  de page au serveur.
+  Le routeur peut composer une URL «&nbsp;naturelle&nbsp;» qui est indiscernable d'une autre qui aurait requis un chargement de page.
+
   Here's the *Crisis Center* URL in this "HTML 5 pushState" style:
+
+  Voici l'URL du *Centre de Crise* dans le style «&nbsp;pushState HTML 5&nbsp;»&nbsp;:
+
 code-example(format=".", language="bash").
   localhost:3002/crisis-center/
 :marked
@@ -1649,29 +3175,62 @@ code-example(format=".", language="bash").
   unless the change occurs after a "#" (called the "hash").
   Routers can take advantage of this exception by composing in-application route
   URLs with hashes.  Here's a "hash URL" that routes to the *Crisis Center*
+
+  Les anciens navigateurs envoient des requêtes de page au serveur lorsque l'URL de location change ...
+  à moins que le changement soit après un «&nbsp;#&nbsp;» (appelé le «&nbsp;hash&nbsp;»).
+  Les routeurs peuvent utiliser cette exception pour composer des URLs de route internes à l'application
+  avec des hashes. Voici une «&nbsp;URL hash&nbsp;» qui route vers le *Centre de Crise*.
+
 code-example(format=".", language="bash").
   localhost:3002/src/#/crisis-center/
 :marked
   The Angular Component Router supports both styles with two `LocationStrategy` providers:
+
+  Le Routeur de Composant d'Angular supporte les deux styles avec deux fournisseurs de `LocationStrategy`&nbsp;:
+
   1. `PathLocationStrategy` - the default "HTML 5 pushState" style.
+
+  1. `PathLocationStrategy` - le style «&nbsp;HTML 5 pushState&nbsp;» par défaut.
+
   1. `HashLocationStrategy` - the "hash URL" style.
+
+  1. `HashLocationStrategy` - le styme «&nbsp;hash URL&nbsp;».
 
   The router's `provideRouter` function sets the `LocationStrategy` to the `PathLocationStrategy`,
   making it the default strategy.
   We can switch to the `HashLocationStrategy` with an override during the bootstrapping process if we prefer it.
+
+  La fonction `provideRouter` du routeur définit la `LocationStrategy` à `PathLocationStrategy`,
+  la faisant la stratégie par défaut.
+  Nous pouvons changer pour la `HashLocationStrategy` durant le processus d'amorçage si nous la préférons.
+
 .l-sub-section
   :marked
     Learn about "providers" and the bootstrap process in the
     [Dependency Injection chapter](dependency-injection#bootstrap)
+
+    Apprenez-en plus sur les «&nbsp;fournisseurs&nbsp;» et le processus d'amorçage
+    dans le [Chapitre sur l'Injection de Dépendance](dependency-injection#bootstrap)
 :marked
   ### Which Strategy is Best?
+
+  ### Quelle Stratégie est la Meilleure&nbsp;?
+
   We must choose a strategy and we need to make the right call early in the project.
   It won't be easy to change later once the application is in production
   and there are lots of application URL references in the wild.
 
+  Nous devons choisir une stratégie et nous devons faire le bon choix tôt dans le projet.
+  Il ne sera pas facile de modifier plus tard lorsque l'application sera en production
+  et qu'il y aura tout un tas d'URLs de l'application référencées un peu partout.
+
   Almost all Angular 2 projects should use the default HTML 5 style.
   It produces URLs that are easier for users to understand.
   And it preserves the option to do **server-side rendering** later.
+
+  Pratiquement tous les projet Angular2 devraient utiliser le style par défaut HTML 5.
+  Il produit des URLs plus faciles à comprendre par les utilisateurs.
+  Et il laisse la possibilité de faire du *rendu côté serveur* plus tard.
 
   Rendering critical pages on the server is a technique that can greatly improve
   perceived responsiveness when the app first loads.
@@ -1679,19 +3238,40 @@ code-example(format=".", language="bash").
   could be rendered on the server and delivered to the user's device
   in less than a second.
 
+  Faire du rendu de pages critiques sur le serveur est une technique qui peut grandement
+  améliorer la perception de la réactivité lorsque l'application se charge.
+  Une application qui prendrait par ailleurs 10 secondes ou plus pour démarrer
+  pourrait être rendue sur le serveur et délivrée à l'appareil de l'utilisateur en moins d'une seconde.
+
   This option is only available if application URLs look like normal web URLs
   without hashes (#) in the middle.
+
+  Cette option est uniquement disponible si les URLs de l'application sont similaires à 
+  des URLs web normales sans hashes (#) au milieu.
 
   Stick with the default unless you have a compelling reason to
   resort to hash routes.
 
+  Conservez le fonctionnement par défaut à moins que vous ayez une bonne raison de recourir aux routes hash.
+
   ### HTML 5 URLs and the  *&lt;base href>*
+
+  ### URLs HTML 5 et le *&lt;base href>*
+
   While the router uses the "[HTML 5 pushState](https://developer.mozilla.org/en-US/docs/Web/API/History_API#Adding_and_modifying_history_entries)"
   style by default, we *must* configure that strategy with a **base href**
+
+  Le routeur utilisant le style «&nbsp;[pushState HTML 5](https://developer.mozilla.org/en-US/docs/Web/API/History_API#Adding_and_modifying_history_entries)&nbsp;»
+  par défaut, nous *devons* configurer cette stratégie avec un **base href**.
 
   The preferred way to configure the strategy is to add a
   [&lt;base href> element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base) tag
   in the `<head>` of the `index.html`.
+
+  Le moyen conseillé pour configurer la stratégie est d'ajouter une balise
+  [d'élément &lt;base href>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base) 
+  dans le `<head>` du `index.html`.
+
 +makeExample('router/ts/index.1.html','base-href')(format=".")
 :marked
   Without that tag, the browser may not be able to load resources
@@ -1699,26 +3279,57 @@ code-example(format=".", language="bash").
   Bad things could happen when someone pastes an application link into the
   browser's address bar or clicks such a link in an email link.
 
+  Sans cette balise, le navigateur ne serait pas capable de charger les ressources 
+  (images, css, scripts) lors de «&nbsp;liens profonds&nbsp;» dans l'application.
+  Des choses bizarres pourraient arriver lorsque quelqu'un collerait un lien de l'application
+  dans la barre d'adresse du navigateur ou cliquerait sur un tel lien dans un email.
+
   Some developers may not be able to add the `<base>` element, perhaps because they don't have
   access to `<head>` or the `index.html`.
 
+  Certains développeurs pourraient ne pas pouvoir ajouter l'élément `<base>`, peut-être
+  parce qu'ils n'ont pas accès au `<head>` du `index.html`.
+
   Those developers may still use HTML 5 URLs by taking two remedial steps:
 
+  Ces développeurs pourraient toujours utiliser les URLs HTML 5 avec ces deux remèdes&nbsp;:
+
   1. Provide the router with an appropriate `APP_BASE_HREF` value.
+
+  1. Fournir au routeur la valeur `APP_BASE_HREF` appropriée.
+
   1. Use **absolute URLs** for all web resources: css, images, scripts, and template html files.
+
+  1. Utiliser des **URLs absolues** pour toutes les ressources web&nbsp;: css, images, scripts et les fichiers
+  de modèle html.
 
 .l-sub-section
   :marked
     Learn about the [APP_BASE_HREF](../api/common/index/APP_BASE_HREF-let.html)
     in the API Guide.
+
+    Apprenez-en plus sur [APP_BASE_HREF](../api/common/index/APP_BASE_HREF-let.html)
+    dans le Guide de l'API.
+
 :marked
   ### *HashLocationStrategy*
+
   We can go old-school with the `HashLocationStrategy` by
   providing it as the router's `LocationStrategy` during application bootstrapping.
+
+  Nous pouvons utiliser `HashLocationStrategy` à la vieille école 
+  en fournissant cette valeur au `LocationStrategy` du routeur durant l'amorçage de l'application.
 
   First, import the `provide` symbol for Dependency Injection and the
   `Location` and `HashLocationStrategy` symbols from the router.
 
+  Tout d'abord, importez le symbole `provide` pour l'Injection de Dépendance
+  et les symboles `Location` et `HashLocationStrategy` depuis le routeur.
+
   Then *override* the default strategy defined in `provideRouter` by
   providing the `HashLocationStrategy` later in the `AppComponent` providers array argument:
+
+  Puis *écrasez* la stratégie par défaut définie dans `provideRouter` en fournissant
+  `HashLocationStrategy` plus tard dans l'argument tableau de fournisseurs de `AppComponent`&nbsp;: 
+
 +makeExample('router/ts/app/main.2.ts','', 'main.ts (hash URL strategy)')
