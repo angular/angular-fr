@@ -1040,7 +1040,7 @@ a(href="#toc") Retour en haut
   :marked
     **Why?** Follows conventional thinking for properties and methods.
     
-    **Pourquoi ?** Cela recpect les idées reçues concernant les propriétés et méthodes.
+    **Pourquoi ?** Cela rescpect les idées reçues concernant les propriétés et méthodes.
 
 .s-why
   :marked
@@ -1052,7 +1052,7 @@ a(href="#toc") Retour en haut
   :marked
     **Why?** TypeScript tooling makes it easy to identify private vs public properties and methods.
     
-    **Pourquoi ?** TypeScript propose les modificateurs d'accès ce qui permet de différencier simplement
+    **Pourquoi ?** TypeScript propose les modificateurs d'accès ce qui permet de différencier d'une manière simple
     les propriétés et méthodes privées vs publique.
 
 +makeExample('style-guide/ts/03-04/app/shared/toast.service.avoid.ts', 'example', 'app/shared/toast.service.ts')(avoid=1)
@@ -1068,15 +1068,22 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="03-05"></a>Import Destructuring Spacing
+  
+  ### <a id="03-05"></a>Les espaces dans la destructuration des Imports
+  
   #### <a href="#03-05">Style 03-05</a>
 
 .s-rule.do
   :marked
     **Do** leave one whitespace character inside of the `import` statements' curly braces when destructuring.
+    
+    **Vous devez** garder un charactère d'espace entre les accolades de l'instruction `import` lors d'une destructuration.
 
 .s-why.s-why-last
   :marked
     **Why?** Whitespace makes it easier to read the imports.
+    
+    **Pourquoi ?** Les caractères blancs facilitent la lecture des imports.
 
 +makeExample('style-guide/ts/03-05/app/+heroes/shared/hero.service.avoid.ts', 'example', 'app/+heroes/shared/hero.service.ts')(avoid=1)
 :marked
@@ -1091,27 +1098,40 @@ a(href="#toc") Retour en haut
 .l-main-section
 :marked
   ### <a id="03-06"></a>Import Line Spacing
+  
+  ### <a id="03-06"></a>Les sauts de lignes dans les Imports
+  
   #### <a href="#03-06">Style 03-06</a>
 
 .s-rule.do
   :marked
     **Do** leave one empty line between third party imports and imports of code we created.
+    
+    **Vous devez** garder une ligne vide entre les imports des librairies tierces et les imports du code applicatif.
 
 .s-rule.do
   :marked
     **Do** list import lines alphabetized by the module.
+    
+    **Vous devez** lister les imports classés par ordre alphabétique des modules.
 
 .s-rule.do
   :marked
     **Do** list destructured imported assets alphabetically.
+    
+    **Vous devez** lister les imports destructurés classés par ordre alphabétique.
 
 .s-why
   :marked
     **Why?** The empty line makes it easy to read and locate imports.
+    
+    **Pourquoi ?** Une ligne vide permet de simplifier la lecture des imports.
 
 .s-why.s-why-last
   :marked
     **Why?** Alphabetizing makes it easier to read and locate imports.
+    
+    **Pourquoi ?** L'ordre alphabétique permet de simplifier la lecture des imports.
 
 +makeExample('style-guide/ts/03-06/app/+heroes/shared/hero.service.avoid.ts', 'example', 'app/+heroes/shared/hero.service.ts')(avoid=1)
 :marked
