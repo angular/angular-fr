@@ -1,72 +1,126 @@
 :marked
   We write **unit tests** to explore and confirm the **behavior** of parts of our application.
 
+  Nous écrivons des **tests unitaires** pour explorer et confirmer le **comportement** des différentes parties de notre application.
+
   1. They **guard** against breaking existing code (“regressions”) when we make changes.
+  1. Ils **préviennent** l'apparition de problèmes dans le code existant (“regressions”) quand nous faisons des changements.
+
   1. They **clarify** what  the code does both when used as intended and when faced with deviant conditions.
+  1. Ils **clarifient** ce que le code doit faire, à la fois quand il est utilisé comme attendu et quand il est face à des conditions anormales.
+
   1. They **reveal** mistakes in design and implementation. Tests force us to look at our code from many angles. When a part of our application seems hard to test, we may have discovered a design flaw, something we can cure now rather than later when it becomes expensive to fix.
+  1. Ils **révèlent** les erreurs dans le design et l'implémentation. Les tests nous forcent à regarder notre code depuis plusieurs angles. Quand une partie de l'application semble difficile à tester, c'est que nous venons peut-être de découvrir un problème de design, quelque chose que nous pourrions réparer maintenant plutôt que plus tard quand cela sera couteux.   
     
+
 a(id="top")
 :marked
   # Table of Contents
 
+  # Sommaire
+
   1. [Jasmine Testing 101](#jasmine-101)
+  1. [Débuter avec les tests Jasmine](#jasmine-101)
     - setup to run Jasmine tests in the browser
+    - préparations pour l'éxécution de tests Jasmine dans le navigateur
     - basic Jasmine testing skills
+    - compétences de bases pour les tests avec Jasmine
     - write simple Jasmine tests in TypeScript
+    - écrire un test Jasmine simple avec TypeScript
     - debug a test in the browser
+    - débugger un test dans le navigateur
   
   1. [The Application Under Test](#aut)
-  
+  1. [L'application testée](#aut)
+
   1. [First app test](#first-app-tests)
+  1. [Première application de test](#first-app-tests)
     - test a simple application interface outside of Angular
+    - tester une simple interface d'application à l'éxtérieur d'Angular
     - where to put the test file
+    - où mettre les fichiers tests
     - load a test file with systemJS
+    - charger un fichier test avec system.js
   
   1. [Pipe driven development](#pipe-testing)
+  1. [--Une idée ?--](#pipe-testing)
     - create a test before creating a class
+    - créer un test avant de créer une classe
     - load multiple test files in our test harness, using system.js
+    - charger plusieurs fichiers test dans notre harnais de test, en utilisant system.js 
     - add the Angular 2 library to our test harness
+    - ajouter la librairie Angular 2 à notre harnais
     - watch the new test fail, and fix it
+    - regarder les nouveaux tests échouer, et les réparer
   
   1. Test an Asynchronous Service (forthcoming)
+  1. Tester un service Asynchrone (à venir)
     - test an asynchronous service class outside of Angular
+    - tester une classe représentant un service asynchrone en dehors d'Angular
     - write a test plan in code
+    - écire un plan de test dans le code
     - fake a dependency
+    - simuler une dépendance
     - master the `catch(fail).then(done)` pattern
+    - maitriser le `catch(fail).then(done)` pattern
     - move setup to `beforeEach`
+    - déplacer les préparatifs dans `beforeEach` 
     - test when a dependency fails
+    - tester quand une dépandance échoue
     - control async test timeout
+    - controler et tester les timeout des opérations asynchrones 
   
   1. The Angular Test Environment (forthcoming)
+  1. L'environement de test d' Angular (à venir)
     - the Angular test environment and why we need help
+    - l'environement de test Angular et pourquoi nous en avons besoin
     - add the Angular Test libraries to the  test harness
+    - ajouter la librairie de test Angular au harnais de test
     - test the same async service using Angular Dependency Injection
+    - tester le même service asynchrone en utilisant l'injection de dépendance d'Angular
     - reduce friction with test helpers
+    - réduire la friction avec les utilitaires de test
     - introducing spies
+    - présentation des espions
   
   1. Test a Component (forthcoming)
-     - test the component outside of Angular
+  1. Tester un composant (à venir)
+    - test the component outside of Angular
+    - tester le composant en dehors d'Angular
     - mock the dependent asynchronous service
+    - mocker le service asynchrone dépendant
     - simulate interaction with the view (no DOM)
+    - simuler une interaction avec la vue (sans le DOM)
     - use a spy-promise to control asynchronous test flow
+    - utiliser une promesse espion pour controler le flot de test asynchrone
   
   1. Test a Component in the DOM (forthcoming
+  1. Tester un composant dans le DOM (à venir)
     - test the component inside the Angular test environment
+    - tester un composant dans l'environement de test Angular
     - use the `TestComponentBuilder`
+    - utiliser le `TestComponentBuilder`
     - more test helpers
+    - plus d'utilitaires de tests
     - interact with the DOM
+    - intéragir avec le DOM
     - bind to a mock dependent asynchronous service
+    - liaisons à un mock de service asynchrone dépendant
   
   1. Run the tests with karma (forthcoming)
+  1. Exécuter les test avec karma (à venir)
 
   It’s a big agenda. Fortunately, you can learn a little bit at a time and put each lesson to use.
+  C'est un gros agenda. Heureusement, vous pouvez apprendre petit à petit et mettre chaque leçon en pratique.
 
 a(href="#top").to-top Back to top
+a(href="#top").to-top Revenir en haut
 
 .l-hr
 a(id="jasmine-101")
 :marked
   # Jasmine Testing 101
+  # Débuter avec les tests Jasmine
 != partial("../testing/jasmine-testing-101")
 a(href="#top").to-top Back to top
 
@@ -74,6 +128,7 @@ a(href="#top").to-top Back to top
 a(id="aut")
 :marked
   # The Application to Test
+  # L'application testée
 != partial("../testing/application-under-test")
 a(href="#top").to-top Back to top
 
@@ -81,6 +136,7 @@ a(href="#top").to-top Back to top
 a(id="first-app-tests")
 :marked
   # First app test
+  # Première application de test
 != partial("../testing/first-app-tests")
 a(href="#top").to-top Back to top
 
@@ -95,3 +151,6 @@ a(href="#top").to-top Back to top
   :marked
     The testing chapter is still under development.
     Please bear with us as we both update and complete it.
+
+    Ce chapitre est encore en dévelopement.
+    Merci de votre patience pandant que nous le mettons à jour et le complétons. 
