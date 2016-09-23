@@ -2,58 +2,99 @@ include ../_util-fns
 
 :marked
   In this chapter we'll setup the environment for testing our sample application and write a few easy Jasmine tests of the app's simplest parts.
+  
+  Dans ce chapitre, nous allons configurer l'environement pour tester notre application d'exemple et pour écrire les quelques tests Jasmine des parties les plus simples de l'application.
+
   We'll learn:
+
+  Nous allons apprendre:
+
   - to test one of our application files
+  - à tester un de nos fichiers de l'application
   - why we prefer our test files to be next to their corresponding source files
+  - pourquoi nous préférons que nos fichiers de tests soient à coté du fichier source correspondant
   - to run tests with an `npm` command
+  - à exécuter les tests avec la commende `npm` 
   - load the test file with SystemJS
+  - à charger les fichiers de tests avec SystemJS
 
 .callout.is-helpful
   header Prior Knowledge
+  header Connaissance prérequises
   :marked
     The Unit Testing chapters build upon each other. We recommend reading them in order.
+
+    Chaque châpitre sur les tests unitaires se base sur le précédent. Nous recommendons de les lires dans l'ordre.
+
     We're also assuming that you're already comfortable with basic Angular 2 concepts and the tools
     we introduced in the [QuickStart](../quickstart.html) and
     the [Tour of Heroes](../tutorial/) tutorial
     such as <code>npm</code>, <code>gulp</code>, and <code>lite-server</code>.
 
+    Nous nous attendons à ce que vous soyez déja habitué aux concepts basiques d'Angular 2 et aux outils 
+    que nous avons présentés dans le [Démarrage rapide]](../quickstart.html) et le
+    tutoriel [Tour des héros](../tutorial/) comme <code>npm</code>, <code>gulp</code>, and <code>lite-server</code>.
+
 .l-main-section
 :marked
   ## Create the test-runner HTML
 
+  ## Créer le code HTML pour l'éxécuteur de tests
+
   Locate the folder that contains the application `index.html` for your testing copy of Tour of Heroes.
 
+  Cherchez le répertoire contant le fichier `index.html` de l'application dans votre copie de test du Tour des héros.
+
   Create a new, sibling HTML file, ** `unit-tests.html` ** and copy over the same basic material from the  `unit-tests.html` in the [Jasmine 101](./jasmine-testing-101.html) chapter.
+
+  Créez un nouveau fichier HTML à coté de celui-ci, ** `tests-unitaires.html` ** et copiez encore le même code de base depuis le fichier `tests-unitaires.html` écrit dans le chapitre [Débuter avec les tests Jasmine](./jasmine-testing-101.html).
   
 +makeExample('testing/ts/unit-tests-2.html', 'test-runner-base', 'unit-tests.html')
 
++makeExample('testing/ts/unit-tests-2.html', 'test-runner-base', 'tests-unitaires.html')
+
 :marked
   We're picking up right where we left off. All we've done is change the title.
+
+  Nous reprennons pile là où nous nous étions arrété. Tout ce que nous avons fait, c'est changer le titre.
 
 .l-main-section
 :marked
   ## Update `package.json` for testing
 
+  ## Mise à jour de `package.json` pour les tests
+
   We must install the Jasmine package as well:
+
+  Nous devons également installer le package Jasmine:
 
 pre.prettyprint.lang-bash
   code npm install jasmine-core --save-dev --save-exact
 
 .alert.is-important Be sure to install <code>jasmine-core</code> , not <code>jasmine</code>!
+.alert.is-important Vérifiez à bien installer <code>jasmine-core</code> , pas <code>jasmine</code>!
 
 .l-main-section
 :marked
   ## Configure `lite-server` for serving our test harness
 
+  ## Configurer `lite-server` pour servir notre harnais de tests
+
 :marked
   First create a configuration file for serving up our test harness through `lite-server`.
+
+  Commençons par créer un fichier de configuration pour servir le harnais de test avec `lite-server`.
 
 +makeExample('testing/ts/liteserver-test-config.json', '', 'liteserver-test-config.json')
 
 :marked
   Let's make one more change to the `package.json` script commands.
 
+  Allons faire une autre modification dans les commandes de scripts de `package.json`.
+
   **Open the `package.json` ** and scroll to the `scripts` node and add the following two entries:
+
+  **Ouvrez `package.json` ** et allez au noeud `scripts` pour y ajouter les deux entrés suivantes:
 
 code-example(format="").
   "lite-server-test": "lite-server --config=liteserver-test-config.json",
@@ -62,82 +103,143 @@ code-example(format="").
 :marked
   The `npm test` command will launch `lite-server` and open a browser to the `unit-tests.html` page we just wrote. It will also take care of recompiling your source code and reloading your browser after any change.
 
+  La commande `npm test` va lancer `lite-server` et ouvrir un navigateur sur la page  `tests-unitaires.html` que nous venons d'écrire. Il va aussi s'occuper de recompiler votre code source et va re-actualiser le navigateur aprés chaques changements.
+
 .l-main-section
 :marked
   ## First app tests
 
+  ## Premier tests de l'app
+
   We can start testing *some* of our app right away. For example, we can test the `Hero` interface:
+
+  Nous pouvons directement commencer par tester *quelques* parties de notre application:
   
 +makeExample('testing/ts/app/hero.ts')  
 
 :marked
   Let's add a couple of simple tests in a new file.
 
+  Ajoutons quelques tests dans un nouveau fichier.
+
 +makeExample('testing/ts/app/hero.spec.ts', 'base-hero-spec')  
 
 :marked
   That's the basic Jasmine we learned back in "Jasmine 101".
 
+  Ce sont les bases que nous avons apprises dans "Débuter avec les tests Jasmine".
+
   Notice that we surrounded our tests with ** `describe('Hero')` **.
+
+  Notez que nous avons entouré nos tests avec ** `describe('Hero')` **.
 
   **By convention, our test always begin with a `describe` that identifies the application part under test.**
 
+  **Par convention, nos tests commencent toujours avec un `describe` qui identifie la partie de l'application que nous testons.**
+
   The description should be sufficient to identify the tested application part and its source file. Almost any convention will do as long as you and your team follow it consistently and are never confused.
+
+  La description doit être suffisante pour identifier la partie testée et son fichier source. Presque toutes les conventions feront l'affaire, temps que vous et votre équipe les suivez correctements et que vous n' êtes jamais perdus.
   
   But we haven't saved this test yet.
+
+  Mais nous n' avons pas encore sauvegardé ce test.
 
 .l-main-section
 :marked
   ## Where do tests go?
 
+  ## Où vont les tests?
+
   Some people like to keep their tests in a `tests` folder parallel to the application source folder.
 
+  Certaines personnes aiment garder leurs tests dans un répertoire `tests` parallèle au répertoire des sources de l'application. 
+
   We are not those people. We like our unit tests to be close to the source code that they test. We prefer this approach because
+
+  Nous ne sommes pas ces personnes. Nous voulons que nos tests soient à coté du code source testé. Nous préférons cette approche car
+
   - The tests are easy to find
-  - We see at a glance if an application part lacks tests.
+  - Les tests sont plus facile à trouver
+  - We see at a glance if an application part lacks tests
+  - Nous voyons d'un coup d'oeil quelles parties de l'application ne sont pas testées
   - Nearby tests can teach us about how the part works; they express the developers intention and reveal how the developer thinks the part should behave under a variety of circumstances.
+  - Les tests proches nous apprennent comment fonctionne le code; ils expriment les intentions du développeur et comment le développeur à pensé au comportement de ce code dans une variété de circonstances.
   - When we move the source (inevitable), we remember to move the test.
+  - Quand nous déplaçons les sources (inévitable), nous pensons à déplacer les tests.
   - When we rename the source file (inevitable), we remember to rename the test file.
+  - Quand nous renommons les sources (inévitable), nous pensons à renommer les fichiers tests. 
 
   We can't think of a downside. The server doesn't care where they are.  They are easy to find and distinguish from application files when named conventionally.
+
+  Nous ne pouvons pas y trouver de mauvais cotés. Le serveur ne se préocupe pas d'où ils se trouvent. Ils sont faciles à trouver et se distinguent des fichiers de l'application quand ils sont nommés en suivant les conventions.
 
 .l-sub-section
   :marked
     You may put your tests elsewhere if you wish. 
+
+    Vous pouvez mettres vos tests ailleur si vous le voulez.
+
     We're putting ours inside the app, next to the source files that they test.
+
+    Nous mettons les notres dans l'application, à coté des fichiers sources qu'ils testent.
 
 .l-main-section
 :marked
   ## First spec file
 
+  ## Premier fichier spec
+
   **Create** a new file, ** `hero.spec.ts` ** in `app` next to `hero.ts`.
+
+  **Créez** un nouveau fichié, ** `hero.spec.ts` ** dans `app` à coté de `hero.ts`.
 
   Notice the ".spec" suffix in the test file's filename, appended to the name of the file holding the application part we're testing.
 
+  Notez le ".spec" suffixe dans le nom du fichier de test, ajouté au nom du fichier contenant la partie de l'application que nous testons.
+
 .alert.is-important  All of our unit test files follow this .spec naming pattern.
+
+.alert.is-important  Tout nos fichiers de tests unitaires suivent ce format .spec.
 
 :marked
   Save the tests we just made in `hero.spec.ts`:
+
+  Sauvegardez les tests que nous venons de faire dans `hero.spec.ts`: 
 
 +makeExample('testing/ts/app/hero.spec.ts', 'base-hero-spec')  
 
 :marked
   ### Import the part we're testing
 
+  ### Importez la partie que nous testons
+
   We have an `import {Hero} from './hero' ` statement.
+
+  Nous avons la déclaration `import {Hero} from './hero'.
 
   If we forgot this import, a TypeScript-aware editor would warn us, with a squiggly red underline, that it can't find the definition of the `Hero` interface.
 
+  Si nous oublions cet import, un éditeur supportant TypeScript devrait nous avertir, avec une soulignage rouge ondulé, qu'il ne trouve pas la définition de l'interface `Hero`.
+
   ### Update unit-tests.html
 
+  ### Mise à jour de tests-unitaires.html
+
   Next we update the `unit-tests.html` with a reference to our new `hero.spec.ts` file. Delete the inline test code.  The revised pertinent HTML looks like this:
+
+  Par la suite, nous mettons à jour `tests-unitaires.html` avec une référence vers notre nouveau fichier `hero.spec.ts`. Supprimez le code de testé en ligne. Le code HTML modifié ressemble à ca 
   
 +makeExample('testing/ts/unit-tests-2.html', 'load-hero-and-spec')(format=".")
 
 :marked
   ### Run and Fail
 
+  ## Exécution et echec
+
   Look over at the browser (lite-server will have reloaded it).  The browser displays
+
+  Regardez le navigateur (lite-server l'aura re-actualisé). Le navigateur affiche
 
 figure.image-display
   img(src='/resources/images/devguide/first-app-tests/Jasmine-not-running-tests.png' style="width:400px;" alt="Jasmine not running any tests")
@@ -145,7 +247,11 @@ figure.image-display
 :marked
   That's Jasmine saying "**things are _so_ bad that _I'm not running any tests_.**"
 
+  Il s'agit de Jasmine qui dit "**les choses vont _si_ mal que _je ne vais éxécuter aucun test_.**"
+
   Open the browser's Developer Tools (F12, Ctrl-Shift-i). There's an error:
+
+  Ouvrez les Outils développeur du navigateur (F12, Ctrl-Shift-i). Il y a une erreur:
 
 code-example(format="" language="html").
   Uncaught ReferenceError: System is not defined
@@ -154,30 +260,53 @@ code-example(format="" language="html").
 :marked
   ## Load tests with SystemJS
 
+  ## Chargez les tests avec SystemJS
+
   The immediate cause of the error is the `export` statement in `hero.ts`.
   That error was there all along.
   It wasn't a problem until we tried to `import` the `Hero` interface in our tests.
 
+  La cause directe de cette erreur est la déclaration `export` dans `hero.ts`. 
+  Cette erreur était là depuis le début.
+  Ce n'était pas un problème jusqu'a ce que nous essayons d' `import` l'interface `Hero` dans nos tests.
+
   Our test environment lacks support for module loading.
   Apparently we can't simply load our application and test scripts like we do with 3rd party JavaScript libraries.
+
+  Il manque à notre environement de test le support pour le chargement de modules.
+  Apparemment nous ne pouvons pas simplement charger notre application et les scripts de tests comme nous le ferions pour une librairies JavaScript tierce.
 
   We are committed to module loading in our application.
   Our app will call `import`.  Our tests must do so too.
 
+  Nous nous sommes engagés à utiliser le chargement des modules dans notre application. 
+  Notre application appelle `import`. Nos tests doivent en faire autant. 
+
   We add module loading support in four steps:
 
+  Nous ajoutons le support du chargement des modules en quatres étapes:
+
   1. add the *SystemJS* module management library
+  1. ajouter la librairie de gestion de modules *SystemJS*
   1. configure *SystemJS* to look for JavaScript files by default
+  1. configurer *SystemJS* pour chercher des fichiers JavaScript par défaut
   1. import our test files
+  1. importer nos fichiers de tests
   1. tell Jasmine to run the imported tests
+  1. informer Jasmine d'éxécuter les tests importés
 
   These steps are all clearly visible, in exactly that order, in the following lines that
   replace the `<body>` contents in `unit-tests.html`:
+
+  Ces étapes sont clairements visibles, éxactement dans le même ordre, 
+  dans les lignes suivantes qui remplacent la section `<body>` dans `tests-unitaires.html`:
 
 +makeExample('testing/ts/unit-tests-3.html', 'systemjs')(format=".")
 
 :marked
   Look in the browser window. Our tests pass once again.
+
+  Regardons dans la fenêtre du navigateur. Nos tests passent à nouveau.
 
 figure.image-display
   img(src='/resources/images/devguide/first-app-tests/test-passed-once-again.png' style="width:400px;" alt="Tests passed once again")
@@ -188,37 +317,70 @@ figure.image-display
   ## Observations
 
   ### System.config
+
   System.js demands that we specify a default extension for the filenames that correspond to whatever it is asked to import.
   Without that default, it would translate an import statement such as `import {Hero} from './hero'` to a request for the file named `hero`.
   Not `hero.js`. Just plain `hero`.  Our server error with "404 - not found" because it doesn't have a file of that name.
 
+  System.js demande à ce que nous spécifions une extension par défaut pour les noms de fichiers correspondant à ce qui va être demandé à importer.
+  Sans ce défaut, om traduit une déclration d'importation comme `import {Hero} from './hero'` en une requête vers un fichier nommé `hero`.
+  Pas `hero.js`. Juste `hero`. Notre serveur retourne alors une erreur "404 - not found" car il ne trouve de fichier avec ce nom. 
+
   Once configured with a default extension of 'js',&nbsp;  SystemJS requests `hero.js` which *does* exist and is promptly returned by our server.
 
+  Une fois configuré avec une l' extension par défaut 'js',&nbsp; SystemJs effectue la requête récupérer le fichier `hero.js` qui lui existe et le retourne directement.  
+
   ### Asynchronous System.import
+  ### System.import asynchrone
+
   The call to `System.import` shouldn't surprise us but its asynchronous nature might.
   If we ponder this for a moment, we realize that it must be asynchronous because
   System.js may have to fetch the corresponding JavaScript file from the server.
   Accordingly, `System.import` returns a promise and we must wait for that promise to resolve.
   Only then can Jasmine start evaluating the imported tests.
 
+  L'appel à `System.import` ne devrait pas nous surprendre, mais ca nature asynchrone elle le pourrait.
+  Si nous réfléchissons à cela un instant, nous réalisons qu'elle doit être asynchrone car System.js doit récupérer le fichier JavaScript correspondant depuis le serveur.
+  En conséquence, `System.import` retourne une promesse et nous devons attendre que cette promesse soit résolue.
+  Alors seulement, Jasmine pourra évaluer le test importé.
+
   ### window.onload
+
   Jasmine doesn't have a `start` method.  It wires its own start to the browser window's `load` event.
   That makes sense if we're loading our tests with script tags.
   The browser raises the `load` event when it finishes loading all scripts.
+
+  Jasmine n'a pas de méthode `start`. La librairie cable son propre démarage sur l'évènement navigateur `load`.
+  Cela semble logique si  nous chargeons nos tests avec des balises scripts.
 
   But we're not loading test scripts inline anymore.
   We're using the SystemJS module loader and it won't be done until long after the browser raised the `load` event.
   Meanwhile, Jasmine started and ran to completion … with no tests to evaluate … before the import completed.
 
+  Mais nous ne chargeons plus nos scripts de cette manière.
+  Nous utilisons le chargeur de module SystemJS et ce ne sera fait seulement longtemp aprés que l'évènement `load` est était émis. 
+
   So we must wait until the import completes and only then call the window `onLoad` handler.
   Jasmine re-starts, this time with our imported test queued up.
+
+  Nous devons donc attendre jusqu'a ce que l'importation soit terminée, alors seulement nous pourrons appeller la fonction `onLoad`.
+  Jasmine re démarera, cette fois avec nos test prêt à être exécutés. 
 
 .l-main-section
 :marked
   ## What's Next?
+  ## Quoi de neuf pour la suite ?
+
   We are able to test a part of our application with simple Jasmine tests.
   The part was a stand-alone interface that made no mention or use of Angular.
+
+  Nous sommes capable de tester une partie de notre application avec des tests Jasmine simples.
+  Cette partie était une interface isolée qui ne mentionnée pas et n'utilisée pas Angular.
 
   That's not rare but it's not typical either. 
   Most of our application parts make some use of the Angular framework.
   Let's test a *pipe* class that does rely on Angular.
+
+  Ce n'est pas rare, mais ce n'est pas non plus un cas typique.
+  La pluparts des parties de notre application utilise d'une manière ou d'une autre le framework Angular.
+  Essayons de tester une classe qui utilise Angular pour implementer un *tuyaux*. 

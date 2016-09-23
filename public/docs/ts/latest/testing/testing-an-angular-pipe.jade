@@ -3,23 +3,44 @@ include ../_util-fns
 :marked
   We’ll test an Angular pipe in this chapter.
 
+  Nous allons tester un tuyau Angular dans ce chapitre.
+
   An Angular pipe is a declarative way in HTML to transform some input into some displayable output.
+
+  Un tuyau Angular est un moyen déclaratif en HTML de transformer une entre en une sortie affichable.
   
   We don't have a pipe though, since in Tour of Heroes we didn't create any pipes. It uses a pipe though, the `uppercase` pipe that comes with Angular 2.
+
+  Nous n'avons cependant pas de tuyaux, car nous n'en avons pas créé. Il utilise cepandant un tuyau, le tuyau `uppercase` fournit par Angular 2.
   
   We can make our own `my-uppercase` pipe that does exactly the same as the `uppercase` pipe and test that.
+
+  Nous allons faire notre propre tuyau `my-uppercase` qui fait éxactement la même chose que le tuyau `uppercase` et le tester.
   
   Since we're getting ready to write some code we want to test, let's take this opportunity to talk just a little bit about [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development). There's a lot written about this topic so we don't want to have an exhaustive description here, but rather a practical application.
+
+  Vue que nous sommes prêt à écrire le code que nous voulons tester, nous allons saisir cette opportunité pour parler un petit peut de [Développement piloté pas les tests](https://fr.wikipedia.org/wiki/Test_driven_development). Il y a beaucoup de resources écrites sur ce sujet, alors nous n'allons 
+  pas en faire une description exhaustive ici, nous allons plutôt parler de ces applications pratiques. 
   
   We already know *exactly* what we want the `uppercase` pipe to do. We could say our ...expectations... of it are very well defined.
+
+  Nous savons déja *exactement* ce que doit faire le tuyau `uppercase`. Nous pourrions dire que nos ...attentes... concernant celui-ci sont trés bien définies.
   
   We always use our expectations to guide development, but sometimes it's hard to see the forest for the trees when we're right in the middle of coding. This is especially evident in larger tasks.
+
+  Nous utilisons toujours nos attentes pour guider le développement, mais certaines fois quand nous sommes en plein milieu d'un développement, les arbres peuvent cacher une forêt. Cela est particulièrement vrais pour de grandes tâches.
   
   So one thing we can do is put those expectations down as cold hard test code. We were going to test things manually anyway, so doing it *before* we have even one line of code isn't going to hurt. 
   
+  Alors une chose que nous pouvons faire, c'est de spécifier ces attentes froidement, en dur, dans du code de test. Nous allions dans tout les cas tester les choses manuellement, alors le faire *avant* même d'avoir une seule ligne de code ne va pas nous déranger.
+
   Worst thing that can happen is have that test fail, but on the way to fixing it we'll end up creating our pipe. So in a sense, the failing test will *tell you what it wants* to pass.
+
+  La pire chose qui puisse arriver est que nos tests échouent, mais au fur et à mesure que nous les réparerons, nous finirons par créer le tuyau. Donc d'une manière, le test qui échoue *vous dira ce qu'il veut* pour fonctionner. 
   
   We're just putting down expectations, nothing more. If we were to put them down on paper, they would look like this:
+
+  Nous allons juste poser nos attentes, rien de plus. Si nous devions les écrires sur papier, elles ressembleraient à cela:
 
   ```  
     MyUppercasePipe
@@ -27,37 +48,71 @@ include ../_util-fns
       transforms "abc def" to "ABC DEF"
       leaves "ABC DEF" unchanged
   ```  
+
+  ```  
+    MyUppercasePipe
+      transforme "abc" en "ABC"
+      transforme "abc def" en "ABC DEF"
+      ne modifie pas "ABC DEF" 
+  ```  
    
-  All we need to know to put down our expectations as code is how a pipe class looks like from the outside. From the [pipe developer guide](pipes#custom-pipes) we know that a pipe implements a `transform` method. 
+  All we need to know to put down our expectations as code is how a pipe class looks like from the outside. From the [pipe developer guide](pipes#custom-pipes) we know that a pipe implements a `transform` method.
+
+  Tout ce que nous devons savoir pour écrire nos attentes sous forme de code est à quoi la classe tuyau ressemble depuis l'extérieur. Grâce au [guide de développement de tuyaux](pipes#custom-pipes) nous savons qu'un tuyau implémente une méthode `transform`.   
   
   Putting it down as Jasmine expectations, they would look something like this:
+
+  Les écrire sous la forme d'attente avec Jasmine, elles devraient ressembler à cela:
   
 +makeExample('testing/ts/app/my-uppercase.pipe.spec.ts', 'expectations')  
 
 :marked
   In this chapter we will:
+
+  Dans ce chapitre nous allons:
+  
   - create a test before creating a class
+  - créer un test avant d'écrire une classe
   - load multiple test files in our test harness, using system.js
+  - charger plusieurs fichiers tests dans notre harnais, en utilisant system.js
   - add the Angular 2 library to our test harness
+  - ajouter la librairie Angular 2 à notre harnais de tests
   - watch the new test fail, and fix it
+  - regarder les nouveaux tests échouer, et les corriger
 
 .callout.is-helpful
   header Prior Knowledge
+  header Connaissances prérequises
   :marked
     The Unit Testing chapters build upon each other. We recommend reading them in order.
+
+    Chaque châpitre sur les tests unitaires se base sur le précédent. Nous recommendons de les lires dans l'ordre.
+    
     We're also assuming that you're already comfortable with basic Angular 2 concepts and the tools
     we introduced in the [QuickStart](../quickstart.html) and
     the [Tour of Heroes](../tutorial/) tutorial
     such as <code>npm</code>, <code>gulp</code>, and <code>lite-server</code>.
 
+    Nous nous attendons à ce que vous soyez déja habitué aux concepts basiques d'Angular 2 et aux outils 
+    que nous avons présentés dans le [Démarrage rapide]](../quickstart.html) et le
+    tutoriel [Tour des héros](../tutorial/) comme <code>npm</code>, <code>gulp</code>, and <code>lite-server</code>.    
+
 :marked
   ## Add another spec file
 
+  ## Ajoutez un autre fichier spec
+
   **Create** a `my-uppercase.pipe.spec.ts` in `app/`.
 
-  **Stop and restart the TypeScript compiler** to ensure we compile the new file.
+  **Créez** in fichier `my-uppercase.pipe.spec.ts` dans `app/`.
+
+  **Stop** and restart the TypeScript compiler** to ensure we compile the new file.
+
+  **Stoppez** et redémarrez le compilateur TypeScript** pour être sur qu'il compile bien le nouveau fichier.
 
   **Add** the following lines of rather obvious Jasmine test code.
+
+  **Ajoutez** les simples lignes de code Jasmine suivantes.
   
 +makeExample('testing/ts/app/my-uppercase.pipe.spec.ts', 'base-pipe-spec', 'app/my-uppercase.pipe.spec.ts')
   
@@ -65,35 +120,64 @@ include ../_util-fns
   Note that each test is short (one line in our case).
   It has a clear label that accurately describes the test. And it makes exactly one expectation.
 
+  Notez que chaque test est court (une ligne dans notre cas).
+  Il a un label clair qui décrit correctement le test. Et il décrit éxactement une seule attente.  
+
   Anyone can read these tests and understand quickly what the test does and what the pipe does.
   If one of the tests fails, we know which expected behavior is no longer true.
   We’ll have little trouble maintaining these tests and adding more like them as we encounter new conditions to explore.
 
+  N'importe qui peut lire ces tests et comprendre rapidement ce que fait le test et ce que fait le tuyau.
+  Si un test échoue, nous savons quel comportement attendu n'est plus vrai.
+  Nous allons avoir quelques petits problèmes pour maintenir ces tests et pour en ajouter d'autres au fur et  à mesure que nous rencontrerons de nouvelles conditions à explorer.
+
   That’s the way we like our tests!
+
+  C'est comme ca que nous aimons nos tests!
 
   ## Add this spec to `unit-tests.html`
 
+  ## Ajoutez cette spec à `tests-unitaires.html` 
+
   Now let’s wire our new spec file into the HTML test harness.
+
+  Maintenant allons cabler notre nouveau fichier de spec dans le harnais de tests HTML.
 
   Open `unit-tests.html`. Find `System.import('app/hero.spec')`.
 
+  Ouvrez `tests-unitaires.html`. Trouvez `System.import('app/hero.spec')`.
+
   Hmm. We can’t just add `System.import('app/my-uppercase.pipe.spec')`.
+
+  Hmm. Nous ne pouvons pas simplement ajouter `System.import('app/my-uppercase.pipe.spec')`.
 
   The first `System.import` returns a promise as does this second import.
   We can’t run any of the Jasmine tests until **both imports are finished**.
 
+  Le premier `System.import` retourne une promesse, tout comme le second import.
+  Nous ne pouvons pas éxécuter les tests Jasmines avant que **les deux imports soient finis**.
+
   Fortunately, we can create a new `Promise` that wraps both import promises and waits
   for both to finish loading.
     
+  Heureusement, nous pouvons créer une nouvelle `Promesse` qui englobe les deux promesses d'importation et attendre que les deux aient terminées de charger.
+
 +makeExample('testing/ts/unit-tests-4.html', 'promise-all')(format=".")
 
 :marked
   We have a pattern for adding new tests.
 
+  Nous avons maintenant un modèle pour ajouter de nouveaux tests.
+
   In future, when we add a new spec, we add another `System.import('app/some.spec')` to
   the array argument passed to `Promise.all`.
+
+  Dans le futur, quand nous ajouterons une nouvelle spécification, nous ajouterons un autre `System.import('app/some.spec')`  au tableau 
+  d'arguments passé à `Promise.all`.
   
   Try it. The browser should refresh and show the following in the console:
+
+  Essayez. Le navigateur devrait se rafraichir et afficher cela dans la console:
 
 code-example(format="" language="html" escape="html").
   GET http://localhost:8080/app/my-uppercase.pipe.js 404 (Not Found)
@@ -101,81 +185,133 @@ code-example(format="" language="html" escape="html").
 :marked
   Our test failed, as expected. We're importing something that doesn't exist and our test fails saying that. All is going according to plan.
   
+  Notre test échoue, comme prévu. Nous importons quelque chose qui n'existe pas et nos tests échouent en nous le disant. Tout se déroule conformément au plan.
+
 :marked
   ## The pipe, if you please
   
+  ## Le tuyau, s'il vous plait.
+
   The test is asking for a pipe, and we shall deliver. 
+
+  Le test demande un tuyau, et nous devons le fournir.
   
   **Create** a `my-uppercase.pipe.ts` in `app/`.
+
+  **Créez** un fichier `my-uppercase.pipe.ts` dans `app/`.
   
   **Stop and restart the TypeScript compiler** to ensure we compile the new file.
   
+  **Stoppez et redémarrez le compilateur TypeScript** pour être sur qu'il compile bien le nouveau fichier.
+
   **Add** a basic pipe that doesn't do anything. We know how to make strings uppercase, but we since we're letting the test take the lead let's wait for it to tell us what's next. Maybe it'll surprise us.
-  
+
+  **Ajoutez** un tuyau basique qui ne fait rien. Nous savons comment capitaliser une chaine, mais comme nous laissons le test diriger, attendons le pour qu'il nous dise quoi faire. Cela pourrait peut-être nous surprendre.
+
 +makeExample('testing/ts/app/my-uppercase.pipe.1.ts', null, 'app/my-uppercase.pipe.ts')
 
 :marked
   Reload our test page and...
+
+  Re-actualisez la page de test et ...
   
 code-example(format="" language="html" escape="html").
   GET http://localhost:8080/angular2/core 404 (Not Found)
 
 :marked
   ## The Angular library, if you please
+
+  ## La librairie Angular s'il vous plait
+
   Looking back at `unit-tests.html` we realize that we have not loaded the Angular library.
   Yet we were able to load and test the application’s `Hero` interface.
+
+  En regardant `tests-unitaires.html` nous réalisons que nous n'avons pas chargé la librairie Angular.
+  Cepandant nous étions capable de charger et de tester l'interface `Hero` de l'application.
 
   **We were lucky!**  The `Hero` interface has no dependence on Angular.
   If it had depended on Angular, we’d still be staring at the Jasmine “big-time fail” screen:
 
+  **Nous étions chanceux!** L'interface `Hero` n'a pas de dépendances sur Angular.
+  Si elle avait dépendue d'Angular, nous serrions toujours en train de voir l'écran "sérieux problème":
+
 figure.image-display
   img(src='/resources/images/devguide/testing-an-angular-pipe/big-time-fail-screen.png' 
-      alt="Jasmine's' big time fail screen")
+      alt="Ecran sérieux problème de Jasmine")
 
 :marked
   We are writing an Angular application after all and
   we were going to need Angular sooner or later. That time has come.
 
+  Aprés tout nous sommes en train d'écrire une application Angular et nous allons avoir besoin d'Angular à un moment ou un autre. 
+  Ce moment est venu.
+
   `MyUppercasePipe` depends on Angular as is clear in the first few lines:
+
+  `MyUppercasePipe` dépend d'Angular, c'est clair dés les premières lignes:
   
 +makeExample('testing/ts/app/my-uppercase.pipe.ts', 'depends-on-angular')(format=".")
 
 :marked
   **Open** `unit-tests.html`
 
+  **Ouvrez** `tests-unitaires.html`
+
   **Find** the `<!-- #1. add the system.js library -->` comment.
 
+  **Trouvez** le commentaire `<!-- #1. add the system.js library -->`.
+
   **Replace** the scripts tags beneath it with the all the needed angular scripts:
+
+  **Remplacez** la balise de script qui se trouve dessous par tout les scripts Angular requis:
 
 +makeExample('testing/ts/unit-tests-5.html', 'import-angular')(format=".")
 
 :marked
   We should now be ready to see our 3 expectations fail when reloading our test page.
   
+  Vous devriez maintenant être prêt pour voir nos 3 attentes échouer quand la page de tests se ré-actualisera.
+
 figure.image-display
   img(src='/resources/images/devguide/testing-an-angular-pipe/two-failures.png' alt="2 failed tests")
     
 :marked
   ## Uppercase, if you please
   
+  ## Majuscule, s'il vous plait
+
   The first two tests that passed were our old `hero` interface tests, so it makes sense that those passed. Of our three new expectations, one still passed though.
+
+  Les deux premiers tests passés sont nos vieux tests de l'interface `hero`, c'est donc logique qu'il aient fonctionnées. Sur nos trois nouvelles attentes, une est quand même passée.
   
   ```  
     MyUppercasePipe
       transforms "abc" to "ABC"
       transforms "abc def" to "ABC DEF"
       leaves "ABC DEF" unchanged
+
   ```  
-  
+    MyUppercasePipe
+      transforme "abc" en "ABC"
+      transforme "abc def" en "ABC DEF"
+      ne modifie pas "ABC DEF" 
+  ```  
+
   Ah but of course! Our simple pipe doesn't transform the input at all, and the third test expected
   input to not be changed.
+
+  Mais bien sur! Notre pipe simpliste ne transforme pas son entré du tout, et le troisième test s'attend à ce que l'entré ne change pas. 
   
   All we have to do now is actually transform text to uppercase in our pipe.
   
+  Tout ce que nous avons à faire maintenant, c'est de transformer notre texte en majuscule dans le tuyau.
+
 +makeExample('testing/ts/app/my-uppercase.pipe.ts', 'uppercase')(format=".")
 
 :marked
   Are we done now?
+
+  Avons nous fini maintenant?
   
 figure.image-display
   img(src='/resources/images/devguide/testing-an-angular-pipe/zero-failures.png' alt="0 failed tests")
@@ -183,17 +319,32 @@ figure.image-display
 :marked
   The glorious green is back with us again!
   
+  Le glorieux vert est de nouveau de retour avec nous!
+
   We tried a bit of test driven development and it seems to have guided us to success.
+
+  Nous avons gouté au développement piloté par les tests et il semble que cela nous ai guidé vers le succés.
   
-  But it's not always feasible. For instance, sometimes we need to write tests for existing functionality, like what we're about to do with the rest of Tour of Heroes. 
+  But it's not always feasible. For instance, sometimes we need to write tests for existing functionality, like what we're about to do with the rest of Tour of Heroes.
+
+  Mais ce n'est pas toujours faisable. Par exemple, certaines fois nous devons écrire des tests pour des fonctionnalités existantes, comme nous allons le faire pour le reste du Tour des Héros. 
   
   If we are writing new code though, writing tests might just be what we need to help us track our progress and keep the end result in sight at all times.
 
+  Cepandant, si nous écrivons du nouveau code, écrire les tests pourrait être éxactement ce que nous avons besoin pour nous aider à suivre notre progression et garder en permanence le résultat final en vue.
+
 :marked
   ## What’s Next?
+  ## Quoi de neuf pour la suite ?
 
   Now we can test parts of our application that we *load* asynchronously with system.js.
 
+  Maintenant nous pouvons tester des parties de nore application que nous *chargeons* de manière asynchrone avec system.js
+
   What about testing parts that *are themselves asynchronous*?
 
+  Mais comment tester des parties qui sont *elles mêmes asynchrones*?
+
   Let's test a service with a public asynchronous method that fetches heroes from a remote server.
+  
+  Allons tester un service avec un méthode asynchrone publique qui récupère des héros depuis un serveur distant.
