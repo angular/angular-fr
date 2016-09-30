@@ -2,23 +2,44 @@ include ../_util-fns
 
 :marked
   We’ll write our tests with the [Jasmine test framework](http://jasmine.github.io/2.3/introduction.html).
+
+  Nous allons écrire nos tests avec le [framework de test Jasmine](http://jasmine.github.io/2.3/introduction.html).
+  
   We’ll start by getting *some* tests to work - *any* tests at all.
 
+  Nous allons commencer par faire fonctionner **quelques** tests.
+
   We will learn
+
+  Nous allons apprendre
+
     - basic Jasmine testing skills
+    - les compétences de base pour tester avec Jasmine
     - to run our tests in the browser
+    - à exécuter nos tests dans le navigateur
     - to write simple Jasmine tests in TypeScript
+    - à écrire des tests simple avec Jasmine en TypeScript
     - to debug a test in the browser
+    - à débuffer un test dans le navigateur
 
   **Create a new project folder** perhaps called `angular2-unit-testing`.
+
+  **Créez un nouveau dossier** appellé, par exemple, `angular2-test-unitaire`.
+
 .l-main-section
 :marked
   ## Install npm packages locally
+  ## Installer les paquets npm localement
 
   Next follow all of  the steps prescribed in  “Install npm packages locally” of the
   [QuickStart](../quickstart.html).
 
+  Suivez toutes les étapes décrites dans la section “Installer un paquet npm locallement” du
+  [démarrage rapide](../quickstart.html).
+
   We’ll also add the Jasmine package via `npm`:
+
+  Nous avons également ajouté le paquet Jasmine via `npm`: 
 
 pre.prettyprint.lang-bash
    code npm install jasmine-core --save-dev --save-exact
@@ -27,29 +48,44 @@ pre.prettyprint.lang-bash
   :marked
     Be sure to install `jasmine-core` , not `jasmine`!
 
+    Soyez sur de bien installer `jasmine-core` , pas `jasmine`!
+
 :marked
   **Create a sub-folder `src` ** for our tests and then **cd into it**.
 
+  **Créez un sous répertoire `src` ** pour nos tests et aprés **cd dedant**.
+
   We are going to **display and control our tests in the browser**.
+
+  Nous allons **afficher et controller nos test dans le navigateur**.
 
 .l-sub-section
   :marked
     The browser is nice during development of a few tests. It’s not the best venue for working with a lot of tests and it won’t do at all for build automation. We’ll switch to the karma test-runner when the time comes. But the browser will do for now.
 
+    Le navigateur est intéressant durant le développement de quelques test. Ce n'est pas le meilleur outil pour travailler avec de nombreux tests et il ne conviendra pas du tout lors de l'automatisation des constructions. Mais pour le moment, le navigateur suffira.
+
 :marked
   Create a new file called`unit-tests.html` and enter the following:
-+makeExample('testing/ts/unit-tests-0.html', 'no-script', 'unit-tests.html')
+
+  Créez un nouveau fichié appelé `tests-unitaires.html` et tappez ce qui suit:
++makeExample('testing/ts/unit-tests-0.html', 'no-script', 'tests-unitaires.html')
 
 :marked
   In the head we have three Jasmine scripts and one Jasmine css file. That’s the foundation for running any tests.
 
+  Dans la balise head nous avons trois scripts Jasmine et un fichier css Jasmine. Ce sont les fondations pour exéctuer n'importe quel test.
+
   We’ll write our first test with inline JavaScript inside the body tag:
 
+  Nous allons écrire notre premier test avec du code Javascript en ligne dans la balise body:
 
 +makeExample('testing/ts/unit-tests-0.html', 'body')(format='.')
 
 :marked
   Now open `unit-tests.html` in a browser and see the Jasmine HTML test output:
+
+  Maintenant ouvrez `tests-unitaires.html` dans un navigateur et regardez la sortie HTML du test Jasmine:
 
 figure.image-display
     img(src='/resources/images/devguide/jasmine-testing-101/jasmine-1-spec-0-failures.png' style="height:170px;" alt="Jasmine HTML test output")
@@ -57,47 +93,77 @@ figure.image-display
 :marked
   It doesn’t get much simpler than that!
 
+  Ca ne peut pas être plus simple que ça.
+
 .l-main-section
 :marked
   ## First TypeScript Test
+  ## Premier test TypeScript
+
   Perhaps too simple. We won’t write our entire test suite inside one HTML file.
+  
+  Peut-être trop simple. Nous n'alllons pas écrire entierement notre suite de tests dans un fichier HTML.
+
   Let’s **extract** that line of test code to a **new file in `src` called `1st.spec.ts` ** .
+
+  Nous allons **extraire** ces lignes de code de test vers un **nouveau fichier dans `src`appellé `1st.spec.ts` ** .
 
 .l-sub-section
   :marked
     Among Jasmine developers, a test is known as a “spec” and test filenames include the word “spec”.  We’ll stick with that convention.
 
+    Parmis les développeurs Jasmine, un test est connue sous l'appellation de “spec” et les noms des fichiers tests incluent le mot “spec”. Nous allons suivre cette convention. 
+
 :marked
   The test we wrote is valid TypeScript because any JavaScript is valid TypeScript. But let’s make it more modern with an arrow function:
+
+  Le test que nous écrivons est du TypeScript valide, car tout JavaScript est du TypeScript valide. Mais rendons cela plus moderne en utilisant les fonctions flèches:
   
 +makeExample('testing/ts/1st.spec.ts', 'it', '1st.spec.ts')
 
 :marked
   Now modify `unit-tests.html` to load the script:
   
+  Maintenant modifions `tests-unitaires.html`pour charger le script:
+
 +makeExample('testing/ts/unit-tests-1.html', 'script')
 
 :marked
   Hold on! We wrote a TypeScript file but we’re loading a JavaScript file?
 
+  Attendez! Nous écrivons un fichier TypeScript mais nous chargeons un fichier JavaScript? 
+
   That’s a reminder that we need to compile our TypeScript test files as we do our TypeScript application files.  Do that next.
+
+  C'est un rappel sur le fait que nous devons compiler nos fichiers de test TypeScript pendant que nous écrivons les fichiers de notre application. C'est ce que nous allons faire. 
 
 .l-main-section
 :marked
   ## Prepare for TypeScript
 
+  ## Préparons nous pour TypeScript
+
   As we’ve seen before, we first have to tell the compiler how to compile our TypeScript files with
   a ** `tsconfig.json` **.
 
+  Comme nous l'avons vu avant, nous devons en premier dire au compilateur comment compiler nos fichiers TypeScript avec un ** `tsconfig.json` **. 
+
   We can copy one from the quickstart we wrote previously and paste it into our src sub-folder.
   It should look something like this:
+
+  Nous pouvons copier celui que nous avons écrit pour le démarrage rapide et le copier dans le sous répertoire src.
+  Cela devrait ressembler à quelque chose comme: 
 
 +makeExample('testing/ts/tsconfig.1.json', null, 'tsconfig.json')
 
 :marked
   ## Compile and Run
 
+  ## Compilation et exécution
+
   Compile in the terminal window using the npm script command
+
+  Compiler dans une fenètre de terminal en utilisant la commande npm script
 
 pre.prettyprint.lang-bash
   code npm run tsc
@@ -108,12 +174,21 @@ pre.prettyprint.lang-bash
     what `it` and `expect` are because they lack the typing files that describe Jasmine.
     We can ignore those annoying complaints for now as they are harmless.
 
+    Notre éditeur et le compilateur risque de se plaindrent car ils ne savent pas ce que sont `it` et `expect` car il nous manque les fichiers de définition de types de Jasmine.
+    Nous pouvons ignorer ces alertes pour le moment, car elles ne sont pas dangereuses.
+
 :marked
   If we reload the browser, we should see the same Jasmine test-runner output as before.
 
+  Si nous re-actualisons le navigateur, nous devrions voir le même résultat de sortie de Jasmine que précédemment.
+
   We’ll be evolving these tests rapidly and it would be nice to have the browser refresh automatically as we make changes and recompile.
 
+  Nous allons faire évoluer ces tests rapidement et il serrait bien que le navigateur s'actualise automatiquement lors de nos modifications et recompilations.
+
   Let’s launch with **lite-server** in a second terminal window:
+
+  Lançons **lite-server** dans un second terminal:
 
 pre.prettyprint.lang-bash
   code npm start
@@ -121,33 +196,51 @@ pre.prettyprint.lang-bash
 :marked
   Now reload `unit-tests.html` in the browser
 
+  Maintenant re-actualisez `tests-unitaires.html` dans le navigateur 
+
   We should get the same Jasmine test-runner output as before.
+
+  Nous devrions voir le même résultat de sortie de Jasmine que précédemment.
 
 .l-main-section
 :marked
   ## Add a describe and another test
 
+  ## Ajouter une description et un autre test
+
   We can’t tell what file produced these test results. We only have one file at the moment but soon we’ll write more.
+
+  Nous ne pouvons pas dire quel fichier à produit ces résultats de test. Nous n'avons qu'un fichier pour le moment, mais nous allons bientôt en avoir plus.
 
   We should wrap this test into something that identifies the file. In Jasmine that “something” is a `describe` function.  Every test file should have at least one `describe` that identifies the file holding the test(s).
 
+  Nous devrions envelopper ces tests dans quelque chose qui identifie le fichier. Avec Jasmine, ce “quelque chose” est une fonction `describe`. Chaque fichier test doit avoir au moins un `describe` qui identifie le fichier contenant le(s) test(s).  
+
   Here’s what our revised `1st.spec.ts` looks like when wrapped in a `describe`:
+
+  Voilà ce à quoi ressemble notre `1st.spec.ts` modifié pour utiliser `describe`:
 
 +makeExample('testing/ts/1st.spec.ts', 'describe')
 
 :marked
   And here’s how the test report displays it.
 
+  Et voila comment notre rapport de test affiche cela.
+
 figure.image-display
     img(src='/resources/images/devguide/jasmine-testing-101/test-report-1-spec-0-failures.png' style="height:100px;" alt="1 spec, 0 failures")
 
 :marked
   Let’s add another Jasmine test to `1st.spec.ts`
+
+  Ajoutons un autre test Jasmine à `1st.spec.ts`
   
 +makeExample('testing/ts/1st.spec.ts', 'another-test')(format=".")
 
 :marked
   You knew that right?  Let’s prove it with this test. The browser should refresh after you paste that test, and show:
+
+  Vous le saviez ça? Exact? Prouvons le avec un test. Le navigateur devrait se re-actualiser aprés que vous ayez copié le test, et afficher:
 
 figure.image-display
     img(src='/resources/images/devguide/jasmine-testing-101/test-report-2-specs-0-failures.png' style="height:100px;" alt="refreshed 2 specs, 0 failures")
@@ -155,11 +248,15 @@ figure.image-display
 :marked
   What does a failing test look like? Remove the `.not`. The browser refreshes and shows:
 
+  A quoi ressemble un test qui échoue? Enlevez le `.not`.Le navigateur se re-actualise et affiche:
+
 figure.image-display
     img(src='/resources/images/devguide/jasmine-testing-101/test-report-2-specs-1-failure.png' style="height:190px;" alt="failing test 2 specs, 1 failure")
 
 :marked
   Click the `Spec List` link just below “2 specs, 1 failure” to see the summary again:
+
+  Cliquez sur le liens `Spec List` juste sous “2 specs, 1 failure” pour voir une nouvelle fois le résumé:
 
 figure.image-display
     img(src='/resources/images/devguide/jasmine-testing-101/spec-list-2-specs-1-failure.png' style="height:140px;" alt="2 specs, 1 failure")
@@ -167,34 +264,61 @@ figure.image-display
 :marked
   We can re-run just the failing test by double-clicking it.  Try it!
 
+  Nous pouvons re-exécuter le test qui échoue en double cliquant dessus. Essayez!
+
 .l-main-section
 :marked
   ## Debug the test
+
+  ## Débugger le test 
+
   Suppose we didn’t know what was going on.  We can debug it in the browser.
 
+  Supposons que nous ne sachions pas ce qu'il se passe. Nous pouvons débugger le test dans le navigateur.
+
     - Open the browser’s “Developer Tools” (F12 or Ctrl-Shift-I).
+    - Ouvrez la fenêtre “Outils développeurs” (F12 or Ctrl-Shift-I).
     - Pick the “sources” section
+    - Selectionnez la section “sources” 
     - Open the `1st.spec.ts` test file (Ctrl-P, then start typing the name of the file).
+    - Ouvrez le fichier de test `1st.spec.ts` (Ctrl-P, puis commencez à tapper le nom du fichier). 
     - Set a breakpoint on the second line of the failing test
+    - Placez un point d'arret sur la seconde ligne du test qui échoue
     - Refresh the browser … and it stops at our breakpoint.
+    - Re-actualisez le navigateur ... et il s'arrète sur notre point d'arret.
     - Open the console window at the bottom  (press Esc)
+    - Ouvrez le fenètre de la console en bas (appuyez sur Esc)
     - Type `null === undefined` … … and we should see this:
+    - Tappez `null === undefined` ... ... et nous devrions voir ça:
 
 figure.image-display
     img(src='/resources/images/devguide/jasmine-testing-101/null-to-equal-undefined.png' style="height:500px;" alt="null === undefined")
 
 :marked
   How about that!  They really aren’t equal.
+
+  Comment ça! Ils ne sont vraiment pas égaux.
+
     - remove the breakpoint (right-click in the “Breakpoints” section and chose “Remove breakpoint”)
+    - supprimez le point d'arret (clic droit dans la section “point d'arrets” et selectionnez “Supprimer un point d'arret”)
     - Click the “play” icon to resume the test  (or F8)
+    - Cliquez sur l'icone “play” pour reprendre le test (ou F8) 
 
   And the test finishes.  Close the browser tools (click the close box or press F12 or Ctrl-Shift-I)
 
+  Et le test se termine. Fermez les outils du navigateur (cliquez sur le bouton de fermeture ou appuyez sur F12 ou Ctrl-Shift-I)
+
   Fix the test (restore the `.not`);  the browser should refresh automatically and all tests pass.
 
+  Réparez le test (remettez le `.not`); le navigateur devrait se re-actualiser automatiquement et tout les tests devraient passer.
+
   Congratulations … you’ve completed Jasmine testing 101.
+
+  Félicitation ... vous venez de terminer votre initiation à Jasmine.
   
   Now that we’re familiar with Jasmine on its own, we’re ready to test an application.
+
+  Maintenant que vous êtes familié avec Jasmine, nous sommes prêts pour tester une application.
 
   <!-- TODO
   .l-main-section
