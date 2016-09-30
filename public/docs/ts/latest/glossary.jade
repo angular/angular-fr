@@ -824,8 +824,14 @@ include _util-fns
     [Event Binding](/docs/ts/latest/guide/template-syntax.html#property-binding).
     Events stream *out* of this property to the receiver identified
     in the template expression to the right of the equal sign.
+    
+    Une propriété de directive qui peut être la ***cible*** d'une
+    [Liaison d'Événement](/docs/ts/latest/guide/template-syntax.html#property-binding).
+    Les événements qui *sortent* de cette propriété sont envoyés au receveur identifié
+    dans le template par l'expression à droite du signe égal.
 
     See the [Template Syntax](/docs/ts/latest/guide/template-syntax.html#inputs-outputs) chapter.
+    Voir le chapitre sur la [Syntaxe des Templates](/docs/ts/latest/guide/template-syntax.html#inputs-outputs).
 
 .l-main-section
 <a id="P"></a>
@@ -835,9 +841,15 @@ include _util-fns
   :marked
     The practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter.
     Class names are typically spelled in PascalCase. Examples include: `Person` and `Customer`.
+    
+    La pratique qui consiste à agréger les mots de façon à ce que chaque mot ou abréviation commence avec une majuscule.
+    Les noms de classe sont typiquement en PascalCase. Par exemple&nbsp;: `Person` et `Customer`.
 
     This form is also known as **upper camel case**, to distinguish it from **lower camel case** which we simply call [camelCase](#camelcase).
     In this documentation, "PascalCase" means *upper camel case* and  "camelCase" means *lower camel case*.
+
+    Cette forme est aussi appelée **upper camel case** (_camel case majuscule_), pour la distinguer du **lower camel case** (_camel case minuscule_) que l'on appelle simplement [camelCase](#camelcase).
+    Dans cette documentation, "PascalCase" veut dire **camel case majuscule* et  "camelCase" veut dire *camel case minuscule*.
 
 :marked
   ## Pipe
@@ -847,14 +859,24 @@ include _util-fns
     display in a [view](#view). We use the `#{atSym}Pipe` !{decorator}
     to associate the pipe function with a name. We then can use that
     name in our HTML to declaratively transform values on screen.
+    
+    Un _pipe_ (tube) Angular est une fonction qui transforme des valeurs d'entrée en valeurs de sortie pour
+    les afficher dans une [vue](#view). On utilise le décorateur `#{atSym}Pipe`
+    pour associer la fonction du pipe avec un nom. On peut ensuite utiliser
+    ce nom dans notre HTML pour transformer declarativement les valeurs à l'écran.
 
     Here's an example that uses the built-in `currency` pipe to display
     a numeric value in the local currency.
+    
+    Voici un exemple qui utilise le pipe `currency` fourni par le framework pour afficher
+    une valeur numérique dans la monnaie locale.
 
   code-example(language="html" escape="html").
     <label>Price: </label>{{product.price | currency}}
   :marked
     Learn more in the chapter on [pipes](/docs/ts/latest/guide/pipes.html) .
+    
+    Apprenez-en plus dans le chapitre sur les [pipes](/docs/ts/latest/guide/pipes.html).
 
 :marked
   ## Provider
@@ -862,70 +884,121 @@ include _util-fns
   :marked
     A Provider creates a new instance of a dependency for the Dependency Injection system.
     It relates a lookup token to code - sometimes called a "recipe" - that can create a dependency value.
+    
+    Un _Provider_ (Fournisseur) crée une nouvelle instance d'une dépendance dans le système d'Injection de Dépendances.
+    Il relie une clé (_token_) à du code - parfois appelé une "recette" - qui peut créer la dépendance.
 
     For example, `new Provider(Foo, {useClass: Foo})` creates a `Provider`
     that relates the `Foo` token to a function that creates a new instance of the `Foo` class.
+    
+    Par exemple, `new Provider(Foo, {useClass: Foo})` crée un `Provider`
+    qui relie la clé `Foo` à la fonction qui crée une nouvelle instance de la classe `Foo`.
 
     There are other ways to create tokens and recipes.
     See [Dependency Injection](#dependency-injection) chapter to learn more.
+    
+    Il y a d'autres façons de créer des clés et des recettes.
+    Voir le chapitre sur l'[Injection de Dépendances](#dependency-injection) pour en savoir plus.
 
 .l-main-section
 <a id="Q"></a>
 <a id="R"></a>
 :marked
   ## Router
+  
+  ## Routeur
 .l-sub-section
   :marked
     Most applications consist of many screens or [views](#view).
     The user navigates among them by clicking links and buttons
     and taking other similar actions that cause the application to
     replace one view with another.
+    
+    La plupart des applications consiste en de nombreux écrans ou [vues](#view).
+    L'utilisateur navigue entre ceux-ci en cliquant sur des liens et des boutons
+    et par d'autres actions similaires qui conduisent l'application à
+    remplacer une vue par une autre.
 
     The Angular [Component Router](/docs/ts/latest/guide/router.html) is a richly featured mechanism for configuring
     and managing the entire view navigation process including the creation and destruction
     of views.
+    
+    Le [Routeur de Composant](/docs/ts/latest/guide/router.html) d'Angular est un mécanisme riche en fonctionnalité pour configurer
+    et gérer le procédé complet de navigation, incluant la création et la destruction
+    des vues.
 :marked
   ## Routing Component
+  
+  ## Composant de route
 .l-sub-section
   :marked
     A [Component](#component) with an attached router.
+    
+    Un [Composant](#component) attaché à un routeur.
 
     In most cases, the component became attached to a [router](#router) by means
     of a `#{atSym}RouterConfig` #{decorator} that defined routes to views controlled by this component.
+    
+    Dans la plupart des cas, le composant devient attaché à un routeur grâce
+    au décorateur`#{atSym}RouterConfig` qui définit des routes pour les vues controllées par ce composant. 
 
     The component's template has a `RouterOutlet` element where it can display views produced by the router.
+    
+    Le template de ce composant a un élément `RouterOutlet` où il peut afficher les vues produites par le routeur. 
 
     It likely has anchor tags or buttons with `RouterLink` directives that users can click to navigate.
+    
+    Il a vraissemblablement des ancres ou boutons avec la directive `RouterLink` que les utilisateurs peuvent cliquer pour naviguer.
 
 <a id="S"></a>
 .l-main-section
 // #enddocregion n-s-1
 :marked
   ## Scoped Package
+  
+  ## Scoped Package
 .l-sub-section
   :marked
     Angular modules are delivered within *scoped packages* such as `@angular/core`, `@angular/common`, `@angular/platform-browser-dynamic`,
     `@angular/http`, and `@angular/router`.
+    
+    Les modules Angular sont livrés dans des *scoped packages* comme `@angular/core`, `@angular/common`, `@angular/platform-browser-dynamic`,
+    `@angular/http`, et `@angular/router`.
 
     A [*scoped package*](https://docs.npmjs.com/misc/scope) is a way to group related *npm* packages.
+    
+    Un [*scoped package*](https://docs.npmjs.com/misc/scope) est une façon de regrouper des packages *npm* liés.
 
     We import a scoped package the same way we'd import a *normal* package.
     The only difference, from a consumer perspective,
     is that the package name begins with the Angular *scope name*, `@angular`.
+    
+    On importe un scoped package de la même façon que l'on importe un package *normal*.
+    La seule différence, du point de vue du consommateur,
+    est que le nom du package commence par le nom de scope d'Angular, `@angular`.
 
   +makeExcerpt('architecture/ts/app/app.component.ts', 'import', '')
 // #docregion n-s-2
 
 :marked
   ## Structural Directive
+  
+  ## Directives structurelles
 .l-sub-section
   :marked
     A category of [Directive](#directive) that can
     shape or re-shape HTML layout, typically by adding, removing, or manipulating
     elements and their children.
+    
+    Une catégorie de [Directive](#directive) qui peuvent
+    façonner ou re-façonner le layout HTML, typiquement en ajoutant, supprimant, ou manipulant
+    des éléments et leurs enfants.
 
     The `ngIf` "conditional element" directive and the `ngFor` "repeater" directive are
     good examples in this category.
+    
+    La directive "élément conditionnel" `ngIf` et la directive "répétition" `ngFor` sont
+    de bons exemples de cette catégorie.
 // #enddocregion n-s-2
 
 // #docregion t1
@@ -938,25 +1011,42 @@ include _util-fns
     A template is a chunk of HTML that Angular uses to render a [view](#view) with
     the support and continuing guidance of an Angular [Directive](#directive),
     most notably a [Component](#component).
+    
+    Un template est un morceau de HTML que Angular utilise pour rendre une [vue](#view) avec
+    le support et les instructions continues d'une [Directive](#directive) Angular,
+    notamment un [Composant](#component).
 
     We write templates in a special [Template Syntax](/docs/ts/latest/guide/template-syntax.html).
+    
+    On écrit les templates avec une [Syntaxe de Template](/docs/ts/latest/guide/template-syntax.html) spéciale. 
 
 :marked
   ## Template Expression
+  
+  ## Expression de Template
 .l-sub-section
   :marked
     An expression in a JavaScript-like syntax that Angular evaluates within
     a [data binding](#data-binding).  Learn how to write template expressions
     in the [Template Syntax](/docs/ts/latest/guide/template-syntax.html#template-expressions) chapter.
+    
+    Une expression dans une syntaxe pseudo-JavaScript qu'Angular évalue dans
+    une [liaison de données](#data-binding). Apprenez à écrire des expressions de template
+    dans le chapitre [Syntaxe de Template](/docs/ts/latest/guide/template-syntax.html#template-expressions).
 
 // #enddocregion t1
 // #docregion t2
 :marked
   ## Transpile
+  
+  ## Transpilation
 .l-sub-section
   :marked
     The process of transforming code written in one form of JavaScript
     (e.g., TypeScript) into another form of JavaScript  (e.g., [ES5](#es5)).
+    
+    Le procédé qui consiste à transformer le code écrit dans une forme de JavaScript 
+    (par exemple, TypeScript) dans une autre forme de JavaScript (par exemple, [ES5](#es5)).
 
  :marked
   ## TypeScript
@@ -965,18 +1055,34 @@ include _util-fns
     A version of JavaScript that supports most [ECMAScript 2015](#ecmascript=2015)
     language features and many features that may arrive in future versions
     of JavaScript such as [Decorators](#decorator).
+    
+    Une version de JavaScript qui supporte la plupart des fonctionnalités de [ECMAScript 2015](#ecmascript=2015) 
+    et beaucoup d'autres fonctionnalités qui pourraient apparaître dans des futures versions
+    de JavaScript comme les [Décorateurs](#decorator). 
 
     TypeScript is also noteable for its optional typing system which gives
     us compile-time type-checking and strong tooling support (e.g. "intellisense",
     code completion, refactoring, and intelligent search). Many code editors
     and IDEs support TypeScript either natively or with plugins.
+    
+    TypeScript est aussi notable pour son typage optionnel qui nous donne
+    une vérification des types à la compilation et un support dans les différents outils très solide (par exemple "intellisense",
+    complétion de code, refactoring, et recherche intelligente). Beaucoup d'éditeurs de code
+    et d'IDE supporte TypeScript soit nativement soit grâce à un plugin.
 
     TypeScript is the preferred language for Angular 2 development although
     we are welcome to write in other JavaScript dialects such as [ES5](#es5).
+    
+    TypeScript est le langage préféré pour développer des applications Angular 2 même
+    si nous sommes à même de les écrire dans d'autres dialectes JavaScript comme [ES5](#es5).
 
     Angular 2 itself is written in TypeScript.
+    
+    Angular 2 lui-même est écrit en TypeScript.
 
     Learn more about TypeScript on its [website](http://www.typescriptlang.org/).
+    
+    Apprenez-en plus à propos de TypeScript sur son [site officiel](http://www.typescriptlang.org/).
 // #enddocregion t2
 
 // #docregion u-z
@@ -985,19 +1091,33 @@ include _util-fns
 .l-main-section
 :marked
   ## View
+  
+  ## Vue
 .l-sub-section
   :marked
     A view is a portion of the screen that displays information and responds
     to user actions such as clicks, mouse moves, and keystrokes.
+    
+    Une vue est une portion de l'écran qui affiche des informations et répond 
+    aux interactions de l'utilisateur comme les clics, déplacements de souris, et entrées clavier. 
 
     Angular renders a view under the control of one or more [Directives](#directive),
     especially  [Component](#component) directives and their companion [Templates](#template).
     The Component plays such a prominent role that we often
     find it convenient to refer to a component as a view.
+    
+    Angular rend une vue sous le contrôle d'une ou plusieurs [Directives](#directive),
+    particulièrement des [Composants](#component) et leurs compagnons les [Templates](#template).
+    Le Composant joue un rôle tellement majeur que l'on trouve souvent
+    pratique d'appeler un composant une vue. 
 
     Views often contain other views and any view might be loaded and unloaded
     dynamically as the user navigates through the application, typically
     under the control of a [router](#router).
+    
+    Les vues contiennent souvent d'autres vues et n'importe quelle vue peut être chargée et déchargée
+    dynamiquement quand l'utilisateur navigue à travers l'application, typiquement
+    sous le contrôle d'un [routeur](#router).
 
 .l-main-section
 <a id="W"></a>
@@ -1010,20 +1130,39 @@ include _util-fns
   :marked
     Zones are a mechanism for encapsulating and intercepting
     a JavaScript application's asynchronous activity.
+    
+    Les Zones sont un mécanisme pour encapsuler et intercepter
+    l'activité asynchrone d'une application JavaScript.
 
     The browser DOM and JavaScript have a limited number
     of asynchronous activities, activities such as DOM events (e.g., clicks),
     [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and
     [XHR](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
     calls to remote servers.
+    
+    Le DOM du navigateur et JavaScript ont un nombre limité
+    d'activités asynchrones, activités comme les événements DOM (par exemple, les clics),
+    les [promesses](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), et
+    les appels [XHR](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
+    vers des serveurs distants.
 
     Zones intercept all of these activities and give a "zone client" the opportunity
     to take action before and after the async activity completes.
+    
+    Les Zones interceptent toutes ces activités et donne au "client" d'une zone l'opportunité
+    de faire une action avant et après cette activité asynchrone.
 
     Angular runs our application in a zone where it can respond to
     asynchronous events by checking for data changes and updating
     the information it displays via [data binding](#data-binding).
+    
+    Angular enveloppe notre application dans une zone et peut ainsi répondre aux
+    événement asynchrones par une détection de changement et une mise à jour
+    des information affichées par [liaison de données](#data-binding).
 
     Learn more about zones in this
     [Brian Ford video](https://www.youtube.com/watch?v=3IqtmUscE_U).
+    
+    Apprenez-en plus sur les zones dans cette
+    [vidéo de Brian Ford](https://www.youtube.com/watch?v=3IqtmUscE_U).
 // #enddocregion u-z
